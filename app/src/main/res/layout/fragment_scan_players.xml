@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/players"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.newgame.ScanPlayersFragment"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+            android:id="@+id/qr_code_scanner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:layout_weight="5">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="15dp"
+            android:text="@string/text_confirm_players"
+            android:layout_weight="1"/>
+
+</LinearLayout>

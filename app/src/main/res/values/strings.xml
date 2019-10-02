@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">KawernaApp</string>
+    <string name="title_home">Home</string>
+    <string name="title_statistics">Scan</string>
+    <string name="title_barcode">QR Code</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_new_game">NEW GAME</string>
+    <string name="text_confirm_players">CONFIRM PLAYERS</string>
+    <string name="text_scan">SCAN</string>
+    <string name="text_back">BACK</string>
+</resources>

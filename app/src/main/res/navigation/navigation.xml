@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/bottom_navigation"
+            app:startDestination="@id/homeFragment">
+
+    <fragment android:id="@+id/homeFragment" android:name="com.tomaszkopacz.kawernaapp.ui.main.HomeFragment"
+              android:label="fragment_home" tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_players"
+            app:destination="@+id/scanPlayersFragment">
+
+        </action>
+
+    </fragment>
+
+    <fragment android:id="@+id/statisticsFragment" android:name="com.tomaszkopacz.kawernaapp.ui.main.StatisticsFragment"
+              android:label="fragment_statistics" tools:layout="@layout/fragment_statistics"/>
+
+    <fragment android:id="@+id/accountFragment" android:name="com.tomaszkopacz.kawernaapp.ui.main.AccountFragment"
+              android:label="fragment_account" tools:layout="@layout/fragment_account"/>
+
+    <fragment android:id="@+id/scanPlayersFragment" android:name="com.tomaszkopacz.kawernaapp.ui.newgame.ScanPlayersFragment"
+              android:label="players_fragment" tools:layout="@layout/fragment_scan_players">
+
+        <action
+            android:id="@+id/action_scan_to_scores"
+            app:destination="@+id/playersScoresFragment">
+
+        </action>
+    </fragment>
+
+    <fragment android:id="@+id/playersScoresFragment"
+              android:name="com.tomaszkopacz.kawernaapp.ui.newgame.PlayersScoresFragment"
+              android:label="fragment_players_scores" tools:layout="@layout/fragment_players_scores">
+
+        <argument
+                android:name="listOfPlayers"
+                app:argType="com.tomaszkopacz.kawernaapp.data.PlayersParcelable">
+
+        </argument>
+    </fragment>
+</navigation>
