@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.ui.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.newgame
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsManager
-import com.tomaszkopacz.kawernaapp.viemodel.newgame.PlayersScoresViewModel
 import kotlinx.android.synthetic.main.fragment_players_scores.*
 
 class PlayersScoresFragment : Fragment() {
@@ -23,7 +22,8 @@ class PlayersScoresFragment : Fragment() {
     private lateinit var layout: View
     private lateinit var viewModel: PlayersScoresViewModel
 
-    private var scoresAdapter: ScoresAdapter = ScoresAdapter()
+    private var scoresAdapter: ScoresAdapter =
+        ScoresAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layout = inflater.inflate(R.layout.fragment_players_scores, container, false)
@@ -56,7 +56,8 @@ class PlayersScoresFragment : Fragment() {
         scores_list.adapter = scoresAdapter
     }
 
-    private val scoreWatcher: ScoreWatcher = object : ScoreWatcher {
+    private val scoreWatcher: ScoreWatcher = object :
+        ScoreWatcher {
         override fun onScoreChanged(position: Int, score: Int) {
             viewModel.updateCurrentScore(position, score)
         }

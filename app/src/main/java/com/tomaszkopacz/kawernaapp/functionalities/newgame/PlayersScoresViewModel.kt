@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.viemodel.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.newgame
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
