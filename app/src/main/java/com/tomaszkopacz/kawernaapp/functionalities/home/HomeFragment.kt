@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.ui.main
+package com.tomaszkopacz.kawernaapp.functionalities.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,7 +26,8 @@ class HomeFragment : Fragment() {
 
     private fun setListeners() {
         new_game_button.setOnClickListener {
-            val direction = HomeFragmentDirections.actionHomeToPlayers()
+            val direction =
+                HomeFragmentDirections.actionHomeToPlayers()
             findNavController().navigate(direction)
         }
     }

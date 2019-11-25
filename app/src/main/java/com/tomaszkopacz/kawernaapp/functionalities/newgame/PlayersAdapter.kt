@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.ui.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.newgame
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     private var players: List<Player> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): PlayersAdapter.PlayerViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): PlayerViewHolder {
         val view =
             LayoutInflater
                 .from(parent.context)
@@ -25,7 +25,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
         return players.size
     }
 
-    override fun onBindViewHolder(holder: PlayersAdapter.PlayerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player = players[position]
         holder.setEmail(player.email)
     }

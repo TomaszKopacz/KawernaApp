@@ -1,17 +1,16 @@
-package com.tomaszkopacz.kawernaapp.ui.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.newgame
 
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.extensions.setCursorToEnd
-import com.tomaszkopacz.kawernaapp.ui.newgame.ScoresAdapter.ScoresViewHolder
+import com.tomaszkopacz.kawernaapp.functionalities.newgame.ScoresAdapter.ScoresViewHolder
 import kotlinx.android.synthetic.main.score_item.view.*
 
 class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {

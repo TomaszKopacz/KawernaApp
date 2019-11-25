@@ -4,7 +4,7 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/bottom_navigation"
             app:startDestination="@id/homeFragment">
 
-    <fragment android:id="@+id/homeFragment" android:name="com.tomaszkopacz.kawernaapp.ui.main.HomeFragment"
+    <fragment android:id="@+id/homeFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.home.HomeFragment"
               android:label="fragment_home" tools:layout="@layout/fragment_home">
 
         <action
@@ -15,13 +15,13 @@
 
     </fragment>
 
-    <fragment android:id="@+id/statisticsFragment" android:name="com.tomaszkopacz.kawernaapp.ui.main.StatisticsFragment"
+    <fragment android:id="@+id/statisticsFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsFragment"
               android:label="fragment_statistics" tools:layout="@layout/fragment_statistics"/>
 
-    <fragment android:id="@+id/accountFragment" android:name="com.tomaszkopacz.kawernaapp.ui.main.AccountFragment"
+    <fragment android:id="@+id/accountFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.account.AccountFragment"
               android:label="fragment_account" tools:layout="@layout/fragment_account"/>
 
-    <fragment android:id="@+id/scanPlayersFragment" android:name="com.tomaszkopacz.kawernaapp.ui.newgame.ScanPlayersFragment"
+    <fragment android:id="@+id/scanPlayersFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.newgame.ScanPlayersFragment"
               android:label="players_fragment" tools:layout="@layout/fragment_scan_players">
 
         <action
@@ -32,7 +32,7 @@
     </fragment>
 
     <fragment android:id="@+id/playersScoresFragment"
-              android:name="com.tomaszkopacz.kawernaapp.ui.newgame.PlayersScoresFragment"
+              android:name="com.tomaszkopacz.kawernaapp.functionalities.newgame.PlayersScoresFragment"
               android:label="fragment_players_scores" tools:layout="@layout/fragment_players_scores">
     </fragment>
 </navigation>

@@ -1,10 +1,9 @@
-package com.tomaszkopacz.kawernaapp.viemodel.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.newgame
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.data.Player
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsManager
 
 class ScanPlayersViewModel : ViewModel() {
 

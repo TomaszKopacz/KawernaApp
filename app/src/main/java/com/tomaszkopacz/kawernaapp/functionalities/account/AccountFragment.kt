@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.ui.main
+package com.tomaszkopacz.kawernaapp.functionalities.account
 
 import android.os.Bundle
 import android.view.LayoutInflater
