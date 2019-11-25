@@ -14,7 +14,8 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.data.PlayersParcelable
+import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsManager
 import com.tomaszkopacz.kawernaapp.viemodel.newgame.ScanPlayersViewModel
 import kotlinx.android.synthetic.main.fragment_scan_players.*
 
@@ -91,7 +92,7 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun setPlayersObserver() {
-        viewModel.playersData.observe(this, Observer {
+        viewModel.players.observe(this, Observer {
             if (it != null) {
                 playersAdapter.loadPlayers(it)
             }
@@ -105,18 +106,23 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun confirmPlayers() {
-        val players = viewModel.playersData.value
+        val players = viewModel.players.value
 
-        if(players != null && players.isNotEmpty())
-            goToScores(PlayersParcelable().apply { this.players = players })
+        if(players != null && players.isNotEmpty()) {
+            savePlayersToSharedPrefs(players)
+            goToScores()
 
-        else
+        } else
             noPlayersMessage()
     }
 
-    private fun goToScores(players: PlayersParcelable) {
-        val direction = ScanPlayersFragmentDirections.actionScanToScores(players)
+    private fun goToScores() {
+        val direction = ScanPlayersFragmentDirections.actionScanToScores()
         findNavController().navigate(direction)
+    }
+
+    private fun savePlayersToSharedPrefs(players: ArrayList<Player>) {
+        SharedPrefsManager.getInstance(context!!).savePlayers(players)
     }
 
     private fun noPlayersMessage() {

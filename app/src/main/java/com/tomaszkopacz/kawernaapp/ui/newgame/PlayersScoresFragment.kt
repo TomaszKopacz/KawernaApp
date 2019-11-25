@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Categories
-import com.tomaszkopacz.kawernaapp.data.PlayersParcelable
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsManager
 import com.tomaszkopacz.kawernaapp.viemodel.newgame.PlayersScoresViewModel
 import kotlinx.android.synthetic.main.fragment_players_scores.*
 
@@ -42,9 +42,11 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun getPlayers() {
-        val players = arguments?.getParcelable<PlayersParcelable>("listOfPlayers")?.players
+        val players = getPlayersFromSharedPrefs()
         viewModel.setPlayers(players ?: ArrayList())
     }
+
+    private fun getPlayersFromSharedPrefs() = SharedPrefsManager.getInstance(context!!).getPlayers()
 
     private fun initRecyclerView() {
         scoresAdapter.setHasStableIds(true)
@@ -73,7 +75,7 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun setScoresObserver() {
-        viewModel.scoresData.observe(this, Observer {
+        viewModel.scores.observe(this, Observer {
             scoresAdapter.loadScores(it)
         })
     }
