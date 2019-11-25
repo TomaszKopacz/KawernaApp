@@ -34,11 +34,5 @@
     <fragment android:id="@+id/playersScoresFragment"
               android:name="com.tomaszkopacz.kawernaapp.ui.newgame.PlayersScoresFragment"
               android:label="fragment_players_scores" tools:layout="@layout/fragment_players_scores">
-
-        <argument
-                android:name="listOfPlayers"
-                app:argType="com.tomaszkopacz.kawernaapp.data.PlayersParcelable">
-
-        </argument>
     </fragment>
 </navigation>
