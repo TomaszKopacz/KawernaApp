@@ -74,7 +74,7 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
         }
 
         private fun setPlayer(value: Score) {
-            itemView.player.text = value.player.email
+            itemView.player.text = value.player
         }
 
         private fun setCurrentScore(score: Score) {

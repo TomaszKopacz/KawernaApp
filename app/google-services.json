@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "851426588617",
+    "firebase_url": "https://kawernaapp.firebaseio.com",
+    "project_id": "kawernaapp",
+    "storage_bucket": "kawernaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851426588617:android:5cfa9f34353c154b",
+        "android_client_info": {
+          "package_name": "com.tomaszkopacz.kawernaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851426588617-22k9lbl6hk26mgvl9iq8v2m75movsiiq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBng7hdSmfUJMD_h5wJj8pjK5KvR5Fj7uI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851426588617-22k9lbl6hk26mgvl9iq8v2m75movsiiq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

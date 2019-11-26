@@ -34,5 +34,8 @@
     <fragment android:id="@+id/playersScoresFragment"
               android:name="com.tomaszkopacz.kawernaapp.functionalities.newgame.PlayersScoresFragment"
               android:label="fragment_players_scores" tools:layout="@layout/fragment_players_scores">
+        <action
+            android:id="@+id/action_playersScores_to_home"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
