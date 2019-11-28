@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">KawernaApp</string>
+    <string name="title_home">Tablica</string>
+    <string name="title_statistics">Statystyki</string>
+    <string name="title_barcode">Profil</string>
+
+    <string name="hello_blank_fragment">Witaj pusty fragmencie</string>
+    <string name="text_new_game">Nowa gra</string>
+    <string name="text_confirm_players">Zaakceptuj użytkowników</string>
+    <string name="text_scan">Skanuj</string>
+    <string name="text_back">Powrót</string>
+    <string name="options">Ustawienia</string>
+    <string name="choose_lang">Wybierz język:</string>
+
+
+</resources>
