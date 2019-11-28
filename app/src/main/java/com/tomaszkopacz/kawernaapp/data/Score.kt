@@ -1,6 +1,6 @@
 package com.tomaszkopacz.kawernaapp.data
 
-data class Score(var player: Player) {
+data class Score(var player: String, var game: String) {
 
     var livestock: Int? = null
     var livestockLack: Int? = null

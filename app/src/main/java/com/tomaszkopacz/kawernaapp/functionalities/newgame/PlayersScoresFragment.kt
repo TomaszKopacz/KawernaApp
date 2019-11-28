@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Categories
@@ -43,7 +45,7 @@ class PlayersScoresFragment : Fragment() {
 
     private fun getPlayers() {
         val players = getPlayersFromSharedPrefs()
-        viewModel.setPlayers(players ?: ArrayList())
+        viewModel.initGame(players ?: ArrayList())
     }
 
     private fun getPlayersFromSharedPrefs() = SharedPrefsManager.getInstance(context!!).getPlayers()
@@ -66,6 +68,7 @@ class PlayersScoresFragment : Fragment() {
     private fun setObservers() {
         setCategoryObserver()
         setScoresObserver()
+        setStateObserver()
     }
 
     private fun setCategoryObserver() {
@@ -79,6 +82,25 @@ class PlayersScoresFragment : Fragment() {
         viewModel.scores.observe(this, Observer {
             scoresAdapter.loadScores(it)
         })
+    }
+
+    private fun setStateObserver() {
+        viewModel.state.observe(this, Observer {
+            when(it) {
+                PlayersScoresViewModel.SCORES_SUBMITTED -> closeFragment()
+                PlayersScoresViewModel.FAILED_TO_SUBMIT_SCORES -> failureMessage()
+            }
+        })
+    }
+
+    private fun closeFragment() {
+        val direction = PlayersScoresFragmentDirections.actionPlayersScoresToHome()
+        findNavController().navigate(direction)
+    }
+
+    private fun failureMessage() {
+        Toast.makeText(context, "Error occured! Cannot submit the scores.", Toast.LENGTH_LONG)
+            .show()
     }
 
     private fun setListeners() {
