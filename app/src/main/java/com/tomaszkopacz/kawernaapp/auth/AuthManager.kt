@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.auth
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -18,8 +19,10 @@ object AuthManager {
 
     fun loginUser(email: String, password: String, listener: AuthListener?) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { listener?.onSuccess() }
-            .addOnCanceledListener { listener?.onFailure() }
+            .addOnCompleteListener {task ->
+                if (task.isSuccessful) listener?.onSuccess()
+                else listener?.onFailure()
+            }
     }
 
     fun getLoggedUser(): FirebaseUser? {

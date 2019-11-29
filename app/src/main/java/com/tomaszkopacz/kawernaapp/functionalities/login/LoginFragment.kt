@@ -42,8 +42,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginAttempt() {
-        val email = loginMail.text.toString()
-        val password = loginPassword.text.toString()
+        val email = loginMail.text.toString().trim()
+        val password = loginPassword.text.toString().trim()
 
         AuthManager.loginUser(email, password, loginListener)
     }
@@ -59,10 +59,7 @@ class LoginFragment : Fragment() {
 
     }
 
-
     private fun goToMainActivity() {
         (activity as StartActivity).navigateToMainActivity()
     }
-
-
 }
