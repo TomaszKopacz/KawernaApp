@@ -1,12 +1,15 @@
 package com.tomaszkopacz.kawernaapp.functionalities.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseUser
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import kotlinx.android.synthetic.main.fragment_home.*
 
 

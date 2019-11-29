@@ -9,6 +9,7 @@
     <string name="text_confirm_players">CONFIRM PLAYERS</string>
     <string name="text_scan">SCAN</string>
     <string name="text_back">BACK</string>
-    <string name="options">Settings</string>
+    <string name="language">Language</string>
     <string name="choose_lang">Choose language:</string>
+    <string name="signout">Sign out</string>
 </resources>
