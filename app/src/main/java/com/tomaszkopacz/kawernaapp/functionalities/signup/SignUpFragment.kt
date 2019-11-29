@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.activities.StartActivity
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import kotlinx.android.synthetic.main.fragment_signup.*
 
@@ -61,8 +62,6 @@ class SignUpFragment : Fragment() {
     }
 
     private fun goToMainActivity() {
-        val direction = SignUpFragmentDirections.actionSignupToMain()
-        activity?.finish()
-        findNavController().navigate(direction)
+        (activity as StartActivity).navigateToMainActivity()
     }
 }

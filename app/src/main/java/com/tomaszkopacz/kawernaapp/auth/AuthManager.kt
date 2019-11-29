@@ -12,13 +12,22 @@ object AuthManager {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) listener?.onSuccess()
                 if (task.isCanceled) listener?.onFailure()
-                if (task.isComplete) listener?.onSuccess()
             }
+            .addOnCanceledListener { listener?.onFailure() }
+    }
+
+    fun loginUser(email: String, password: String, listener: AuthListener?) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { listener?.onSuccess() }
             .addOnCanceledListener { listener?.onFailure() }
     }
 
     fun getLoggedUser(): FirebaseUser? {
         return auth.currentUser
+    }
+
+    fun logoutUser() {
+        auth.signOut()
     }
 
     interface AuthListener {

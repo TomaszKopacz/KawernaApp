@@ -6,10 +6,31 @@
     android:orientation="vertical"
     tools:context=".functionalities.login.LoginFragment">
 
-    <Button
-        android:id="@+id/TESTBTN"
+    <EditText
+        android:id="@+id/loginMail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TEST" />
+        android:inputType="text"
+        android:hint="Email"
+        android:autofillHints="Email"
+        tools:targetApi="o"
+        android:layout_margin="12dp"/>
+
+    <EditText
+        android:id="@+id/loginPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:autofillHints="Password"
+        tools:targetApi="o"
+        android:layout_margin="12dp"/>
+
+    <Button
+        android:id="@+id/loginSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:layout_margin="12dp"/>
 
 </LinearLayout>

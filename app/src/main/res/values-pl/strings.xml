@@ -9,8 +9,9 @@
     <string name="text_confirm_players">Zaakceptuj użytkowników</string>
     <string name="text_scan">Skanuj</string>
     <string name="text_back">Powrót</string>
-    <string name="options">Ustawienia</string>
+    <string name="language">Język</string>
     <string name="choose_lang">Wybierz język:</string>
+    <string name="signout">Wyloguj się</string>
 
 
 </resources>

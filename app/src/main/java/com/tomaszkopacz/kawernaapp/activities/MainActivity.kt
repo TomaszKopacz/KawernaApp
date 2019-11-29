@@ -1,8 +1,8 @@
 package com.tomaszkopacz.kawernaapp.activities
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.utils.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,9 +37,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.options -> showLanguageDialog()
+            R.id.language -> showLanguageDialog()
+            R.id.signout -> signOut()
             else -> {true}
         }
+    }
+
+    fun navigateToStartActivity() {
+        val intent = Intent(this, StartActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showLanguageDialog(): Boolean {
@@ -73,5 +81,12 @@ class MainActivity : AppCompatActivity() {
     private fun setLanguage() {
         val localeManager = LocaleManager()
         localeManager.changeLanguage(this, "pl")
+    }
+
+    private fun signOut() : Boolean {
+        AuthManager.logoutUser()
+        navigateToStartActivity()
+
+        return true
     }
 }
