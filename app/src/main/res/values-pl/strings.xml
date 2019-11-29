@@ -12,6 +12,7 @@
     <string name="language">Język</string>
     <string name="choose_lang">Wybierz język:</string>
     <string name="signout">Wyloguj się</string>
+    <string name="qr_code">Kod QR</string>
 
 
 </resources>
