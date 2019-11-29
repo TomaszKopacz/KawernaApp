@@ -17,12 +17,6 @@ class StartActivity : AppCompatActivity() {
 
         val navController = Navigation.findNavController(this, R.id.start_container)
         start_bottom_navigation.setupWithNavController(navController)
-
-        checkIsAnyUserLoggedIn()
-    }
-
-    private fun checkIsAnyUserLoggedIn() {
-        if (AuthManager.getLoggedUser() != null) navigateToMainActivity()
     }
 
     fun navigateToMainActivity() {
