@@ -1,6 +1,7 @@
 package com.tomaszkopacz.kawernaapp.data
 
 import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.Exception
 
 class FireStoreRepository {
 
@@ -11,26 +12,34 @@ class FireStoreRepository {
 
     private val database = FirebaseFirestore.getInstance()
 
-    fun addScore(score: Score, listener: ResultListener?) {
+    fun addScore(score: Score, listener: UploadScoreListener?) {
         database.collection(SCORES_COLLECTION).document()
             .set(score)
-            .addOnCompleteListener { listener?.onSuccess(score) }
-            .addOnFailureListener { listener?.onFailure(score) }
+            .addOnSuccessListener { listener?.onSuccess(score) }
+            .addOnFailureListener { exception ->  listener?.onFailure(exception) }
     }
 
-    fun addScores(scores: ArrayList<Score>, listener: ResultListener?) {
-        for(score in scores) {
-            addScore(score, object : ResultListener {
-                override fun onSuccess(obj: Any?) {}
-                override fun onFailure(obj: Any?) { listener?.onFailure(score)}
-            })
-        }
+    fun getScores(player: String, listener: DownloadScoresListener?) {
+        val scores = ArrayList<Score>()
 
-        listener?.onSuccess(scores)
+        database.collection(SCORES_COLLECTION)
+            .whereEqualTo("player", player)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) scores.add(document.toObject(Score::class.java))
+                listener?.onSuccess(scores)
+            }
+            .addOnFailureListener { exception -> listener?.onFailure(exception) }
+
     }
 
-    interface ResultListener {
-        fun onSuccess(obj: Any?)
-        fun onFailure(obj: Any?)
+    interface UploadScoreListener {
+        fun onSuccess(score: Score)
+        fun onFailure(exception: Exception)
+    }
+
+    interface DownloadScoresListener {
+        fun onSuccess(scores: ArrayList<Score>)
+        fun onFailure(exception: Exception)
     }
 }

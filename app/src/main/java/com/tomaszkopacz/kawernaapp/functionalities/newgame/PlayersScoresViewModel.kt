@@ -6,22 +6,17 @@ import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PlayersScoresViewModel : ViewModel() {
 
-    companion object {
-        private const val TAG = "Kawerna"
-
-        const val NONE = ""
-        const val SCORES_SUBMITTED = "Scores submitted"
-        const val FAILED_TO_SUBMIT_SCORES = "Failed to submit scores"
-    }
+    private var _scores: ArrayList<Score> = ArrayList()
 
     var currentCategory: MutableLiveData<Int> = MutableLiveData()
-
-    private var _scores: ArrayList<Score> = ArrayList()
     var scores: MutableLiveData<ArrayList<Score>> = MutableLiveData()
-
     var state: MutableLiveData<String> = MutableLiveData()
 
     init {
@@ -31,9 +26,11 @@ class PlayersScoresViewModel : ViewModel() {
 
     fun initGame(players: ArrayList<Player>) {
         val gameId = generateUniqueGameId()
+        val currentDate = getCurrentDateString()
+        val playersCount = players.size
 
         for (player in players)
-            this._scores.add(Score(player.email, gameId))
+            this._scores.add(Score(player.email, gameId, currentDate, playersCount))
 
         this.scores.value = _scores
     }
@@ -42,6 +39,11 @@ class PlayersScoresViewModel : ViewModel() {
         val millis = System.currentTimeMillis().toString()
         val random = (0..1000000).random().toString()
         return millis + random
+    }
+
+    private fun getCurrentDateString(): String {
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        return sdf.format(Date())
     }
 
     fun updateCurrentScore(position: Int, score: Int) {
@@ -69,23 +71,43 @@ class PlayersScoresViewModel : ViewModel() {
 
     fun nextCategory() {
         currentCategory.value = currentCategory.value!!.inc()
+        updateUsersPlaces()
         sortScores()
     }
 
+    private fun updateUsersPlaces() {
+        val sortedScores = _scores.sortedByDescending { it.total() }
+        sortedScores.forEachIndexed { index, score ->
+            score.place = index + 1
+        }
+    }
+
     private fun sortScores() {
-        _scores.sortByDescending { it.total() }
+        _scores.sortBy { it.place }
         scores.value = _scores
     }
 
     fun submitScores() {
-        FireStoreRepository().addScores(_scores, object : FireStoreRepository.ResultListener {
-            override fun onSuccess(obj: Any?) {
-                state.value = SCORES_SUBMITTED
-            }
+        saveToFireStore()
+    }
 
-            override fun onFailure(obj: Any?) {
-                state.value = FAILED_TO_SUBMIT_SCORES
-            }
-        })
+    private fun saveToFireStore() {
+
+        for (score in _scores)
+            FireStoreRepository().addScore(score, object : FireStoreRepository.UploadScoreListener {
+                override fun onSuccess(score: Score) {
+                    state.value = SCORE_UPLOADED
+                }
+
+                override fun onFailure(exception: Exception) {
+                    state.value = FAILED_TO_UPLOAD_SCORE
+                }
+            })
+    }
+
+    companion object {
+        const val NONE = ""
+        const val SCORE_UPLOADED = "Scores submitted"
+        const val FAILED_TO_UPLOAD_SCORE = "Failed to submit scores"
     }
 }

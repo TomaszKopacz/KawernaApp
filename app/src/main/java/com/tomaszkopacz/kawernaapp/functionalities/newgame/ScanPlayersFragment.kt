@@ -20,17 +20,16 @@ import kotlinx.android.synthetic.main.fragment_scan_players.*
 
 class ScanPlayersFragment : Fragment() {
 
-    companion object {
-        private const val TAG = "Kawerna"
-    }
-
     private lateinit var layout: View
     private lateinit var viewModel: ScanPlayersViewModel
 
-    private var playersAdapter: PlayersAdapter =
-        PlayersAdapter()
+    private var playersAdapter: PlayersAdapter = PlayersAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         layout = inflater.inflate(R.layout.fragment_scan_players, container, false)
         viewModel = ViewModelProviders.of(this).get(ScanPlayersViewModel::class.java)
@@ -92,10 +91,8 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun setPlayersObserver() {
-        viewModel.players.observe(this, Observer {
-            if (it != null) {
-                playersAdapter.loadPlayers(it)
-            }
+        viewModel.players.observe(this, Observer { players ->
+            playersAdapter.loadPlayers(players)
         })
     }
 
@@ -108,7 +105,7 @@ class ScanPlayersFragment : Fragment() {
     private fun confirmPlayers() {
         val players = viewModel.players.value
 
-        if(players != null && players.isNotEmpty()) {
+        if (players != null && players.isNotEmpty()) {
             savePlayersToSharedPrefs(players)
             goToScores()
 

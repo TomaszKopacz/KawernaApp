@@ -87,8 +87,8 @@ class PlayersScoresFragment : Fragment() {
     private fun setStateObserver() {
         viewModel.state.observe(this, Observer {
             when(it) {
-                PlayersScoresViewModel.SCORES_SUBMITTED -> closeFragment()
-                PlayersScoresViewModel.FAILED_TO_SUBMIT_SCORES -> failureMessage()
+                PlayersScoresViewModel.SCORE_UPLOADED -> closeFragment()
+                PlayersScoresViewModel.FAILED_TO_UPLOAD_SCORE -> failureMessage()
             }
         })
     }
