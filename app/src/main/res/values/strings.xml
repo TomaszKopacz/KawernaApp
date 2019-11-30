@@ -12,4 +12,5 @@
     <string name="language">Language</string>
     <string name="choose_lang">Choose language:</string>
     <string name="signout">Sign out</string>
+    <string name="qr_code">QR code</string>
 </resources>

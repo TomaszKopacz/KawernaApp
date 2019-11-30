@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.auth
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.lang.Exception
@@ -18,6 +19,7 @@ object AuthManager {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { result -> listener?.onSuccess(result.user) }
             .addOnFailureListener { exception ->  listener?.onFailure(exception) }
+
     }
 
     fun getLoggedUser(): FirebaseUser? {
