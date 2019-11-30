@@ -1,9 +1,7 @@
 package com.tomaszkopacz.kawernaapp.auth
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.lang.Exception
 
 object AuthManager {
 

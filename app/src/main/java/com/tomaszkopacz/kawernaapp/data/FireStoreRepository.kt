@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.data
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
 
@@ -19,16 +20,14 @@ class FireStoreRepository {
             .addOnFailureListener { exception ->  listener?.onFailure(exception) }
     }
 
-    fun getScores(player: Player, listener: DownloadScoresListener?) {
-        val email = player.email
+    fun getScores(player: String, listener: DownloadScoresListener?) {
         val scores = ArrayList<Score>()
 
         database.collection(SCORES_COLLECTION)
-            .whereEqualTo("email", email)
+            .whereEqualTo("player", player)
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents)
-                    scores.add(document.toObject(Score::class.java))
+                for (document in documents) scores.add(document.toObject(Score::class.java))
                 listener?.onSuccess(scores)
             }
             .addOnFailureListener { exception -> listener?.onFailure(exception) }
