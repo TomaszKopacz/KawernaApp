@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.lang.Exception
 
 object AuthManager {
 
@@ -9,17 +10,14 @@ object AuthManager {
 
     fun registerUser(email: String, password: String, listener: AuthListener?) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) listener?.onSuccess()
-                if (task.isCanceled) listener?.onFailure()
-            }
-            .addOnCanceledListener { listener?.onFailure() }
+            .addOnSuccessListener { result -> listener?.onSuccess(result.user)  }
+            .addOnFailureListener { exception -> listener?.onFailure(exception) }
     }
 
     fun loginUser(email: String, password: String, listener: AuthListener?) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { listener?.onSuccess() }
-            .addOnCanceledListener { listener?.onFailure() }
+            .addOnSuccessListener { result -> listener?.onSuccess(result.user) }
+            .addOnFailureListener { exception ->  listener?.onFailure(exception) }
     }
 
     fun getLoggedUser(): FirebaseUser? {
@@ -31,8 +29,7 @@ object AuthManager {
     }
 
     interface AuthListener {
-        fun onSuccess()
-        fun onFailure()
+        fun onSuccess(user: FirebaseUser)
+        fun onFailure(exception: Exception)
     }
-
 }

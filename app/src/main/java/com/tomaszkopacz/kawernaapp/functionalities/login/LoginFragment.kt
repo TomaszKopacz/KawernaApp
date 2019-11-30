@@ -3,11 +3,11 @@ package com.tomaszkopacz.kawernaapp.functionalities.login
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseUser
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.StartActivity
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
@@ -49,14 +49,11 @@ class LoginFragment : Fragment() {
     }
 
     private val loginListener = object : AuthManager.AuthListener {
-        override fun onSuccess() {
-            goToMainActivity()
-        }
+        override fun onSuccess(user: FirebaseUser) { goToMainActivity() }
 
-        override fun onFailure() {
+        override fun onFailure(exception: Exception) {
             Log.d("Kawerna", "Login failed")
         }
-
     }
 
 
