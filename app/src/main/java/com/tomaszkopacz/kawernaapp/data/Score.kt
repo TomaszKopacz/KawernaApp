@@ -1,8 +1,8 @@
 package com.tomaszkopacz.kawernaapp.data
 
-data class Score(var player: String, var game: String, var playersCount: Int) {
+data class Score(var player: String, var game: String, var date: String, var playersCount: Int) {
 
-    constructor() : this("", "", 0)
+    constructor() : this("", "", "", 0)
 
     var livestock: Int? = null
     var livestockLack: Int? = null

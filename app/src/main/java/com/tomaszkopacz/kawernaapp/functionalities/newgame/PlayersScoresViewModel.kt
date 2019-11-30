@@ -7,6 +7,9 @@ import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PlayersScoresViewModel : ViewModel() {
 
@@ -23,10 +26,11 @@ class PlayersScoresViewModel : ViewModel() {
 
     fun initGame(players: ArrayList<Player>) {
         val gameId = generateUniqueGameId()
+        val currentDate = getCurrentDateString()
         val playersCount = players.size
 
         for (player in players)
-            this._scores.add(Score(player.email, gameId, playersCount))
+            this._scores.add(Score(player.email, gameId, currentDate, playersCount))
 
         this.scores.value = _scores
     }
@@ -35,6 +39,11 @@ class PlayersScoresViewModel : ViewModel() {
         val millis = System.currentTimeMillis().toString()
         val random = (0..1000000).random().toString()
         return millis + random
+    }
+
+    private fun getCurrentDateString(): String {
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        return sdf.format(Date())
     }
 
     fun updateCurrentScore(position: Int, score: Int) {
