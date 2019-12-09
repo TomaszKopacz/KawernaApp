@@ -5,15 +5,7 @@
             app:startDestination="@id/homeFragment">
 
     <fragment android:id="@+id/homeFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.home.HomeFragment"
-              android:label="fragment_home" tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_home_to_players"
-            app:destination="@+id/scanPlayersFragment">
-
-        </action>
-
-    </fragment>
+              android:label="fragment_home" tools:layout="@layout/fragment_home"/>
 
     <fragment android:id="@+id/statisticsFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsFragment"
               android:label="fragment_statistics" tools:layout="@layout/fragment_statistics"/>
@@ -21,21 +13,4 @@
     <fragment android:id="@+id/accountFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.account.AccountFragment"
               android:label="fragment_account" tools:layout="@layout/fragment_account"/>
 
-    <fragment android:id="@+id/scanPlayersFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.newgame.ScanPlayersFragment"
-              android:label="players_fragment" tools:layout="@layout/fragment_scan_players">
-
-        <action
-            android:id="@+id/action_scan_to_scores"
-            app:destination="@+id/playersScoresFragment">
-
-        </action>
-    </fragment>
-
-    <fragment android:id="@+id/playersScoresFragment"
-              android:name="com.tomaszkopacz.kawernaapp.functionalities.newgame.PlayersScoresFragment"
-              android:label="fragment_players_scores" tools:layout="@layout/fragment_players_scores">
-        <action
-            android:id="@+id/action_playersScores_to_home"
-            app:destination="@id/homeFragment" />
-    </fragment>
 </navigation>

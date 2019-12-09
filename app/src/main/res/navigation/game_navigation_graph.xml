@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_navigation_graph"
+    app:startDestination="@id/scanPlayersFragment">
+
+    <fragment
+        android:id="@+id/scanPlayersFragment"
+        android:name="com.tomaszkopacz.kawernaapp.functionalities.scanplayers.ScanPlayersFragment"
+        android:label="fragment_scan_players"
+        tools:layout="@layout/fragment_scan_players" >
+
+        <action
+            android:id="@+id/action_scan_to_playersScores"
+            app:destination="@id/playersScoresFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playersScoresFragment"
+        android:name="com.tomaszkopacz.kawernaapp.functionalities.gamescores.PlayersScoresFragment"
+        android:label="fragment_players_scores"
+        tools:layout="@layout/fragment_players_scores" >
+
+        <action
+            android:id="@+id/action_playersScores_to_resultScreen"
+            app:destination="@id/resultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.tomaszkopacz.kawernaapp.functionalities.resultscreen.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
+</navigation>

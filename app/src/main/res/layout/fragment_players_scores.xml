@@ -5,7 +5,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".functionalities.newgame.PlayersScoresFragment">
+        tools:context=".functionalities.gamescores.PlayersScoresFragment">
 
     <TextView
             android:id="@+id/category_text"
