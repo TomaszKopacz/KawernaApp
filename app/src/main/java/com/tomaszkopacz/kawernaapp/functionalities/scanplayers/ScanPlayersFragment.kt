@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.functionalities.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.scanplayers
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Player
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsManager
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
 import kotlinx.android.synthetic.main.fragment_scan_players.*
 
 class ScanPlayersFragment : Fragment() {
@@ -23,7 +23,8 @@ class ScanPlayersFragment : Fragment() {
     private lateinit var layout: View
     private lateinit var viewModel: ScanPlayersViewModel
 
-    private var playersAdapter: PlayersAdapter = PlayersAdapter()
+    private var playersAdapter: PlayersAdapter =
+        PlayersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,21 +107,37 @@ class ScanPlayersFragment : Fragment() {
         val players = viewModel.players.value
 
         if (players != null && players.isNotEmpty()) {
-            savePlayersToSharedPrefs(players)
-            goToScores()
+            setGameSharedPrefs()
+            navigateToScoresScreen()
 
         } else
             noPlayersMessage()
     }
 
-    private fun goToScores() {
-        val direction =
-            ScanPlayersFragmentDirections.actionScanToScores()
-        findNavController().navigate(direction)
+    private fun setGameSharedPrefs() {
+        addGameIdToSharedPrefs()
+        addPlayersToSharedPrefs()
     }
 
-    private fun savePlayersToSharedPrefs(players: ArrayList<Player>) {
-        SharedPrefsManager.getInstance(context!!).savePlayers(players)
+    private fun addGameIdToSharedPrefs() {
+        val id = generateUniqueGameId()
+        SharedPrefsGameManager.getInstance(context!!).saveGameId(id)
+    }
+
+    private fun generateUniqueGameId(): String {
+        val millis = System.currentTimeMillis().toString()
+        val random = (0..1000000).random().toString()
+        return millis + random
+    }
+
+    private fun addPlayersToSharedPrefs() {
+        val players = viewModel.players.value
+        SharedPrefsGameManager.getInstance(context!!).savePlayers(players!!)
+    }
+
+    private fun navigateToScoresScreen() {
+        val direction = ScanPlayersFragmentDirections.actionScanToPlayersScores()
+        findNavController().navigate(direction)
     }
 
     private fun noPlayersMessage() {

@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.functionalities.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,7 +10,7 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.extensions.setCursorToEnd
-import com.tomaszkopacz.kawernaapp.functionalities.newgame.ScoresAdapter.ScoresViewHolder
+import com.tomaszkopacz.kawernaapp.functionalities.gamescores.ScoresAdapter.ScoresViewHolder
 import kotlinx.android.synthetic.main.score_item.view.*
 
 class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {

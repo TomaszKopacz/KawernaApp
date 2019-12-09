@@ -5,7 +5,7 @@
         android:id="@+id/players"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".functionalities.newgame.ScanPlayersFragment"
+        tools:context=".functionalities.scanplayers.ScanPlayersFragment"
         android:orientation="vertical"
         android:weightSum="10">
 

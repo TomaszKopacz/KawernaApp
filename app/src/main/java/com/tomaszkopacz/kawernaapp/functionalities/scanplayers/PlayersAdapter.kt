@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.functionalities.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.scanplayers
 
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +18,9 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
                 .from(parent.context)
                 .inflate(R.layout.player_item, parent, false)
 
-        return PlayerViewHolder(view)
+        return PlayerViewHolder(
+            view
+        )
     }
 
     override fun getItemCount(): Int {

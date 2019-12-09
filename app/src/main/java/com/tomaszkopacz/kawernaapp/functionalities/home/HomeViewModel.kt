@@ -19,8 +19,8 @@ class HomeViewModel : ViewModel() {
 
     fun downloadScores() {
         when (AuthManager.getLoggedUser()?.email) {
-            "tk@op.pl" -> FireStoreRepository().getScores("Tomasz", scoresListener)
-            "arek@op.pl" -> FireStoreRepository().getScores("Arek", scoresListener)
+            "tk@op.pl" -> FireStoreRepository().getPlayerScores("Tomasz", scoresListener)
+            "arek@op.pl" -> FireStoreRepository().getPlayerScores("Arek", scoresListener)
         }
     }
 

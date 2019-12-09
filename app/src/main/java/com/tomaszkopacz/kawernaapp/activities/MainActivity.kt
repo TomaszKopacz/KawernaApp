@@ -3,8 +3,9 @@ package com.tomaszkopacz.kawernaapp.activities
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
-import com.tomaszkopacz.kawernaapp.functionalities.account.AccountFragment
 import com.tomaszkopacz.kawernaapp.utils.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -47,6 +47,12 @@ class MainActivity : AppCompatActivity() {
 
     fun navigateToStartActivity() {
         val intent = Intent(this, StartActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    fun navigateToNewGameActivity() {
+        val intent = Intent(this, GameActivity::class.java)
         startActivity(intent)
         finish()
     }

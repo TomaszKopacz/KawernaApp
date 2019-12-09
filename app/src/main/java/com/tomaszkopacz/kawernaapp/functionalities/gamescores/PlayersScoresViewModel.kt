@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.functionalities.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,8 +24,7 @@ class PlayersScoresViewModel : ViewModel() {
         state.value = NONE
     }
 
-    fun initGame(players: ArrayList<Player>) {
-        val gameId = generateUniqueGameId()
+    fun initGame(gameId: String, players: ArrayList<Player>) {
         val currentDate = getCurrentDateString()
         val playersCount = players.size
 
@@ -33,12 +32,6 @@ class PlayersScoresViewModel : ViewModel() {
             this._scores.add(Score(player.email, gameId, currentDate, playersCount))
 
         this.scores.value = _scores
-    }
-
-    private fun generateUniqueGameId(): String {
-        val millis = System.currentTimeMillis().toString()
-        val random = (0..1000000).random().toString()
-        return millis + random
     }
 
     private fun getCurrentDateString(): String {
@@ -88,19 +81,21 @@ class PlayersScoresViewModel : ViewModel() {
     }
 
     fun submitScores() {
-        saveToFireStore()
+        saveScoresToFireStore()
     }
 
-    private fun saveToFireStore() {
+    private fun saveScoresToFireStore() {
 
         for (score in _scores)
             FireStoreRepository().addScore(score, object : FireStoreRepository.UploadScoreListener {
                 override fun onSuccess(score: Score) {
-                    state.value = SCORE_UPLOADED
+                    state.value =
+                        SCORE_UPLOADED
                 }
 
                 override fun onFailure(exception: Exception) {
-                    state.value = FAILED_TO_UPLOAD_SCORE
+                    state.value =
+                        FAILED_TO_UPLOAD_SCORE
                 }
             })
     }

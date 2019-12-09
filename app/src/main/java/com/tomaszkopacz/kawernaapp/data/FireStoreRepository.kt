@@ -19,7 +19,7 @@ class FireStoreRepository {
             .addOnFailureListener { exception ->  listener?.onFailure(exception) }
     }
 
-    fun getScores(player: String, listener: DownloadScoresListener?) {
+    fun getPlayerScores(player: String, listener: DownloadScoresListener?) {
         val scores = ArrayList<Score>()
 
         database.collection(SCORES_COLLECTION)
@@ -30,7 +30,19 @@ class FireStoreRepository {
                 listener?.onSuccess(scores)
             }
             .addOnFailureListener { exception -> listener?.onFailure(exception) }
+    }
 
+    fun getGameScores(gameId: String, listener: DownloadScoresListener?) {
+        val scores = ArrayList<Score>()
+
+        database.collection(SCORES_COLLECTION)
+            .whereEqualTo("game", gameId)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) scores.add(document.toObject(Score::class.java))
+                listener?.onSuccess(scores)
+            }
+            .addOnFailureListener { exception -> listener?.onFailure(exception) }
     }
 
     interface UploadScoreListener {

@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.functionalities.newgame
+package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Categories
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsManager
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
 import kotlinx.android.synthetic.main.fragment_players_scores.*
 
 class PlayersScoresFragment : Fragment() {
@@ -36,19 +36,22 @@ class PlayersScoresFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        getPlayers()
+        initGame()
         initRecyclerView()
 
         setObservers()
         setListeners()
     }
 
-    private fun getPlayers() {
+    private fun initGame() {
+        val gameId = getGameIdFromSharedPrefs()
         val players = getPlayersFromSharedPrefs()
-        viewModel.initGame(players ?: ArrayList())
+        viewModel.initGame(gameId ?: "", players ?: ArrayList())
     }
 
-    private fun getPlayersFromSharedPrefs() = SharedPrefsManager.getInstance(context!!).getPlayers()
+    private fun getGameIdFromSharedPrefs() = SharedPrefsGameManager.getInstance(context!!).getGameId()
+
+    private fun getPlayersFromSharedPrefs() = SharedPrefsGameManager.getInstance(context!!).getPlayers()
 
     private fun initRecyclerView() {
         scoresAdapter.setHasStableIds(true)
@@ -87,14 +90,14 @@ class PlayersScoresFragment : Fragment() {
     private fun setStateObserver() {
         viewModel.state.observe(this, Observer {
             when(it) {
-                PlayersScoresViewModel.SCORE_UPLOADED -> closeFragment()
+                PlayersScoresViewModel.SCORE_UPLOADED -> navigateToResultScreen()
                 PlayersScoresViewModel.FAILED_TO_UPLOAD_SCORE -> failureMessage()
             }
         })
     }
 
-    private fun closeFragment() {
-        val direction = PlayersScoresFragmentDirections.actionPlayersScoresToHome()
+    private fun navigateToResultScreen() {
+        val direction = PlayersScoresFragmentDirections.actionPlayersScoresToResultScreen()
         findNavController().navigate(direction)
     }
 
