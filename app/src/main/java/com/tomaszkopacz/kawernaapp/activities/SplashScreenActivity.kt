@@ -25,11 +25,15 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun goToMainActivity() {
+        finish()
+
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
     private fun goToStartActivity() {
+        finish()
+
         val intent = Intent(this, StartActivity::class.java)
         startActivity(intent)
     }

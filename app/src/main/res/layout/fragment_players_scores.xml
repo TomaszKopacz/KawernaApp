@@ -13,57 +13,57 @@
             android:layout_height="wrap_content"
             android:text="CATEGORY"
             android:gravity="center"
-            android:layout_margin="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:textSize="24sp"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimaryLight"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scores_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="15dp"
             android:layout_below="@+id/category_text"
             android:layout_above="@+id/buttons">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:weightSum="3">
+            android:layout_alignParentBottom="true">
 
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/previous_category_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentStart="true"
                 android:layout_margin="15dp"
                 android:visibility="invisible"
-                android:text="PREVIOUS CATEGORY"/>
+                android:src="@drawable/ic_back"/>
 
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/submit_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="15dp"
                 android:visibility="invisible"
-                android:text="SUBMIT"/>
+                android:src="@drawable/ic_ok"
+                android:layout_centerHorizontal="true"/>
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/next_category_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="15dp"
                 android:visibility="visible"
-                android:text="NEXT CATEGORY"/>
+                android:src="@drawable/ic_next"
+                android:layout_alignParentEnd="true" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

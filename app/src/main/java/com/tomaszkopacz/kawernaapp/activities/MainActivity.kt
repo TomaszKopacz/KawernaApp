@@ -46,15 +46,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun navigateToStartActivity() {
+        finish()
+
         val intent = Intent(this, StartActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     fun navigateToNewGameActivity() {
         val intent = Intent(this, GameActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     private fun showLanguageDialog(): Boolean {
