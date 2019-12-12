@@ -10,8 +10,7 @@
         android:id="@+id/result_scores_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/accept_button"
-        android:layout_margin="15dp">
+        android:layout_above="@+id/accept_button">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -21,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="15dp"
-        android:text="@string/finish"/>
+        android:text="@string/finish"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
 </RelativeLayout>
