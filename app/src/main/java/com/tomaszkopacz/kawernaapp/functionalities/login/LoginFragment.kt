@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
         val email = loginMail.text.toString().trim()
         val password = loginPassword.text.toString().trim()
 
-        AuthManager.loginUser(email, password, loginListener)
+        AuthManager().loginUser(email, password, loginListener)
     }
 
     private val loginListener = object : AuthManager.AuthListener {

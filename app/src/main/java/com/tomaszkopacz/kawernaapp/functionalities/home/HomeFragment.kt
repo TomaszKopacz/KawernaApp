@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.MainActivity
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
+import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -23,7 +26,9 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         layout = inflater.inflate(R.layout.fragment_home, container, false)
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProviders
+            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .get(HomeViewModel::class.java)
 
         return layout
     }

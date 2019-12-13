@@ -28,7 +28,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun checkLoggedUser() {
-        val user = AuthManager.getLoggedUser()
+        val user = AuthManager().getLoggedUser()
         if (user == null) Log.d("Kawerna", "NO USER!")
         else goToMainActivity()
     }
@@ -47,7 +47,7 @@ class SignUpFragment : Fragment() {
         val email = signUpMail.text.toString()
         val password = signUpPassword.text.toString()
 
-        AuthManager.registerUser(email, password, registrationListener)
+        AuthManager().registerUser(email, password, registrationListener)
     }
 
     private val registrationListener = object : AuthManager.AuthListener {

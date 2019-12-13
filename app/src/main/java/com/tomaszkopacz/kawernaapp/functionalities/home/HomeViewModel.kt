@@ -6,7 +6,10 @@ import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Score
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val authManager: AuthManager,
+    private val fireStoreRepository: FireStoreRepository
+) : ViewModel() {
 
     private var mUserScores = ArrayList<Score>()
 
@@ -18,9 +21,11 @@ class HomeViewModel : ViewModel() {
     }
 
     fun downloadScores() {
-        when (AuthManager.getLoggedUser()?.email) {
-            "tk@op.pl" -> FireStoreRepository().getPlayerScores("Tomasz", scoresListener)
-            "arek@op.pl" -> FireStoreRepository().getPlayerScores("Arek", scoresListener)
+        when (authManager.getLoggedUser()) {
+            "tk@op.pl" -> fireStoreRepository.getPlayerScores("Tomasz", scoresListener)
+            "arek@op.pl" -> fireStoreRepository.getPlayerScores("Arek", scoresListener)
+            "playernotfound@gmail.com" -> fireStoreRepository.getPlayerScores("playernotfound@gmail.com", scoresListener)
+            else -> scoresListener.onFailure(java.lang.Exception("Player is null"))
         }
     }
 

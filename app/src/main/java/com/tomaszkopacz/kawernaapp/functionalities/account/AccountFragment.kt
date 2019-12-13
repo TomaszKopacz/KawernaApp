@@ -47,6 +47,6 @@ class AccountFragment : Fragment() {
     }
 
     private fun getStringToEncode(): String? {
-        return AuthManager.getLoggedUser()?.email
+        return AuthManager().getLoggedUser()
     }
 }
