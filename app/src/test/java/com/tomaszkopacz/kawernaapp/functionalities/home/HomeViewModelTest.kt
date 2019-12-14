@@ -1,13 +1,9 @@
 package com.tomaszkopacz.kawernaapp.functionalities.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.base.CharMatcher.any
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.data.Player
-import org.junit.Assert.assertNotNull
+import com.tomaszkopacz.kawernaapp.data.Score
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -32,7 +28,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun testConstructor_WhenInitialized_ThenStateIs_NONE() {
+    fun `testConstructor - when view model created, then state is NONE`() {
         assertTrue(viewModel.state.value == HomeViewModel.STATE_NONE)
     }
 
@@ -79,6 +75,17 @@ class HomeViewModelTest {
 
     @Test
     fun `downloadScores() - when player exists in db then state is DOWNLOADED` () {
+        val listenerCaptor = ArgumentCaptor.forClass(FireStoreRepository.DownloadScoresListener::class.java)
+        val scores = ArrayList<Score>()
+        for (i in 1..3) scores.add(Score())
+
+        Mockito.`when`(authManager.getLoggedUser()).thenReturn("someplayer@gmail.com")
+
+        viewModel.downloadScores()
+        Mockito.verify(fireStoreRepository).getPlayerScores(Mockito.anyString(), listenerCaptor.capture())
+        listenerCaptor.value.onSuccess(scores)
+
+        assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOADED)
 
     }
 
@@ -92,12 +99,25 @@ class HomeViewModelTest {
         viewModel.downloadScores()
         Mockito.verify(fireStoreRepository).getPlayerScores(Mockito.anyString(), listenerCaptor.capture())
         listenerCaptor.value.onSuccess(ArrayList())
+
         assertTrue(viewModel.userScores.value != null)
         assertTrue(viewModel.userScores.value!!.isEmpty())
     }
 
     @Test
     fun `downloadScores() - when player exists in db then scores list is set` () {
+        val listenerCaptor = ArgumentCaptor.forClass(FireStoreRepository.DownloadScoresListener::class.java)
+        val scores = ArrayList<Score>()
+        for (i in 1..3)
+            scores.add(Score())
 
+        Mockito.`when`(authManager.getLoggedUser()).thenReturn("someplayer@gmail.com")
+
+        viewModel.downloadScores()
+        Mockito.verify(fireStoreRepository).getPlayerScores(Mockito.anyString(), listenerCaptor.capture())
+        listenerCaptor.value.onSuccess(scores)
+
+        assertTrue(viewModel.userScores.value != null)
+        assertTrue(viewModel.userScores.value!!.size == 3)
     }
 }

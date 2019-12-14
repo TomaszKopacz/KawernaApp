@@ -14,6 +14,7 @@ import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.annotations.TestOnly
 
 
 class HomeFragment : Fragment() {
@@ -56,5 +57,10 @@ class HomeFragment : Fragment() {
         new_game_button.setOnClickListener {
             (activity as MainActivity).navigateToNewGameActivity()
         }
+    }
+
+    @TestOnly
+    fun setTestViewModel(testViewModel: HomeViewModel) {
+        this.viewModel = testViewModel
     }
 }

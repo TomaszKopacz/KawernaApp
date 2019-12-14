@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.functionalities.home.HomeViewModel
 
 class ViewModelFactory (
     private val authManager: AuthManager,
@@ -12,6 +11,8 @@ class ViewModelFactory (
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return HomeViewModel(authManager, fireStoreRepository) as T
+        return modelClass
+            .getConstructor(AuthManager::class.java, FireStoreRepository::class.java)
+            .newInstance(authManager, fireStoreRepository)
     }
 }

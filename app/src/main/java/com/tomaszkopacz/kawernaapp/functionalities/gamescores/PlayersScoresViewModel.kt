@@ -2,16 +2,19 @@ package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlayersScoresViewModel : ViewModel() {
+class PlayersScoresViewModel(
+    private val authManager: AuthManager,
+    private val fireStoreRepository: FireStoreRepository
+) : ViewModel() {
 
     private var _scores: ArrayList<Score> = ArrayList()
 
@@ -87,7 +90,7 @@ class PlayersScoresViewModel : ViewModel() {
     private fun saveScoresToFireStore() {
 
         for (score in _scores)
-            FireStoreRepository().addScore(score, object : FireStoreRepository.UploadScoreListener {
+            fireStoreRepository.addScore(score, object : FireStoreRepository.UploadScoreListener {
                 override fun onSuccess(score: Score) {
                     state.value =
                         SCORE_UPLOADED

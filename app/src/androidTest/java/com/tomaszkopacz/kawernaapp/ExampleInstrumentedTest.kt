@@ -1,24 +1,29 @@
 package com.tomaszkopacz.kawernaapp
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
-
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.rule.ActivityTestRule
+import com.tomaszkopacz.kawernaapp.activities.MainActivity
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-import org.junit.Assert.*
-
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-@RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+
+    @Rule
+    @JvmField
+    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+
+    @Before
+    fun setUp() {
+        activityRule.activity.supportFragmentManager.beginTransaction()
+    }
+
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.tomaszkopacz.kawernaapp", appContext.packageName)
+    fun someTest() {
+        for(i in 1..100)
+            onView(withId(R.id.container)).perform(ViewActions.click())
     }
 }

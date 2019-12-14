@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Score
+import com.tomaszkopacz.kawernaapp.extensions.isEmailPattern
 
 class HomeViewModel(
     private val authManager: AuthManager,
@@ -21,11 +22,20 @@ class HomeViewModel(
     }
 
     fun downloadScores() {
-        when (authManager.getLoggedUser()) {
-            "tk@op.pl" -> fireStoreRepository.getPlayerScores("Tomasz", scoresListener)
-            "arek@op.pl" -> fireStoreRepository.getPlayerScores("Arek", scoresListener)
-            "playernotfound@gmail.com" -> fireStoreRepository.getPlayerScores("playernotfound@gmail.com", scoresListener)
-            else -> scoresListener.onFailure(java.lang.Exception("Player is null"))
+        val user = authManager.getLoggedUser()
+
+        when {
+            user == null ->
+                scoresListener.onFailure(Exception("No user is logged in!"))
+
+            user.isEmpty() ->
+                scoresListener.onFailure(Exception("User has unset  email!"))
+
+            !user.isEmailPattern() ->
+                scoresListener.onFailure(Exception("User's email is incorrect!"))
+
+            else ->
+                fireStoreRepository.getPlayerScores(user, scoresListener)
         }
     }
 
