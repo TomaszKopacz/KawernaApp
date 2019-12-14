@@ -21,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun isAnyUserLoggedIn() : Boolean {
-        return AuthManager.getLoggedUser() != null
+        return AuthManager().getLoggedUser() != null
     }
 
     private fun goToMainActivity() {

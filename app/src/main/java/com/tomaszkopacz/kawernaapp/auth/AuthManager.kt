@@ -3,7 +3,7 @@ package com.tomaszkopacz.kawernaapp.auth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-object AuthManager {
+class AuthManager {
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -20,8 +20,8 @@ object AuthManager {
 
     }
 
-    fun getLoggedUser(): FirebaseUser? {
-        return auth.currentUser
+    fun getLoggedUser(): String? {
+        return auth.currentUser?.email
     }
 
     fun logoutUser() {

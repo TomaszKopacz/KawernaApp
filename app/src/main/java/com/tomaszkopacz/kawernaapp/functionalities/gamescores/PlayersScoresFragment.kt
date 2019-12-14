@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.Categories
+import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
+import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_players_scores.*
 
 class PlayersScoresFragment : Fragment() {
@@ -24,13 +28,14 @@ class PlayersScoresFragment : Fragment() {
     private lateinit var layout: View
     private lateinit var viewModel: PlayersScoresViewModel
 
-    private var scoresAdapter: ScoresAdapter =
-        ScoresAdapter()
+    private var scoresAdapter: ScoresAdapter = ScoresAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layout = inflater.inflate(R.layout.fragment_players_scores, container, false)
 
-        viewModel = ViewModelProviders.of(this).get(PlayersScoresViewModel::class.java)
+        viewModel = ViewModelProviders
+            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .get(PlayersScoresViewModel::class.java)
 
         return layout
     }
@@ -174,14 +179,17 @@ class PlayersScoresFragment : Fragment() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setPreviousButtonVisibility(isVisible: Boolean) {
         previous_category_button.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setNextButtonVisibility(isVisible: Boolean) {
         next_category_button.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setSubmitButtonVisibility(isVisible: Boolean) {
         submit_button.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }

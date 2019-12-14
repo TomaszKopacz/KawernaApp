@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() : Boolean {
-        AuthManager.logoutUser()
+        AuthManager().logoutUser()
         navigateToStartActivity()
 
         return true
