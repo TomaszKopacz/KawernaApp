@@ -2,7 +2,6 @@ package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
@@ -12,7 +11,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class PlayersScoresViewModel(
-    private val authManager: AuthManager,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
