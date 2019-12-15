@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".functionalities.gamescores.PlayersScoresFragment">
+
+    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".functionalities.gamescores.PlayersScoresFragment">
+        android:layout_height="match_parent">
 
-    <TextView
+        <TextView
             android:id="@+id/category_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CATEGORY"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimaryLight"
             android:gravity="center"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:textSize="24sp"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorPrimaryLight"/>
+            android:textSize="24sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scores_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@+id/category_text"
-            android:layout_above="@+id/buttons">
+            android:layout_above="@+id/buttons"
+            android:layout_below="@+id/category_text">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
-    <RelativeLayout
+        <RelativeLayout
             android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/previous_category_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_margin="15dp"
-                android:visibility="invisible"
-                android:src="@drawable/ic_back"/>
+                android:src="@drawable/ic_back"
+                android:visibility="invisible" />
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/submit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_margin="15dp"
-                android:visibility="invisible"
                 android:src="@drawable/ic_ok"
-                android:layout_centerHorizontal="true"/>
+                android:visibility="invisible" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/next_category_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_margin="15dp"
-                android:visibility="visible"
                 android:src="@drawable/ic_next"
-                android:layout_alignParentEnd="true" />
+                android:visibility="visible" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-</RelativeLayout>
+</layout>

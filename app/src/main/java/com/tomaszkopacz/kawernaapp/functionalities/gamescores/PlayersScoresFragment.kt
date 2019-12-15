@@ -33,6 +33,7 @@ class PlayersScoresFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layout = inflater.inflate(R.layout.fragment_players_scores, container, false)
 
+
         viewModel = ViewModelProviders
             .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
             .get(PlayersScoresViewModel::class.java)
