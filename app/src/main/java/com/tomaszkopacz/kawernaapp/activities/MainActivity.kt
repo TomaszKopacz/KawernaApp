@@ -3,16 +3,17 @@ package com.tomaszkopacz.kawernaapp.activities
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
+import com.tomaszkopacz.kawernaapp.data.Languages
+import com.tomaszkopacz.kawernaapp.dialogs.DialogProvider
 import com.tomaszkopacz.kawernaapp.utils.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater:MenuInflater = menuInflater
+        val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.options_menu, menu)
         return true
     }
@@ -41,7 +42,9 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.language -> showLanguageDialog()
             R.id.signout -> signOut()
-            else -> {true}
+            else -> {
+                true
+            }
         }
     }
 
@@ -57,41 +60,25 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showLanguageDialog(): Boolean {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialog_language)
-
-        val langList = arrayListOf("Polski", "English")
-        val radioGroup = dialog.findViewById<RadioGroup>(R.id.radio_group)
-
-        for (lang in langList) {
-            val radioBtn = RadioButton(this)
-            radioBtn.text = lang
-            radioGroup.addView(radioBtn)
-        }
-
-        radioGroup.setOnCheckedChangeListener { butGroup, checkedId ->
-            val childCount = butGroup.childCount
-            for (i in 0 until childCount) {
-                val btn = butGroup.getChildAt(i) as RadioButton
-                if (btn.id == checkedId) {
-                    setLanguage()
-                    dialog.dismiss()
-                }
-            }
-        }
-
-        dialog.show()
-
+    private fun showLanguageDialog() : Boolean {
+        DialogProvider.createLanguageDialog(this, languageChosenListener).show()
         return true
     }
 
-    private fun setLanguage() {
-        val localeManager = LocaleManager()
-        localeManager.changeLanguage(this, "pl")
+    private val languageChosenListener = object : DialogProvider.ChosenLanguageListener {
+        override fun onLanguageChosen(language: Languages, dialog: Dialog) {
+            setLanguage(language.code)
+            dialog.dismiss()
+        }
+
     }
 
-    private fun signOut() : Boolean {
+    private fun setLanguage(lang: String) {
+        val localeManager = LocaleManager()
+        localeManager.changeLanguage(this, lang)
+    }
+
+    private fun signOut(): Boolean {
         AuthManager().logoutUser()
         navigateToStartActivity()
 
