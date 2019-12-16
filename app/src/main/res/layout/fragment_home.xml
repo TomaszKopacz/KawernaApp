@@ -21,7 +21,6 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_add"
             app:fabSize="normal"
-            android:layout_margin="15dp"
-            android:text="@string/text_new_game"/>
+            android:layout_margin="15dp"/>
 
 </RelativeLayout>

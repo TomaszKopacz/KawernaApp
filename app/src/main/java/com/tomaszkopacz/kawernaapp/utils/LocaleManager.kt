@@ -4,15 +4,15 @@ import android.content.Context
 import android.content.res.Configuration
 import java.util.*
 
-class LocaleManager {
+object LocaleManager {
 
-    fun changeLanguage(context: Context, lang: String) {
+    fun changeLanguage(baseContext: Context, lang: String) {
         val locale = Locale(lang)
         Locale.setDefault(locale)
 
         val config = Configuration()
-        config.locale = locale
+        config.setLocale(locale)
 
-        context.resources.configuration.updateFrom(config)
+        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
     }
 }

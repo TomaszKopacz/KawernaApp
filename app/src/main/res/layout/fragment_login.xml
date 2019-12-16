@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:autofillHints="Email"
-            android:hint="Email"
+            android:hint="@string/hint_email"
             android:inputType="text"
             tools:targetApi="o" />
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:autofillHints="Password"
-            android:hint="Password"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
             tools:targetApi="o" />
 
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            android:text="SUBMIT"
+            android:text="@string/btn_submit_login"
             style="@style/Widget.AppCompat.Button.Colored"/>
 
     </LinearLayout>

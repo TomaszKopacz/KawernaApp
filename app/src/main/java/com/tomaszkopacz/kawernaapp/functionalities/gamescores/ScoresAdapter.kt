@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.Score
+import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.extensions.setCursorToEnd
 import com.tomaszkopacz.kawernaapp.functionalities.gamescores.ScoresAdapter.ScoresViewHolder
 import kotlinx.android.synthetic.main.score_item.view.*
@@ -19,7 +19,7 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
     }
 
     private var scores: List<Score> = ArrayList()
-    private var category: Int = Categories.LIVESTOCK
+    private var category: ScoreCategory = ScoreCategory.LIVESTOCK
 
     private var scoreWatcher: ScoreWatcher? = null
 
@@ -53,7 +53,7 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun loadCategory(category: Int) {
+    fun loadCategory(category: ScoreCategory) {
         this.category = category
     }
 
@@ -79,18 +79,17 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
 
         private fun setCurrentScore(score: Score) {
             var categoryScore: String = when (category) {
-                Categories.LIVESTOCK -> score.livestock.toString()
-                Categories.LIVESTOCK_LACK -> score.livestockLack.toString()
-                Categories.CEREAL -> score.cereal.toString()
-                Categories.VEGETABLES -> score.vegetables.toString()
-                Categories.RUBIES -> score.rubies.toString()
-                Categories.DWARFS -> score.dwarfs.toString()
-                Categories.AREAS -> score.areas.toString()
-                Categories.UNUSED_AREAS -> score.unusedAreas.toString()
-                Categories.PREMIUM_AREAS -> score.premiumAreas.toString()
-                Categories.GOLD -> score.gold.toString()
-                Categories.BEGS -> score.begs.toString()
-                else -> ""
+                ScoreCategory.LIVESTOCK -> score.livestock.toString()
+                ScoreCategory.LIVESTOCK_LACK -> score.livestockLack.toString()
+                ScoreCategory.CEREAL -> score.cereal.toString()
+                ScoreCategory.VEGETABLES -> score.vegetables.toString()
+                ScoreCategory.RUBIES -> score.rubies.toString()
+                ScoreCategory.DWARFS -> score.dwarfs.toString()
+                ScoreCategory.AREAS -> score.areas.toString()
+                ScoreCategory.UNUSED_AREAS -> score.unusedAreas.toString()
+                ScoreCategory.PREMIUM_AREAS -> score.premiumAreas.toString()
+                ScoreCategory.GOLD -> score.gold.toString()
+                ScoreCategory.BEG -> score.begs.toString()
             }
 
             if (categoryScore == "null") categoryScore = ""
