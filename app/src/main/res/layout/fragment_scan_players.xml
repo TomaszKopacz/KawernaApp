@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="15dp"
-            android:text="@string/text_confirm_players"
+            android:text="@string/btn_confirm_players"
             android:layout_weight="1"
             style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 

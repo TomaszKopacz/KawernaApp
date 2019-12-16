@@ -13,17 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
-import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_players_scores.*
 
 class PlayersScoresFragment : Fragment() {
-
-    companion object {
-        private const val TAG = "Kawerna"
-    }
 
     private lateinit var layout: View
     private lateinit var viewModel: PlayersScoresViewModel
@@ -81,9 +77,9 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun setCategoryObserver() {
-        viewModel.currentCategory.observe(this, Observer {
-            setCategoryLayout(it)
-            scoresAdapter.loadCategory(it)
+        viewModel.currentCategory.observe(this, Observer {category ->
+            setCategoryLayout(category)
+            scoresAdapter.loadCategory(category)
         })
     }
 
@@ -136,37 +132,25 @@ class PlayersScoresFragment : Fragment() {
         }
     }
 
-    private fun setCategoryLayout(category: Int) {
+    private fun setCategoryLayout(category: ScoreCategory) {
         updateCategoryText(category)
         controlButtons(category)
         focusFirstItem()
     }
 
-    private fun updateCategoryText(category: Int) {
-        when (category) {
-            Categories.LIVESTOCK -> category_text.text = "Livestock and dogs"
-            Categories.LIVESTOCK_LACK -> category_text.text = "Missing livestock"
-            Categories.CEREAL -> category_text.text = "Cereal"
-            Categories.VEGETABLES -> category_text.text = "Vegetables"
-            Categories.RUBIES -> category_text.text = "Rubies"
-            Categories.DWARFS -> category_text.text = "Dwarfs"
-            Categories.AREAS -> category_text.text = "Improvements, pastures, mines"
-            Categories.UNUSED_AREAS -> category_text.text = "Unused areas"
-            Categories.PREMIUM_AREAS -> category_text.text = "Rooms, warehouses, chambers"
-            Categories.GOLD -> category_text.text = "Gold coins"
-            Categories.BEGS -> category_text.text = "Begging tokens"
-        }
+    private fun updateCategoryText(category: ScoreCategory) {
+        category_text.text = resources.getString(resources.getIdentifier(category.name, "string", context!!.packageName))
     }
 
-    private fun controlButtons(category: Int) {
+    private fun controlButtons(category: ScoreCategory) {
         when (category) {
-            Categories.LIVESTOCK -> {
+            ScoreCategory.LIVESTOCK -> {
                 setPreviousButtonVisibility(false)
                 setNextButtonVisibility(true)
                 setSubmitButtonVisibility(false)
             }
 
-            Categories.BEGS -> {
+            ScoreCategory.BEG -> {
                 setPreviousButtonVisibility(true)
                 setNextButtonVisibility(false)
                 setSubmitButtonVisibility(true)

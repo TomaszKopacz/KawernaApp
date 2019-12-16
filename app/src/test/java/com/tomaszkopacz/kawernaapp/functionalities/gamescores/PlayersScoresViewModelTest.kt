@@ -1,11 +1,10 @@
 package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.tomaszkopacz.kawernaapp.auth.AuthManager
-import com.tomaszkopacz.kawernaapp.data.Categories
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
-import org.junit.Assert.*
+import com.tomaszkopacz.kawernaapp.data.ScoreCategory
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,15 +18,12 @@ class PlayersScoresViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PlayersScoresViewModel
-    private lateinit var authManager: AuthManager
     private lateinit var fireStoreRepository: FireStoreRepository
 
     @Before
     fun setUp() {
         fireStoreRepository = Mockito.mock(FireStoreRepository::class.java)
-        authManager = Mockito.mock(AuthManager::class.java)
-
-        viewModel = PlayersScoresViewModel(authManager, fireStoreRepository)
+        viewModel = PlayersScoresViewModel(fireStoreRepository)
     }
 
     @Test
@@ -37,7 +33,7 @@ class PlayersScoresViewModelTest {
 
     @Test
     fun `testConstructor - when view model created, then default category is set to LIVESTOCK` () {
-        assertTrue(viewModel.currentCategory.value == Categories.LIVESTOCK)
+        assertTrue(viewModel.currentCategory.value == ScoreCategory.LIVESTOCK)
     }
 
     @Test

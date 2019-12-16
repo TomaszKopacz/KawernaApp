@@ -5,7 +5,7 @@ import android.content.Context
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.data.Languages
+import com.tomaszkopacz.kawernaapp.data.Language
 
 object DialogProvider {
 
@@ -22,7 +22,7 @@ object DialogProvider {
             for (i in 0 until childCount) {
                 val btn = butGroup.getChildAt(i) as RadioButton
                 if (btn.id == checkedId) {
-                    listener.onLanguageChosen(Languages.values()[i], dialog)
+                    listener.onLanguageChosen(Language.values()[i], dialog)
                 }
             }
         }
@@ -34,7 +34,7 @@ object DialogProvider {
         context: Context,
         radioGroup: RadioGroup
     ) {
-        for (lang in Languages.values()) {
+        for (lang in Language.values()) {
             val radioBtn = RadioButton(context)
             radioBtn.text = lang.text
             radioGroup.addView(radioBtn)
@@ -42,6 +42,6 @@ object DialogProvider {
     }
 
     interface ChosenLanguageListener {
-        fun onLanguageChosen(language: Languages, dialog: Dialog)
+        fun onLanguageChosen(language: Language, dialog: Dialog)
     }
 }

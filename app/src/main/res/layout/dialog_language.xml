@@ -8,7 +8,7 @@
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/choose_lang"
+        android:text="@string/title_choose_lang"
         android:textSize="24dp"
         android:layout_margin="12dp"
         android:layout_gravity="center"

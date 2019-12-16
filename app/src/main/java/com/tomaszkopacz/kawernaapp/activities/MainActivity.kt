@@ -3,7 +3,6 @@ package com.tomaszkopacz.kawernaapp.activities
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,7 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
-import com.tomaszkopacz.kawernaapp.data.Languages
+import com.tomaszkopacz.kawernaapp.data.Language
 import com.tomaszkopacz.kawernaapp.dialogs.DialogProvider
 import com.tomaszkopacz.kawernaapp.utils.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -66,16 +65,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val languageChosenListener = object : DialogProvider.ChosenLanguageListener {
-        override fun onLanguageChosen(language: Languages, dialog: Dialog) {
-            setLanguage(language.code)
+        override fun onLanguageChosen(language: Language, dialog: Dialog) {
+            setAppLanguage(language.code)
             dialog.dismiss()
         }
-
     }
 
-    private fun setLanguage(lang: String) {
-        val localeManager = LocaleManager()
-        localeManager.changeLanguage(this, lang)
+    private fun setAppLanguage(lang: String) {
+        LocaleManager.changeLanguage(baseContext, lang)
+        refreshContext()
+    }
+
+    private fun refreshContext() {
+        val refreshIntent = Intent(this, MainActivity::class.java)
+
+        finish()
+        startActivity(refreshIntent)
     }
 
     private fun signOut(): Boolean {
