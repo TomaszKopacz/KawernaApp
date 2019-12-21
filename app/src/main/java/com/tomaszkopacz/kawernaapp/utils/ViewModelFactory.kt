@@ -8,6 +8,7 @@ import com.tomaszkopacz.kawernaapp.functionalities.gamescores.PlayersScoresViewM
 import com.tomaszkopacz.kawernaapp.functionalities.home.HomeViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.login.LoginViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.signup.SignUpViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsViewModel
 
 class ViewModelFactory (
     private val authManager: AuthManager,
@@ -29,6 +30,9 @@ class ViewModelFactory (
 
                 isAssignableFrom(PlayersScoresViewModel::class.java) ->
                     PlayersScoresViewModel(fireStoreRepository)
+
+                isAssignableFrom(StatisticsViewModel::class.java) ->
+                    StatisticsViewModel(authManager, fireStoreRepository)
 
                 else -> throw IllegalArgumentException("Unknown ViewModel class ${this.name}")
             }
