@@ -77,7 +77,7 @@ class PlayersScoresViewModel(
 
     private fun sortScores() {
         _scores.sortBy { it.place }
-        scores.value = _scores
+        scores.postValue(_scores)
     }
 
     fun submitScores() {

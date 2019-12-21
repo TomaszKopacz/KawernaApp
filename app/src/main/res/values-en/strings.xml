@@ -42,6 +42,8 @@
     <string name="GOLD">Gold coins</string>
     <string name="BEG">Begging coins</string>
 
+    <string name="TOTAL">Total</string>
+
     <string name="btn_finish">FINISH</string>
 
 </resources>

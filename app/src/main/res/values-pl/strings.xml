@@ -42,6 +42,8 @@
     <string name="GOLD">Złote monety</string>
     <string name="BEG">Żerony żebrania</string>
 
+    <string name="TOTAL">Wszystko</string>
+
     <string name="btn_finish">ZAKOŃCZ</string>
 
 </resources>
