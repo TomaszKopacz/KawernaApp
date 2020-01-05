@@ -11,11 +11,12 @@ class PlayersScoresViewModel(
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
-    private var _scores: ArrayList<Score> = ArrayList()
+    var state: MutableLiveData<String> = MutableLiveData()
+
+    private var _playersScores: ArrayList<PlayerScore> = ArrayList()
+    var playersScores: MutableLiveData<ArrayList<PlayerScore>> = MutableLiveData()
 
     var currentCategory: MutableLiveData<ScoreCategory> = MutableLiveData()
-    var scores: MutableLiveData<ArrayList<Score>> = MutableLiveData()
-    var state: MutableLiveData<String> = MutableLiveData()
 
     init {
         currentCategory.value = ScoreCategory.LIVESTOCK
@@ -27,9 +28,9 @@ class PlayersScoresViewModel(
         val playersCount = players.size
 
         for (player in players)
-            this._scores.add(Score(player.email, gameId, currentDate, playersCount))
+            this._playersScores.add(PlayerScore(player, Score(player.email, gameId, currentDate, playersCount)))
 
-        this.scores.value = _scores
+        this.playersScores.value = _playersScores
     }
 
     private fun getCurrentDateString(): String {
@@ -39,20 +40,20 @@ class PlayersScoresViewModel(
 
     fun updateCurrentScore(position: Int, score: Int) {
         when (currentCategory.value) {
-            ScoreCategory.LIVESTOCK -> _scores[position].livestock = score
-            ScoreCategory.LIVESTOCK_LACK -> _scores[position].livestockLack = (-2) * score
-            ScoreCategory.CEREAL -> _scores[position].cereal = score / 2 + score % 2
-            ScoreCategory.VEGETABLES -> _scores[position].vegetables = score
-            ScoreCategory.RUBIES -> _scores[position].rubies = score
-            ScoreCategory.DWARFS -> _scores[position].dwarfs = score
-            ScoreCategory.AREAS -> _scores[position].areas = score
-            ScoreCategory.UNUSED_AREAS -> _scores[position].unusedAreas = (-1) * score
-            ScoreCategory.PREMIUM_AREAS -> _scores[position].premiumAreas = score
-            ScoreCategory.GOLD -> _scores[position].gold = score
-            ScoreCategory.BEG -> _scores[position].begs = (-3) * score
+            ScoreCategory.LIVESTOCK -> _playersScores[position].score.livestock = score
+            ScoreCategory.LIVESTOCK_LACK -> _playersScores[position].score.livestockLack = (-2) * score
+            ScoreCategory.CEREAL -> _playersScores[position].score.cereal = score / 2 + score % 2
+            ScoreCategory.VEGETABLES -> _playersScores[position].score.vegetables = score
+            ScoreCategory.RUBIES -> _playersScores[position].score.rubies = score
+            ScoreCategory.DWARFS -> _playersScores[position].score.dwarfs = score
+            ScoreCategory.AREAS -> _playersScores[position].score.areas = score
+            ScoreCategory.UNUSED_AREAS -> _playersScores[position].score.unusedAreas = (-1) * score
+            ScoreCategory.PREMIUM_AREAS -> _playersScores[position].score.premiumAreas = score
+            ScoreCategory.GOLD -> _playersScores[position].score.gold = score
+            ScoreCategory.BEG -> _playersScores[position].score.begs = (-3) * score
         }
 
-        this.scores.value = _scores
+        this.playersScores.value = _playersScores
     }
 
     fun previousCategory() {
@@ -69,15 +70,15 @@ class PlayersScoresViewModel(
     }
 
     private fun updateUsersPlaces() {
-        val sortedScores = _scores.sortedByDescending { it.total() }
-        sortedScores.forEachIndexed { index, score ->
-            score.place = index + 1
+        val sortedPlayersScores = _playersScores.sortedByDescending { it.score.total() }
+        sortedPlayersScores.forEachIndexed { index, playerScore ->
+            playerScore.score.place = index + 1
         }
     }
 
     private fun sortScores() {
-        _scores.sortBy { it.place }
-        scores.postValue(_scores)
+        _playersScores.sortBy { it.score.place }
+        playersScores.postValue(_playersScores)
     }
 
     fun submitScores() {
@@ -86,8 +87,8 @@ class PlayersScoresViewModel(
 
     private fun saveScoresToFireStore() {
 
-        for (score in _scores)
-            fireStoreRepository.addScore(score, object : FireStoreRepository.UploadScoreListener {
+        for (playerScore in _playersScores)
+            fireStoreRepository.addScore(playerScore.score, object : FireStoreRepository.UploadScoreListener {
                 override fun onSuccess(score: Score) {
                     state.value =
                         SCORE_UPLOADED
@@ -103,6 +104,6 @@ class PlayersScoresViewModel(
     companion object {
         const val NONE = ""
         const val SCORE_UPLOADED = "Scores submitted"
-        const val FAILED_TO_UPLOAD_SCORE = "Failed to submit scores"
+        const val FAILED_TO_UPLOAD_SCORE = "Failed to submit playersScores"
     }
 }

@@ -7,6 +7,7 @@ import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.functionalities.gamescores.PlayersScoresViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.home.HomeViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.login.LoginViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.scanplayers.ScanPlayersViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.signup.SignUpViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsViewModel
 
@@ -23,10 +24,13 @@ class ViewModelFactory (
                     LoginViewModel(authManager)
 
                 isAssignableFrom(SignUpViewModel::class.java) ->
-                    SignUpViewModel(authManager)
+                    SignUpViewModel(authManager, fireStoreRepository)
 
                 isAssignableFrom(HomeViewModel::class.java) ->
                     HomeViewModel(authManager, fireStoreRepository)
+
+                isAssignableFrom(ScanPlayersViewModel::class.java) ->
+                    ScanPlayersViewModel(authManager, fireStoreRepository)
 
                 isAssignableFrom(PlayersScoresViewModel::class.java) ->
                     PlayersScoresViewModel(fireStoreRepository)
