@@ -58,7 +58,7 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recycler_view.adapter = playersAdapter
     }
 
