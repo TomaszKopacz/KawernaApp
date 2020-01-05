@@ -10,4 +10,6 @@
     <color name="colorSecondaryDark">#494949</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="successColor">#4CAF50</color>
 </resources>

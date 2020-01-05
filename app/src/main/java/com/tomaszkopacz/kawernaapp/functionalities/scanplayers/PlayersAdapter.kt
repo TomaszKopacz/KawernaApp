@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.functionalities.scanplayers
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,8 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player = players[position]
-        holder.setEmail(player.email)
+        val text = player.email.subSequence(0, 2).toString().toUpperCase()
+        holder.setPlayerView(text)
     }
 
     fun loadPlayers(players: ArrayList<Player>) {
@@ -38,10 +40,10 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
     }
 
     class PlayerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var emailView = itemView.findViewById<TextView>(R.id.email_view)
+        private var playerView = itemView.findViewById<TextView>(R.id.player_text)
 
-        fun setEmail(email: String) {
-            emailView.text = email
+        fun setPlayerView(text: String) {
+            playerView.text = text
         }
     }
 }

@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/players"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".functionalities.scanplayers.ScanPlayersFragment"
-        android:orientation="vertical"
-        android:weightSum="10">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/players"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".functionalities.scanplayers.ScanPlayersFragment">
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
-            android:id="@+id/qr_code_scanner"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
+        android:id="@+id/qr_code_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="15dp"
-            android:layout_weight="5">
+        android:id="@+id/recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textAlignment="viewStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/qr_code_scanner">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-            android:id="@+id/confirm_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="15dp"
-            android:text="@string/btn_confirm_players"
-            android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+        android:id="@+id/confirm_button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="@string/btn_confirm_players"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/qr_code_scanner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
