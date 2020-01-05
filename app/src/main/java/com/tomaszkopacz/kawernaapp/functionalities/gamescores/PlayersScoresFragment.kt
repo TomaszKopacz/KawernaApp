@@ -84,7 +84,7 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun setScoresObserver() {
-        viewModel.scores.observe(this, Observer {
+        viewModel.playersScores.observe(this, Observer {
             scoresAdapter.loadScores(it)
         })
     }
@@ -104,7 +104,7 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun failureMessage() {
-        Toast.makeText(context, "Error occured! Cannot submit the scores.", Toast.LENGTH_LONG)
+        Toast.makeText(context, "Error occured! Cannot submit the playersScores.", Toast.LENGTH_LONG)
             .show()
     }
 

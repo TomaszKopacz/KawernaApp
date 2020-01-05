@@ -2,7 +2,6 @@ package com.tomaszkopacz.kawernaapp.functionalities.signup
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.auth.FirebaseUser
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.StartActivity
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
@@ -23,7 +21,11 @@ class SignUpFragment : Fragment() {
     private lateinit var layout: View
     private lateinit var viewModel: SignUpViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         layout = inflater.inflate(R.layout.fragment_signup, container, false)
 
         viewModel = ViewModelProviders
@@ -45,9 +47,10 @@ class SignUpFragment : Fragment() {
     private fun setSubmitButtonListener() {
         signUpSubmit.setOnClickListener {
             val mail = signUpMail.text.toString()
+            val name = signUpName.text.toString()
             val password = signUpPassword.text.toString()
 
-            viewModel.registerAttempt(mail, password)
+            viewModel.registerAttempt(mail, name, password)
         }
     }
 

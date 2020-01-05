@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.data
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
 
@@ -45,6 +46,33 @@ class FireStoreRepository {
             .addOnFailureListener { exception -> listener?.onFailure(exception) }
     }
 
+    fun addPlayer(player: Player, listener: UploadPlayerListener?) {
+        database.collection(PLAYERS_COLLECTION).document()
+            .set(player)
+            .addOnSuccessListener { listener?.onSuccess(player) }
+            .addOnFailureListener { exception -> listener?.onFailure(exception) }
+    }
+
+    fun getPlayerByEmail(email: String, listener: DownloadPlayerListener?) {
+        database.collection(PLAYERS_COLLECTION)
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.size() > 0) {
+                    val player = documents.documents[0].toObject(Player::class.java)
+                    listener?.onSuccess(player)
+                }
+
+                else {
+                    listener?.onSuccess(null)
+                }
+
+            }
+            .addOnFailureListener { exception ->
+                listener?.onFailure(exception)
+            }
+    }
+
     interface UploadScoreListener {
         fun onSuccess(score: Score)
         fun onFailure(exception: Exception)
@@ -52,6 +80,16 @@ class FireStoreRepository {
 
     interface DownloadScoresListener {
         fun onSuccess(scores: ArrayList<Score>)
+        fun onFailure(exception: Exception)
+    }
+
+    interface UploadPlayerListener {
+        fun onSuccess(player: Player)
+        fun onFailure(exception: Exception)
+    }
+
+    interface DownloadPlayerListener {
+        fun onSuccess(player: Player?)
         fun onFailure(exception: Exception)
     }
 }

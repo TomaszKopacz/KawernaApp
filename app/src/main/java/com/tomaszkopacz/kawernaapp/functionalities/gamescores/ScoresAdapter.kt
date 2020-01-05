@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.extensions.setCursorToEnd
@@ -14,11 +16,8 @@ import com.tomaszkopacz.kawernaapp.functionalities.gamescores.ScoresAdapter.Scor
 import kotlinx.android.synthetic.main.score_item.view.*
 
 class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
-    companion object {
-        private const val TAG = "Kawerna"
-    }
 
-    private var scores: List<Score> = ArrayList()
+    private var playersScores: List<PlayerScore> = ArrayList()
     private var category: ScoreCategory = ScoreCategory.LIVESTOCK
 
     private var scoreWatcher: ScoreWatcher? = null
@@ -33,11 +32,13 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return scores.size
+        return playersScores.size
     }
 
     override fun onBindViewHolder(holder: ScoresViewHolder, position: Int) {
-        holder.score = scores[position]
+        holder.score = playersScores[position].score
+        holder.player = playersScores[position].player
+        holder.fillViewHolderFields()
     }
 
     override fun getItemId(position: Int): Long {
@@ -48,8 +49,8 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
         this.scoreWatcher = scoreTextWatcher
     }
 
-    fun loadScores(scores: ArrayList<Score>) {
-        this.scores = scores
+    fun loadScores(playersScores: ArrayList<PlayerScore>) {
+        this.playersScores = playersScores
         notifyDataSetChanged()
     }
 
@@ -59,25 +60,26 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
 
     inner class ScoresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), TextWatcher {
 
+        var player: Player? = null
         var score: Score? = null
-            set(value) {
-                field = value
-                setItemFields(value)
-            }
 
-        private fun setItemFields(score: Score?) {
-            if (score != null) {
-                setPlayer(score)
-                setCurrentScore(score)
-                setTotalScore(score)
+        init {
+            itemView.current_score.addTextChangedListener(this)
+        }
+
+        fun fillViewHolderFields() {
+            if (score != null && player != null) {
+                setPlayerText(player!!)
+                setCurrentScoreText(score!!)
+                setTotalScoreText(score!!)
             }
         }
 
-        private fun setPlayer(value: Score) {
-            itemView.player.text = value.player
+        private fun setPlayerText(player: Player) {
+            itemView.player.text = player.name
         }
 
-        private fun setCurrentScore(score: Score) {
+        private fun setCurrentScoreText(score: Score) {
             var categoryScore: String = when (category) {
                 ScoreCategory.LIVESTOCK -> score.livestock.toString()
                 ScoreCategory.LIVESTOCK_LACK -> score.livestockLack.toString()
@@ -100,12 +102,8 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
             itemView.current_score.addTextChangedListener(this)
         }
 
-        private fun setTotalScore(value: Score) {
+        private fun setTotalScoreText(value: Score) {
             itemView.total_score.text = value.total().toString()
-        }
-
-        init {
-            itemView.current_score.addTextChangedListener(this)
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -114,7 +112,11 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
 
         override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
             if (scoreWatcher != null) {
-                val result = try { text.toString().toInt() } catch (e: Exception) { 0 }
+                val result = try {
+                    text.toString().toInt()
+                } catch (e: Exception) {
+                    0
+                }
                 scoreWatcher!!.onScoreChanged(adapterPosition, result)
             }
         }

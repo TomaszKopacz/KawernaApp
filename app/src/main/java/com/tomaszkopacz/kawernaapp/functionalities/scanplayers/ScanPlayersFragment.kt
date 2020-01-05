@@ -14,8 +14,10 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
+import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
+import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_scan_players.*
 
 class ScanPlayersFragment : Fragment() {
@@ -33,13 +35,16 @@ class ScanPlayersFragment : Fragment() {
     ): View {
 
         layout = inflater.inflate(R.layout.fragment_scan_players, container, false)
-        viewModel = ViewModelProviders.of(this).get(ScanPlayersViewModel::class.java)
+        viewModel = ViewModelProviders
+            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .get(ScanPlayersViewModel::class.java)
 
         return layout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRecyclerView()
+        viewModel.init()
         setScanner()
         setObservers()
         setListeners()
@@ -88,7 +93,16 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun setObservers() {
+        setStateObserver()
         setPlayersObserver()
+    }
+
+    private fun setStateObserver() {
+        viewModel.state.observe(this, Observer { state ->
+            when (state) {
+                ScanPlayersViewModel.PLAYER_NOT_FOUND -> showMessage("Cannot find such player")
+            }
+        })
     }
 
     private fun setPlayersObserver() {
@@ -111,7 +125,7 @@ class ScanPlayersFragment : Fragment() {
             navigateToScoresScreen()
 
         } else
-            noPlayersMessage()
+            showMessage("No useres scanned")
     }
 
     private fun setGameSharedPrefs() {
@@ -140,7 +154,7 @@ class ScanPlayersFragment : Fragment() {
         findNavController().navigate(direction)
     }
 
-    private fun noPlayersMessage() {
-        Toast.makeText(context, "No useres scanned", Toast.LENGTH_LONG).show()
+    private fun showMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

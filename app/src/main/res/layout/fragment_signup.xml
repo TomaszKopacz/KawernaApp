@@ -34,6 +34,16 @@
             tools:targetApi="o" />
 
         <EditText
+            android:id="@+id/signUpName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:autofillHints="Name"
+            android:hint="@string/hint_name"
+            android:inputType="text"
+            tools:targetApi="o" />
+
+        <EditText
             android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

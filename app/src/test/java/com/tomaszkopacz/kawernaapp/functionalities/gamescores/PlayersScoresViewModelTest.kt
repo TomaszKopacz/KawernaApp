@@ -56,8 +56,8 @@ class PlayersScoresViewModelTest {
 
         viewModel.initGame(gameId, players)
 
-        assertTrue(viewModel.scores.value != null)
-        assertTrue(viewModel.scores.value!!.size == playersNum)
+        assertTrue(viewModel.playersScores.value != null)
+        assertTrue(viewModel.playersScores.value!!.size == playersNum)
     }
 
     @Test
@@ -70,9 +70,9 @@ class PlayersScoresViewModelTest {
 
         viewModel.initGame(gameId, players)
 
-        assertTrue(viewModel.scores.value != null)
+        assertTrue(viewModel.playersScores.value != null)
 
-        for (score in viewModel.scores.value!!)
+        for (score in viewModel.playersScores.value!!)
             assertTrue(score.game == gameId)
     }
 
@@ -86,10 +86,10 @@ class PlayersScoresViewModelTest {
 
         viewModel.initGame(gameId, players)
 
-        assertTrue(viewModel.scores.value != null)
+        assertTrue(viewModel.playersScores.value != null)
 
-        val date = viewModel.scores.value!![0].date
-        for (score in viewModel.scores.value!!)
+        val date = viewModel.playersScores.value!![0].date
+        for (score in viewModel.playersScores.value!!)
             assertTrue(score.date == date)
     }
 }

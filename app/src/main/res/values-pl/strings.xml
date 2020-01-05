@@ -7,6 +7,7 @@
     <string name="tab_sign_up">Nowy użytkownik</string>
 
     <string name="hint_email">Email</string>
+    <string name="hint_name">Nazwa</string>
     <string name="hint_password">Hasło</string>
 
     <string name="btn_submit_login">ZALOGUJ</string>
