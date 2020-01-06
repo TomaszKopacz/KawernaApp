@@ -31,8 +31,8 @@
 
     <string name="btn_confirm_players">CONFIRM PLAYERS</string>
 
-    <string name="LIVESTOCK">Animals</string>
-    <string name="LIVESTOCK_LACK">Missing animals</string>
+    <string name="ANIMALS">Animals</string>
+    <string name="ANIMALS_LACK">Missing animals</string>
     <string name="CEREAL">Cereal</string>
     <string name="VEGETABLES">Vegetables</string>
     <string name="RUBIES">Rubies</string>

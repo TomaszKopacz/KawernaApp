@@ -30,7 +30,9 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player = players[position]
-        val text = player.email.subSequence(0, 2).toString().toUpperCase()
+        val name = player.name ?: player.email
+        val text = name.subSequence(0, 2).toString().toUpperCase()
+
         holder.setPlayerView(text)
     }
 

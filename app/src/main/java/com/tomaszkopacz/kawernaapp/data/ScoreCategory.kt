@@ -3,9 +3,9 @@ package com.tomaszkopacz.kawernaapp.data
 enum class ScoreCategory {
 
 
-    LIVESTOCK,
+    ANIMALS,
 
-    LIVESTOCK_LACK,
+    ANIMALS_LACK,
 
     CEREAL,
 
@@ -15,13 +15,11 @@ enum class ScoreCategory {
 
     DWARFS,
 
+    UNUSED_AREAS,
+
     AREAS,
 
     PREMIUM_AREAS,
 
-    UNUSED_AREAS,
-
-    GOLD,
-
-    BEG
+    GOLD
 }

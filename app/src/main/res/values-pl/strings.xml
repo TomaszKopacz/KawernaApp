@@ -31,8 +31,8 @@
 
     <string name="btn_confirm_players">POTWIERDŹ</string>
 
-    <string name="LIVESTOCK">Zwierzęta</string>
-    <string name="LIVESTOCK_LACK">Brakujące zwierzęta</string>
+    <string name="ANIMALS">Zwierzęta</string>
+    <string name="ANIMALS_LACK">Brakujące zwierzęta</string>
     <string name="CEREAL">Zboże</string>
     <string name="VEGETABLES">Warzywa</string>
     <string name="RUBIES">Rubiny</string>

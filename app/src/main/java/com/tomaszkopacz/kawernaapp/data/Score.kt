@@ -4,31 +4,29 @@ data class Score(var player: String, var game: String, var date: String, var pla
 
     constructor() : this("", "", "", 0)
 
-    var livestock: Int? = null
-    var livestockLack: Int? = null
-    var cereal: Int? = null
-    var vegetables: Int? = null
-    var rubies: Int? = null
-    var dwarfs: Int? = null
-    var areas: Int? = null
-    var unusedAreas: Int? = null
-    var premiumAreas: Int? = null
-    var gold: Int? = null
-    var begs: Int? = null
+    var livestock: Int = 0
+    var livestockLack: Int = 0
+    var cereal: Int = 0
+    var vegetables: Int = 0
+    var rubies: Int = 0
+    var dwarfs: Int = 0
+    var areas: Int = 0
+    var unusedAreas: Int = 0
+    var premiumAreas: Int = 0
+    var gold: Int = 0
 
-    var place: Int? = null
+    var place: Int = 0
 
     fun total() : Int {
-        return (livestock ?: 0) +
-                (livestockLack ?: 0) +
-                (cereal ?: 0) +
-                (vegetables ?: 0) +
-                (rubies ?: 0) +
-                (dwarfs ?: 0) +
-                (areas ?: 0) +
-                (unusedAreas ?: 0) +
-                (premiumAreas ?: 0) +
-                (gold ?: 0) +
-                (begs ?: 0)
+        return (livestock) +
+                (livestockLack * (-2)) +
+                (cereal/2 + cereal%2) +
+                (vegetables) +
+                (rubies) +
+                (dwarfs) +
+                (areas) +
+                (unusedAreas * (-1)) +
+                (premiumAreas) +
+                (gold)
     }
 }

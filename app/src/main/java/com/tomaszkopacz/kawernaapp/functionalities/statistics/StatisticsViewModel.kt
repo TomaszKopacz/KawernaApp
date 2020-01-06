@@ -6,8 +6,6 @@ import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
-import com.tomaszkopacz.kawernaapp.data.ScoreCategory
-import java.lang.Exception
 
 class StatisticsViewModel(
     private val authManager: AuthManager,
@@ -34,7 +32,7 @@ class StatisticsViewModel(
     }
 
     private fun loggedUserFound(player: Player) {
-        loggedUser = player;
+        loggedUser = player
         categoryChanged(TOTAL)
     }
 
@@ -51,12 +49,12 @@ class StatisticsViewModel(
 
                 val maxValue = when (category) {
                     TOTAL -> scores.maxBy { it.total() }!!.total()
-                    ANIMALS -> scores.maxBy { it.livestock!! }!!.livestock
-                    CEREALS -> scores.maxBy { it.cereal!! }!!.cereal
-                    VEGETABLES -> scores.maxBy { it.vegetables!! }!!.vegetables
-                    AREAS -> scores.maxBy { it.areas!! }!!.areas
-                    PREMIUM_AREAS -> scores.maxBy { it.premiumAreas!! }!!.premiumAreas
-                    GOLD -> scores.maxBy { it.gold!! }!!.gold
+                    ANIMALS -> scores.maxBy { it.livestock }!!.livestock
+                    CEREALS -> scores.maxBy { it.cereal }!!.cereal
+                    VEGETABLES -> scores.maxBy { it.vegetables }!!.vegetables
+                    AREAS -> scores.maxBy { it.areas }!!.areas
+                    PREMIUM_AREAS -> scores.maxBy { it.premiumAreas }!!.premiumAreas
+                    GOLD -> scores.maxBy { it.gold }!!.gold
                     else -> 0
                 }
 
@@ -75,12 +73,12 @@ class StatisticsViewModel(
                 val mean = scores.sumBy { score ->
                     when (category) {
                         TOTAL -> score.total()
-                        ANIMALS -> score.livestock!!
-                        CEREALS -> score.cereal!!
-                        VEGETABLES -> score.vegetables!!
-                        AREAS -> score.areas!!
-                        PREMIUM_AREAS -> score.premiumAreas!!
-                        GOLD -> score.gold!!
+                        ANIMALS -> score.livestock
+                        CEREALS -> score.cereal
+                        VEGETABLES -> score.vegetables
+                        AREAS -> score.areas
+                        PREMIUM_AREAS -> score.premiumAreas
+                        GOLD -> score.gold
                         else -> 0
                 }
                 } / scores.size
