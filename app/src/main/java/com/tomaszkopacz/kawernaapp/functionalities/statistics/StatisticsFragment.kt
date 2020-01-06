@@ -61,7 +61,7 @@ class StatisticsFragment : Fragment() {
 
     private fun subscribeToUI() {
         category_picker.setOnValueChangedListener { _, _, newVal ->
-            viewModel.setCategory(newVal)
+            viewModel.categoryChanged(newVal)
         }
     }
 
