@@ -33,7 +33,7 @@ class PlayersScoresViewModelTest {
 
     @Test
     fun `testConstructor - when view model created, then default category is set to LIVESTOCK` () {
-        assertTrue(viewModel.currentCategory.value == ScoreCategory.LIVESTOCK)
+        assertTrue(viewModel.currentCategory.value == ScoreCategory.ANIMALS)
     }
 
     @Test

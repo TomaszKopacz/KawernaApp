@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.score_item.view.*
 class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
 
     private var playersScores: List<PlayerScore> = ArrayList()
-    private var category: ScoreCategory = ScoreCategory.LIVESTOCK
+    private var category: ScoreCategory = ScoreCategory.ANIMALS
 
     private var scoreWatcher: ScoreWatcher? = null
 
@@ -81,8 +81,8 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
 
         private fun setCurrentScoreText(score: Score) {
             var categoryScore: String = when (category) {
-                ScoreCategory.LIVESTOCK -> score.livestock.toString()
-                ScoreCategory.LIVESTOCK_LACK -> score.livestockLack.toString()
+                ScoreCategory.ANIMALS -> score.livestock.toString()
+                ScoreCategory.ANIMALS_LACK -> score.livestockLack.toString()
                 ScoreCategory.CEREAL -> score.cereal.toString()
                 ScoreCategory.VEGETABLES -> score.vegetables.toString()
                 ScoreCategory.RUBIES -> score.rubies.toString()
@@ -91,7 +91,6 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
                 ScoreCategory.UNUSED_AREAS -> score.unusedAreas.toString()
                 ScoreCategory.PREMIUM_AREAS -> score.premiumAreas.toString()
                 ScoreCategory.GOLD -> score.gold.toString()
-                ScoreCategory.BEG -> score.begs.toString()
             }
 
             if (categoryScore == "null") categoryScore = ""

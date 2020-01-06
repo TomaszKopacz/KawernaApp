@@ -6,31 +6,34 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.Score
 
 class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
 
-    private var scores: List<Score> = ArrayList()
+    private var playersScores: List<PlayerScore> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoresViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.result_score_item, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.result_score_item, parent, false)
         return ScoresViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        return scores.size
+        return playersScores.size
     }
 
     override fun onBindViewHolder(holder: ScoresViewHolder, position: Int) {
-        val score = scores[position]
+        val player = playersScores[position].player
+        val score = playersScores[position].score
 
         holder.setPlace(score.place)
-        holder.setPlayer(score.player)
+        holder.setPlayer(player.name ?: player.email)
         holder.setScore(score.total().toString())
     }
 
-    fun loadScores(scoresToLoad: ArrayList<Score>) {
-        scores = scoresToLoad
+    fun loadScores(scoresToLoad: ArrayList<PlayerScore>) {
+        playersScores = scoresToLoad
         notifyDataSetChanged()
     }
 

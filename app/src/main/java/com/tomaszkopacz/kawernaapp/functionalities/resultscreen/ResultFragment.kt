@@ -45,7 +45,8 @@ class ResultFragment : Fragment() {
 
     private fun initResultScreen() {
         val gameId = SharedPrefsGameManager.getInstance(context!!).getGameId()
-        if (gameId != null) viewModel.downloadGameResults(gameId)
+        val players = SharedPrefsGameManager.getInstance((context!!)).getPlayers()
+        if (gameId != null) viewModel.showGameResults(gameId, players!!)
     }
 
     private fun setListeners() {

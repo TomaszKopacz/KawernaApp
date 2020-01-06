@@ -144,13 +144,13 @@ class PlayersScoresFragment : Fragment() {
 
     private fun controlButtons(category: ScoreCategory) {
         when (category) {
-            ScoreCategory.LIVESTOCK -> {
+            ScoreCategory.ANIMALS -> {
                 setPreviousButtonVisibility(false)
                 setNextButtonVisibility(true)
                 setSubmitButtonVisibility(false)
             }
 
-            ScoreCategory.BEG -> {
+            ScoreCategory.GOLD -> {
                 setPreviousButtonVisibility(true)
                 setNextButtonVisibility(false)
                 setSubmitButtonVisibility(true)

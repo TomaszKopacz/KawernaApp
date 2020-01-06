@@ -19,7 +19,7 @@ class PlayersScoresViewModel(
     var currentCategory: MutableLiveData<ScoreCategory> = MutableLiveData()
 
     init {
-        currentCategory.value = ScoreCategory.LIVESTOCK
+        currentCategory.value = ScoreCategory.ANIMALS
         state.value = NONE
     }
 
@@ -40,17 +40,16 @@ class PlayersScoresViewModel(
 
     fun updateCurrentScore(position: Int, score: Int) {
         when (currentCategory.value) {
-            ScoreCategory.LIVESTOCK -> _playersScores[position].score.livestock = score
-            ScoreCategory.LIVESTOCK_LACK -> _playersScores[position].score.livestockLack = (-2) * score
-            ScoreCategory.CEREAL -> _playersScores[position].score.cereal = score / 2 + score % 2
+            ScoreCategory.ANIMALS -> _playersScores[position].score.livestock = score
+            ScoreCategory.ANIMALS_LACK -> _playersScores[position].score.livestockLack = score
+            ScoreCategory.CEREAL -> _playersScores[position].score.cereal = score
             ScoreCategory.VEGETABLES -> _playersScores[position].score.vegetables = score
             ScoreCategory.RUBIES -> _playersScores[position].score.rubies = score
             ScoreCategory.DWARFS -> _playersScores[position].score.dwarfs = score
             ScoreCategory.AREAS -> _playersScores[position].score.areas = score
-            ScoreCategory.UNUSED_AREAS -> _playersScores[position].score.unusedAreas = (-1) * score
+            ScoreCategory.UNUSED_AREAS -> _playersScores[position].score.unusedAreas = score
             ScoreCategory.PREMIUM_AREAS -> _playersScores[position].score.premiumAreas = score
             ScoreCategory.GOLD -> _playersScores[position].score.gold = score
-            ScoreCategory.BEG -> _playersScores[position].score.begs = (-3) * score
         }
 
         this.playersScores.value = _playersScores
@@ -82,6 +81,8 @@ class PlayersScoresViewModel(
     }
 
     fun submitScores() {
+        updateUsersPlaces()
+        sortScores()
         saveScoresToFireStore()
     }
 

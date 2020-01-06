@@ -45,7 +45,7 @@ class StatisticsFragment : Fragment() {
         val categories = arrayOfNulls<String>(StatisticsViewModel.CATEGORY_NUM)
 
         categories[StatisticsViewModel.TOTAL] = resources.getString(R.string.TOTAL)
-        categories[StatisticsViewModel.ANIMALS] = resources.getString(R.string.LIVESTOCK)
+        categories[StatisticsViewModel.ANIMALS] = resources.getString(R.string.ANIMALS)
         categories[StatisticsViewModel.CEREALS] = resources.getString(R.string.CEREAL)
         categories[StatisticsViewModel.VEGETABLES] = resources.getString(R.string.VEGETABLES)
         categories[StatisticsViewModel.AREAS] = resources.getString(R.string.AREAS)
