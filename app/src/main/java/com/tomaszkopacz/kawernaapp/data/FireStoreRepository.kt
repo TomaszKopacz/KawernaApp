@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.data
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import java.lang.Exception
 
 class FireStoreRepository {
