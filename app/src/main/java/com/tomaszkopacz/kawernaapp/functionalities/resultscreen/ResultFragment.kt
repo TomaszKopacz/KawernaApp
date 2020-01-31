@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.GameActivity
+import com.tomaszkopacz.kawernaapp.auth.AuthManager
+import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
+import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_result.*
 
 class ResultFragment : Fragment() {
@@ -22,20 +25,31 @@ class ResultFragment : Fragment() {
 
     private val adapter = ScoresAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         layout = inflater.inflate(R.layout.fragment_result, container, false)
-        viewModel = ViewModelProviders.of(this).get(ResultScreenViewModel::class.java)
+        viewModel = ViewModelProviders
+            .of(
+                this, ViewModelFactory(
+                    AuthManager(),
+                    SharedPrefsRepository.getInstance(context!!),
+                    FireStoreRepository()
+                )
+            )
+            .get(ResultScreenViewModel::class.java)
 
         return layout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRecyclerView()
-        initResultScreen()
 
-        setListeners()
-        setObservers()
+        subscribeToUI()
+        subscribeToViewModel()
     }
 
     private fun initRecyclerView() {
@@ -43,24 +57,14 @@ class ResultFragment : Fragment() {
         result_scores_recycler_view.adapter = adapter
     }
 
-    private fun initResultScreen() {
-        val gameId = SharedPrefsRepository.getInstance(context!!).getGameId()
-        val players = SharedPrefsRepository.getInstance((context!!)).getPlayers()
-        if (gameId != null) viewModel.showGameResults(gameId, players!!)
-    }
-
-    private fun setListeners() {
+    private fun subscribeToUI() {
         accept_button.setOnClickListener {
-            clearSharedPrefs()
+            viewModel.submit()
             (activity as GameActivity).goToMainActivity()
         }
     }
 
-    private fun clearSharedPrefs() {
-        SharedPrefsRepository.getInstance(context!!).clearAll()
-    }
-
-    private fun setObservers() {
+    private fun subscribeToViewModel() {
         viewModel.resultScores.observe(this, Observer { resultScores ->
             adapter.loadScores(resultScores)
         })

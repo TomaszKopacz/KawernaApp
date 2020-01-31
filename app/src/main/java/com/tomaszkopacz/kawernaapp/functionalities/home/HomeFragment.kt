@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.MainActivity
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
@@ -41,8 +40,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRecyclerView()
-        setObservers()
-        setListeners()
+        subscribeToUI()
+        subscribeToViewModel()
 
         viewModel.downloadScores()
     }
@@ -52,20 +51,15 @@ class HomeFragment : Fragment() {
         home_scores_recycler_view.adapter = scoresAdapter
     }
 
-    private fun setObservers() {
-        viewModel.userScores.observe(this, Observer {scores ->
-            scoresAdapter.loadScores(scores)
-        })
-    }
-
-    private fun setListeners() {
+    private fun subscribeToUI() {
         new_game_button.setOnClickListener {
             (activity as MainActivity).navigateToNewGameActivity()
         }
     }
 
-    @TestOnly
-    fun setTestViewModel(testViewModel: HomeViewModel) {
-        this.viewModel = testViewModel
+    private fun subscribeToViewModel() {
+        viewModel.userScores.observe(this, Observer {scores ->
+            scoresAdapter.loadScores(scores)
+        })
     }
 }

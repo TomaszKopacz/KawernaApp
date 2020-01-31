@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -43,9 +44,7 @@ class StatisticsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initCategoryPicker()
-        initViewModel()
 
-        subscribeToUI()
         subscribeToViewModel()
     }
 
@@ -53,23 +52,20 @@ class StatisticsFragment : Fragment() {
         spinnerCategory.adapter = CategoryAdapter(context!!)
     }
 
-    private fun initViewModel() {
-        viewModel.init()
-    }
-
-    private fun subscribeToUI() {
-        spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                viewModel.categoryChanged(parent!!.getItemAtPosition(position) as ScoreCategory)
-            }
-        }
-    }
-
     private fun subscribeToViewModel() {
+        observeState()
         observeMaxValue()
         observeMeanValue()
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(this, Observer { state->
+            when (state) {
+                StatisticsViewModel.STATE_SCORES_DOWNLOAD_IN_PROGRESS -> { }
+                StatisticsViewModel.STATE_SCORES_DOWNLOAD_SUCCEED -> { subscribeToUI() }
+                StatisticsViewModel.STATE_SCORES_DOWNLOAD_FAILED -> { }
+            }
+        })
     }
 
     private fun observeMaxValue() {
@@ -82,5 +78,15 @@ class StatisticsFragment : Fragment() {
         viewModel.meanScore.observe(this, Observer { score ->
             mean_score.text = score.toString()
         })
+    }
+
+    private fun subscribeToUI() {
+        spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+                viewModel.categoryChanged(parent!!.getItemAtPosition(position) as ScoreCategory)
+            }
+        }
     }
 }

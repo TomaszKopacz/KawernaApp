@@ -3,11 +3,13 @@ package com.tomaszkopacz.kawernaapp.functionalities.gamescores
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.*
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class PlayersScoresViewModel(
+    private val sharedPrefsRepository: SharedPrefsRepository,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
@@ -19,18 +21,24 @@ class PlayersScoresViewModel(
     var currentCategory: MutableLiveData<ScoreCategory> = MutableLiveData()
 
     init {
-        currentCategory.value = ScoreCategory.ANIMALS
-        state.value = NONE
+        resetState()
+        initGame()
+        exposeScores()
+        exposeCategory(ScoreCategory.ANIMALS)
     }
 
-    fun initGame(gameId: String, players: ArrayList<Player>) {
+    private fun initGame() {
+        val gameId = sharedPrefsRepository.getGameId()
+        val players = sharedPrefsRepository.getPlayers()
+        populatePlayersScores(gameId!!, players!!)
+    }
+
+    private fun populatePlayersScores(gameId: String, players: ArrayList<Player>) {
         val currentDate = getCurrentDateString()
         val playersCount = players.size
 
         for (player in players)
             this._playersScores.add(PlayerScore(player, Score(player.email, gameId, currentDate, playersCount)))
-
-        this.playersScores.value = _playersScores
     }
 
     private fun getCurrentDateString(): String {
@@ -38,9 +46,9 @@ class PlayersScoresViewModel(
         return sdf.format(Date())
     }
 
-    fun updateCurrentScore(position: Int, score: Int) {
+    fun updateCurrentScoresResults(position: Int, score: Int) {
         when (currentCategory.value) {
-            ScoreCategory.TOTAL -> {}
+            ScoreCategory.TOTAL -> { }
             ScoreCategory.ANIMALS -> _playersScores[position].score.livestock = score
             ScoreCategory.ANIMALS_LACK -> _playersScores[position].score.livestockLack = score
             ScoreCategory.CEREAL -> _playersScores[position].score.cereal = score
@@ -58,13 +66,15 @@ class PlayersScoresViewModel(
 
     fun previousCategory() {
         val currentCategoryIndex = currentCategory.value!!.ordinal
-        currentCategory.postValue(ScoreCategory.values()[currentCategoryIndex.dec()])
+        exposeCategory(ScoreCategory.values()[currentCategoryIndex.dec()])
+
         sortScores()
     }
 
     fun nextCategory() {
         val currentCategoryIndex = currentCategory.value!!.ordinal
-        currentCategory.postValue(ScoreCategory.values()[currentCategoryIndex.inc()])
+        exposeCategory(ScoreCategory.values()[currentCategoryIndex.inc()])
+
         updateUsersPlaces()
         sortScores()
     }
@@ -78,7 +88,7 @@ class PlayersScoresViewModel(
 
     private fun sortScores() {
         _playersScores.sortBy { it.score.place }
-        playersScores.postValue(_playersScores)
+        exposeScores()
     }
 
     fun submitScores() {
@@ -88,24 +98,43 @@ class PlayersScoresViewModel(
     }
 
     private fun saveScoresToFireStore() {
-
         for (playerScore in _playersScores)
-            fireStoreRepository.addScore(playerScore.score, object : FireStoreRepository.UploadScoreListener {
-                override fun onSuccess(score: Score) {
-                    state.value =
-                        SCORE_UPLOADED
-                }
+            fireStoreRepository.addScore(  playerScore.score, fireStoreListener)
+    }
 
-                override fun onFailure(exception: Exception) {
-                    state.value =
-                        FAILED_TO_UPLOAD_SCORE
-                }
-            })
+    private var fireStoreListener = object : FireStoreRepository.UploadScoreListener {
+        override fun onSuccess(score: Score) {
+            scoresUploadSucceed()
+        }
+
+        override fun onFailure(exception: java.lang.Exception) {
+            scoresUploadFailed()
+        }
+    }
+
+    private fun exposeScores() {
+        playersScores.postValue(_playersScores)
+    }
+
+    private fun exposeCategory(category: ScoreCategory) {
+        currentCategory.postValue(category)
+    }
+
+    private fun resetState() {
+        state.postValue(STATE_NONE)
+    }
+
+    private fun scoresUploadSucceed() {
+        state.postValue(STATE_SCORE_UPLOAD_SUCCEED)
+    }
+
+    private fun scoresUploadFailed() {
+        state.postValue(STATE_SCORES_UPLOAD_FAILED)
     }
 
     companion object {
-        const val NONE = ""
-        const val SCORE_UPLOADED = "Scores submitted"
-        const val FAILED_TO_UPLOAD_SCORE = "Failed to submit playersScores"
+        const val STATE_NONE = ""
+        const val STATE_SCORE_UPLOAD_SUCCEED = "Scores submitted"
+        const val STATE_SCORES_UPLOAD_FAILED = "Failed to submit playersScores"
     }
 }

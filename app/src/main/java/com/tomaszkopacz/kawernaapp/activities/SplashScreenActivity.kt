@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -21,7 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun isAnyUserLoggedIn() : Boolean {
-        return AuthManager().getLoggedUser() != null
+        return SharedPrefsRepository.getInstance(this).getLoggedUser() != null
     }
 
     private fun goToMainActivity() {

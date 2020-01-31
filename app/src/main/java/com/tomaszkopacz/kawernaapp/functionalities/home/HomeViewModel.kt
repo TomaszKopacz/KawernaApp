@@ -22,34 +22,33 @@ class HomeViewModel(
     }
 
     fun downloadScores() {
-        val user = sharedPrefsRepository.getLoggedUser()!!.email
-
-        when {
-            user == null ->
-                scoresListener.onFailure(Exception("No user is logged in!"))
-
-            user.isEmpty() ->
-                scoresListener.onFailure(Exception("User has unset  email!"))
-
-            !user.isEmailPattern() ->
-                scoresListener.onFailure(Exception("User's email is incorrect!"))
-
-            else ->
-                fireStoreRepository.getPlayerScores(user, scoresListener)
-        }
+        val user = sharedPrefsRepository.getLoggedUser()
+        fireStoreRepository.getPlayerScores(user!!.email, scoresListener)
     }
 
     private val scoresListener = object : FireStoreRepository.DownloadScoresListener {
         override fun onSuccess(scores: ArrayList<Score>) {
             mUserScores = scores
+            showScores()
 
-            userScores.value = mUserScores
-            state.value = STATE_SCORES_DOWNLOADED
+            downloadSucceed()
         }
 
         override fun onFailure(exception: Exception) {
-            state.value = STATE_SCORES_DOWNLOAD_FAILED
+            downloadFailed()
         }
+    }
+
+    private fun showScores() {
+        userScores.postValue(mUserScores)
+    }
+
+    private fun downloadSucceed() {
+        state.postValue(STATE_SCORES_DOWNLOADED)
+    }
+
+    private fun downloadFailed() {
+        state.postValue(STATE_SCORES_DOWNLOAD_FAILED)
     }
 
     companion object {

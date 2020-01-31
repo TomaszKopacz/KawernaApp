@@ -13,6 +13,7 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.Language
 import com.tomaszkopacz.kawernaapp.dialogs.DialogProvider
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signOut(): Boolean {
         AuthManager().logoutUser()
+        SharedPrefsRepository.getInstance(this).clearLoggedUser()
         navigateToStartActivity()
 
         return true

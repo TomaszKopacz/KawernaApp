@@ -20,8 +20,8 @@ class AuthManager {
 
     }
 
-    fun getLoggedUser(): String? {
-        return auth.currentUser?.email
+    fun getLoggedUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
     fun logoutUser() {
