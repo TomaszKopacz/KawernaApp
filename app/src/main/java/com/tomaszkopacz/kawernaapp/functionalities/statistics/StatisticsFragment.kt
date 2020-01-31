@@ -2,15 +2,18 @@ package com.tomaszkopacz.kawernaapp.functionalities.statistics
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
@@ -20,7 +23,11 @@ class StatisticsFragment : Fragment() {
     private lateinit var viewModel: StatisticsViewModel
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         layout = inflater.inflate(R.layout.fragment_statistics, container, false)
 
         viewModel = ViewModelProviders
@@ -39,20 +46,7 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun initCategoryPicker() {
-        category_picker.minValue = 0
-        category_picker.maxValue = StatisticsViewModel.CATEGORY_NUM-1
-
-        val categories = arrayOfNulls<String>(StatisticsViewModel.CATEGORY_NUM)
-
-        categories[StatisticsViewModel.TOTAL] = resources.getString(R.string.TOTAL)
-        categories[StatisticsViewModel.ANIMALS] = resources.getString(R.string.ANIMALS)
-        categories[StatisticsViewModel.CEREALS] = resources.getString(R.string.CEREAL)
-        categories[StatisticsViewModel.VEGETABLES] = resources.getString(R.string.VEGETABLES)
-        categories[StatisticsViewModel.AREAS] = resources.getString(R.string.AREAS)
-        categories[StatisticsViewModel.PREMIUM_AREAS] = resources.getString(R.string.PREMIUM_AREAS)
-        categories[StatisticsViewModel.GOLD] = resources.getString(R.string.GOLD)
-
-        category_picker.displayedValues = categories
+        spinnerCategory.adapter = CategoryAdapter(context!!)
     }
 
     private fun initViewModel() {
@@ -60,8 +54,12 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun subscribeToUI() {
-        category_picker.setOnValueChangedListener { _, _, newVal ->
-            viewModel.categoryChanged(newVal)
+        spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+                viewModel.categoryChanged(parent!!.getItemAtPosition(position) as ScoreCategory)
+            }
         }
     }
 
@@ -79,5 +77,6 @@ class StatisticsFragment : Fragment() {
     private fun observeMeanValue() {
         viewModel.meanScore.observe(this, Observer { score ->
             mean_score.text = score.toString()
-        })    }
+        })
+    }
 }

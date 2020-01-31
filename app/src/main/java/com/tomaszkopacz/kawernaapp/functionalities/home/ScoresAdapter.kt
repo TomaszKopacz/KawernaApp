@@ -36,13 +36,13 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
     }
 
     class ScoresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var dateTextView = itemView.findViewById<TextView>(R.id.date)
+//        private var dateTextView = itemView.findViewById<TextView>(R.id.date)
         private var totalTextView = itemView.findViewById<TextView>(R.id.total)
         private var placeTextView = itemView.findViewById<TextView>(R.id.place)
-        private var playersNumTextView = itemView.findViewById<TextView>(R.id.playersNum)
+//        private var playersNumTextView = itemView.findViewById<TextView>(R.id.playersNum)
 
         fun setDate(date: String?) {
-            dateTextView.text = date ?: "no date"
+//            dateTextView.text = date ?: "no date"
         }
 
         fun setTotal(total: Int) {
@@ -50,11 +50,11 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
         }
 
         fun setPlace(place: Int?) {
-            placeTextView.text = place?.toString() ?: "no place"
+//            placeTextView.text = place?.toString() ?: "no place"
         }
 
         fun setPlayersCount(playersCount: Int?) {
-            playersNumTextView.text = playersCount?.toString() ?: "no players count"
+//            playersNumTextView.text = playersCount?.toString() ?: "no players count"
         }
     }
 }

@@ -1,78 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardCornerRadius="5dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+    app:cardCornerRadius="3dp">
 
         <RelativeLayout
-            android:id="@+id/relativeLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorSecondaryLight"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="48dp"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="36sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="36sp"/>
+
+            <Button
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_below="@+id/total"
+                android:layout_centerHorizontal="true"
+                android:textSize="10dp"
+                android:text="Szczegóły">
+            </Button>
+
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place" />
-
-        <TextView
-            android:id="@+id/place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout3" />
-
-        <TextView
-            android:id="@+id/separator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:text="/"
-            app:layout_constraintBottom_toBottomOf="@+id/place"
-            app:layout_constraintStart_toEndOf="@+id/place" />
-
-        <TextView
-            android:id="@+id/playersNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            app:layout_constraintBottom_toBottomOf="@+id/place"
-            app:layout_constraintStart_toEndOf="@+id/separator" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+<!--<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_margin="10dp"-->
+<!--    app:cardCornerRadius="5dp">-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/relativeLayout3"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/colorSecondaryLight"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.0"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/total"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:layout_margin="48dp"-->
+<!--                android:textColor="@color/primaryTextColor"-->
+<!--                android:textSize="36sp"-->
+<!--                android:textStyle="bold" />-->
+<!--        </RelativeLayout>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/date"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:layout_marginBottom="12dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/place" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/place"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:textSize="18sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/relativeLayout3" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/separator"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="3dp"-->
+<!--            android:text="/"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/place"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/place" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/playersNum"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="3dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/place"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/separator" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</androidx.cardview.widget.CardView>-->

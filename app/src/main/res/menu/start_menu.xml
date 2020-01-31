@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/loginFragment"
         android:title="@string/tab_login"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="1"/>
+        android:icon="@drawable/ic_user" />
 
     <item android:id="@+id/signupFragment"
         android:title="@string/tab_sign_up"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="2"/>
+        android:icon="@drawable/ic_new_user"/>
 </menu>
