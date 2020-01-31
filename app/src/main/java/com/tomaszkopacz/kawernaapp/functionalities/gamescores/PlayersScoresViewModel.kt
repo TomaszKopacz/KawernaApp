@@ -40,6 +40,7 @@ class PlayersScoresViewModel(
 
     fun updateCurrentScore(position: Int, score: Int) {
         when (currentCategory.value) {
+            ScoreCategory.TOTAL -> {}
             ScoreCategory.ANIMALS -> _playersScores[position].score.livestock = score
             ScoreCategory.ANIMALS_LACK -> _playersScores[position].score.livestockLack = score
             ScoreCategory.CEREAL -> _playersScores[position].score.cereal = score

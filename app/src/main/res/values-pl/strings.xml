@@ -15,7 +15,7 @@
 
     <!-- MAIN ACTIVITY -->
 
-    <string name="tab_home">Tablica</string>
+    <string name="tab_board">Tablica</string>
     <string name="tab_statistics">Statystyki</string>
     <string name="tab_barcode">Profil</string>
 

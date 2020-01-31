@@ -3,8 +3,8 @@
 
     <item
             android:id="@+id/homeFragment"
-            android:icon="@drawable/ic_home"
-            android:title="@string/tab_home"/>
+            android:icon="@drawable/ic_board"
+            android:title="@string/tab_board"/>
 
     <item
             android:id="@+id/statisticsFragment"

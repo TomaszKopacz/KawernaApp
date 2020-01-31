@@ -6,6 +6,7 @@ import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
+import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 
 class StatisticsViewModel(
     private val authManager: AuthManager,
@@ -14,7 +15,7 @@ class StatisticsViewModel(
 
     private var loggedUser: Player? = null
 
-    private var currentCategory: Int = TOTAL
+    private var currentCategory: ScoreCategory = ScoreCategory.TOTAL
 
     var maxScore = MutableLiveData<Int>()
     var meanScore = MutableLiveData<Int>()
@@ -33,28 +34,28 @@ class StatisticsViewModel(
 
     private fun loggedUserFound(player: Player) {
         loggedUser = player
-        categoryChanged(TOTAL)
+        categoryChanged(ScoreCategory.TOTAL)
     }
 
-    fun categoryChanged(category: Int) {
+    fun categoryChanged(category: ScoreCategory) {
         currentCategory = category
 
         countMax(category)
         countMean(category)
     }
 
-    private fun countMax(category: Int) {
+    private fun countMax(category: ScoreCategory) {
         fireStoreRepository.getPlayerScores(loggedUser!!.email, object : FireStoreRepository.DownloadScoresListener {
             override fun onSuccess(scores: ArrayList<Score>) {
 
                 val maxValue = when (category) {
-                    TOTAL -> scores.maxBy { it.total() }!!.total()
-                    ANIMALS -> scores.maxBy { it.livestock }!!.livestock
-                    CEREALS -> scores.maxBy { it.cereal }!!.cereal
-                    VEGETABLES -> scores.maxBy { it.vegetables }!!.vegetables
-                    AREAS -> scores.maxBy { it.areas }!!.areas
-                    PREMIUM_AREAS -> scores.maxBy { it.premiumAreas }!!.premiumAreas
-                    GOLD -> scores.maxBy { it.gold }!!.gold
+                    ScoreCategory.TOTAL -> scores.maxBy { it.total() }!!.total()
+                    ScoreCategory.ANIMALS -> scores.maxBy { it.livestock }!!.livestock
+                    ScoreCategory.CEREAL -> scores.maxBy { it.cereal }!!.cereal
+                    ScoreCategory.VEGETABLES -> scores.maxBy { it.vegetables }!!.vegetables
+                    ScoreCategory.AREAS -> scores.maxBy { it.areas }!!.areas
+                    ScoreCategory.PREMIUM_AREAS -> scores.maxBy { it.premiumAreas }!!.premiumAreas
+                    ScoreCategory.GOLD -> scores.maxBy { it.gold }!!.gold
                     else -> 0
                 }
 
@@ -67,20 +68,20 @@ class StatisticsViewModel(
         })
     }
 
-    private fun countMean(category: Int) {
+    private fun countMean(category: ScoreCategory) {
         fireStoreRepository.getPlayerScores(loggedUser!!.email, object : FireStoreRepository.DownloadScoresListener {
             override fun onSuccess(scores: ArrayList<Score>) {
                 val mean = scores.sumBy { score ->
                     when (category) {
-                        TOTAL -> score.total()
-                        ANIMALS -> score.livestock
-                        CEREALS -> score.cereal
-                        VEGETABLES -> score.vegetables
-                        AREAS -> score.areas
-                        PREMIUM_AREAS -> score.premiumAreas
-                        GOLD -> score.gold
+                        ScoreCategory.TOTAL -> score.total()
+                        ScoreCategory.ANIMALS -> score.livestock
+                        ScoreCategory.CEREAL -> score.cereal
+                        ScoreCategory.VEGETABLES -> score.vegetables
+                        ScoreCategory.AREAS -> score.areas
+                        ScoreCategory.PREMIUM_AREAS -> score.premiumAreas
+                        ScoreCategory.GOLD -> score.gold
                         else -> 0
-                }
+                    }
                 } / scores.size
 
                 meanScore.postValue(mean)
@@ -91,16 +92,5 @@ class StatisticsViewModel(
             }
 
         })
-    }
-
-    companion object {
-        const val CATEGORY_NUM = 7
-        const val TOTAL = 0
-        const val ANIMALS = 1
-        const val CEREALS = 2
-        const val VEGETABLES = 3
-        const val AREAS = 4
-        const val PREMIUM_AREAS = 5
-        const val GOLD = 6
     }
 }
