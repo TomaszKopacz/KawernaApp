@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.GameActivity
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import kotlinx.android.synthetic.main.fragment_result.*
 
 class ResultFragment : Fragment() {
@@ -44,8 +44,8 @@ class ResultFragment : Fragment() {
     }
 
     private fun initResultScreen() {
-        val gameId = SharedPrefsGameManager.getInstance(context!!).getGameId()
-        val players = SharedPrefsGameManager.getInstance((context!!)).getPlayers()
+        val gameId = SharedPrefsRepository.getInstance(context!!).getGameId()
+        val players = SharedPrefsRepository.getInstance((context!!)).getPlayers()
         if (gameId != null) viewModel.showGameResults(gameId, players!!)
     }
 
@@ -57,7 +57,7 @@ class ResultFragment : Fragment() {
     }
 
     private fun clearSharedPrefs() {
-        SharedPrefsGameManager.getInstance(context!!).clearAll()
+        SharedPrefsRepository.getInstance(context!!).clearAll()
     }
 
     private fun setObservers() {

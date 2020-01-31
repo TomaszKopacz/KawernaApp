@@ -2,13 +2,13 @@ package com.tomaszkopacz.kawernaapp.functionalities.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.extensions.isEmailPattern
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 
 class HomeViewModel(
-    private val authManager: AuthManager,
+    private val sharedPrefsRepository: SharedPrefsRepository,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
@@ -22,7 +22,7 @@ class HomeViewModel(
     }
 
     fun downloadScores() {
-        val user = authManager.getLoggedUser()
+        val user = sharedPrefsRepository.getLoggedUser()!!.email
 
         when {
             user == null ->

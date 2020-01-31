@@ -10,9 +10,11 @@ import com.tomaszkopacz.kawernaapp.functionalities.login.LoginViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.scanplayers.ScanPlayersViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.signup.SignUpViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsViewModel
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 
 class ViewModelFactory (
     private val authManager: AuthManager,
+    private val sharedPrefsRepository: SharedPrefsRepository,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
@@ -21,22 +23,22 @@ class ViewModelFactory (
             when {
 
                 isAssignableFrom(LoginViewModel::class.java) ->
-                    LoginViewModel(authManager)
+                    LoginViewModel(authManager, sharedPrefsRepository, fireStoreRepository)
 
                 isAssignableFrom(SignUpViewModel::class.java) ->
-                    SignUpViewModel(authManager, fireStoreRepository)
+                    SignUpViewModel(authManager, sharedPrefsRepository, fireStoreRepository)
 
                 isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(authManager, fireStoreRepository)
+                    HomeViewModel(sharedPrefsRepository, fireStoreRepository)
 
                 isAssignableFrom(ScanPlayersViewModel::class.java) ->
-                    ScanPlayersViewModel(authManager, fireStoreRepository)
+                    ScanPlayersViewModel(sharedPrefsRepository, fireStoreRepository)
 
                 isAssignableFrom(PlayersScoresViewModel::class.java) ->
                     PlayersScoresViewModel(fireStoreRepository)
 
                 isAssignableFrom(StatisticsViewModel::class.java) ->
-                    StatisticsViewModel(authManager, fireStoreRepository)
+                    StatisticsViewModel(sharedPrefsRepository, fireStoreRepository)
 
                 else -> throw IllegalArgumentException("Unknown ViewModel class ${this.name}")
             }

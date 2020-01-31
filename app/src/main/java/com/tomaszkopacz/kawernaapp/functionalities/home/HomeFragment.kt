@@ -13,6 +13,7 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.MainActivity
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.annotations.TestOnly
@@ -29,7 +30,10 @@ class HomeFragment : Fragment() {
 
         layout = inflater.inflate(R.layout.fragment_home, container, false)
         viewModel = ViewModelProviders
-            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .of(this, ViewModelFactory(
+                AuthManager(),
+                SharedPrefsRepository.getInstance(context!!),
+                FireStoreRepository()))
             .get(HomeViewModel::class.java)
 
         return layout

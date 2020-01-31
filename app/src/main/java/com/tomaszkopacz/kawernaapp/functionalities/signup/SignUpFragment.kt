@@ -13,6 +13,7 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.activities.StartActivity
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_signup.*
 
@@ -29,7 +30,10 @@ class SignUpFragment : Fragment() {
         layout = inflater.inflate(R.layout.fragment_signup, container, false)
 
         viewModel = ViewModelProviders
-            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .of(this, ViewModelFactory(
+                AuthManager(),
+                SharedPrefsRepository.getInstance(context!!),
+                FireStoreRepository()))
             .get(SignUpViewModel::class.java)
 
         return layout
