@@ -14,66 +14,77 @@ class SignUpViewModel(
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
+    private lateinit var mail: String
+    private lateinit var name: String
+    private lateinit var password: String
+
     var state = MutableLiveData<String>()
 
-    init {
-        checkIsUserLoggedIn()
-    }
+    fun registerAttempt(mailToVerify: String, nameToVerify: String, passwordToVerify: String) {
+        val mailTrimmed = mailToVerify.trim()
+        val nameTrimmed = nameToVerify.trim()
+        val passwordTrimmed = passwordToVerify.trim()
 
-    private fun checkIsUserLoggedIn() {
-        if (authManager.getLoggedUser() != null)
-            state.postValue(STATE_USER_LOGGED)
-    }
-
-    fun registerAttempt(mail: String, name: String, password: String) {
-        val mailToVerify = mail.trim()
-        val passwordToVerify = password.trim()
-
-        if (areDataEmpty(mailToVerify, passwordToVerify)) {
-            state.postValue(STATE_REGISTRATION_FAILED)
+        if (areDataEmpty(mailTrimmed, passwordTrimmed)) {
+            registrationFailed()
             return
         }
 
-        register(mailToVerify, passwordToVerify, name)
+        mail = mailTrimmed
+        name = nameTrimmed
+        password = passwordTrimmed
+
+        registerToAuth(mail, password)
     }
 
     private fun areDataEmpty(mail: String, password: String) : Boolean {
         return mail.isEmpty() || password.isEmpty()
     }
 
-    private fun register(mail: String, password: String, name: String) {
+    private fun registerToAuth(mail: String, password: String) {
         authManager.registerUser(mail, password, registrationAuthListener)
-
-        val player = Player(mail)
-        player.name = name
-        fireStoreRepository.addPlayer(player, registrationRepoListener)
     }
 
     private val registrationAuthListener = object : AuthManager.AuthListener {
         override fun onSuccess(user: FirebaseUser) {
-            state.postValue(STATE_REGISTRATION_SUCCEED)
+            registerToFireStore(mail, name, registrationFireStoreListener)
         }
 
         override fun onFailure(exception: Exception) {
-            state.postValue(STATE_REGISTRATION_FAILED)
+            registrationFailed()
         }
     }
 
-    private val registrationRepoListener = object : FireStoreRepository.UploadPlayerListener {
+    private fun registerToFireStore(mail: String, name: String?, listener: FireStoreRepository.UploadPlayerListener) {
+        val player = Player(mail)
+        player.name = name
+        fireStoreRepository.addPlayer(player, listener)
+    }
 
+    private val registrationFireStoreListener = object : FireStoreRepository.UploadPlayerListener {
         override fun onSuccess(player: Player) {
-            sharedPrefsRepository.saveLoggedUser(player)
-            state.postValue(STATE_REGISTRATION_SUCCEED)
+            saveLoggedUserInMemory(player)
+            registrationSucceed()
         }
 
         override fun onFailure(exception: Exception) {
-            state.postValue(STATE_REGISTRATION_FAILED)
+            registrationFailed()
         }
     }
 
+    private fun saveLoggedUserInMemory(player: Player) {
+        sharedPrefsRepository.saveLoggedUser(player)
+    }
+
+    private fun registrationSucceed() {
+        state.postValue(STATE_REGISTRATION_SUCCEED)
+    }
+
+    private fun registrationFailed() {
+        state.postValue(STATE_REGISTRATION_FAILED)
+    }
 
     companion object {
-        const val STATE_USER_LOGGED = "USER LOGGED IN"
         const val STATE_REGISTRATION_SUCCEED = "REGISTRATION_SUCCEED"
         const val STATE_REGISTRATION_FAILED = "REGISTRATION_FAILED"
     }

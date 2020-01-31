@@ -40,11 +40,11 @@ class SignUpFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        reactToUI()
-        subscribeViewModel()
+        subscribeToUI()
+        subscribeToViewModel()
     }
 
-    private fun reactToUI() {
+    private fun subscribeToUI() {
         setSubmitButtonListener()
     }
 
@@ -58,14 +58,13 @@ class SignUpFragment : Fragment() {
         }
     }
 
-    private fun subscribeViewModel() {
+    private fun subscribeToViewModel() {
         observeState()
     }
 
     private fun observeState() {
         viewModel.state.observe(this, Observer { state ->
             when (state) {
-                SignUpViewModel.STATE_USER_LOGGED -> goToMainActivity()
                 SignUpViewModel.STATE_REGISTRATION_SUCCEED -> goToMainActivity()
                 SignUpViewModel.STATE_REGISTRATION_FAILED -> showMessage("Registration failed!")
             }

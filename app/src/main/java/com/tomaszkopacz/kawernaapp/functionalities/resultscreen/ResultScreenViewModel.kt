@@ -6,9 +6,13 @@ import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.Score
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import java.lang.Exception
 
-class ResultScreenViewModel : ViewModel() {
+class ResultScreenViewModel(
+    private val sharedPrefsRepository: SharedPrefsRepository,
+    private val fireStoreRepository: FireStoreRepository
+) : ViewModel() {
 
     private var mPlayers = ArrayList<Player>()
     private var mScores = ArrayList<Score>()
@@ -16,27 +20,47 @@ class ResultScreenViewModel : ViewModel() {
 
     var resultScores = MutableLiveData<ArrayList<PlayerScore>>()
 
-    fun showGameResults(gameId: String, players: ArrayList<Player>) {
-        mPlayers = players
-        FireStoreRepository().getGameScores(gameId, listener)
+    init {
+        getFinalScores()
     }
 
-    private val listener = object : FireStoreRepository.DownloadScoresListener {
-        override fun onSuccess(scores: ArrayList<Score>) {
-            scores.sortBy { score -> score.place }
-            mScores = scores
+    private fun getFinalScores() {
+        mPlayers = sharedPrefsRepository.getPlayers()!!
+        val gameId = sharedPrefsRepository.getGameId()!!
 
-            for (score in mScores) {
-                for (player in mPlayers)
-                    if (player.email == score.player) mResultScores.add(PlayerScore(player, score))
+        fireStoreRepository.getGameScores(gameId, object : FireStoreRepository.DownloadScoresListener {
+            override fun onSuccess(scores: ArrayList<Score>) {
+                scores.sortBy { score -> score.place }
+                mScores = scores
+
+                processPlayersScores()
+                exposeResultScores()
             }
 
-            resultScores.postValue(mResultScores)
+            override fun onFailure(exception: Exception) {
+
+            }
+        })
+    }
+
+    private fun processPlayersScores() {
+        for (score in mScores) {
+            for (player in mPlayers)
+                if (player.email == score.player)
+                    mResultScores.add(PlayerScore(player, score))
         }
+    }
 
-        override fun onFailure(exception: Exception) {
+    private fun exposeResultScores() {
+        resultScores.postValue(mResultScores)
+    }
 
-        }
+    fun submit() {
+        clearMemory()
+    }
 
+    private fun clearMemory() {
+        sharedPrefsRepository.clearGameId()
+        sharedPrefsRepository.clearPlayers()
     }
 }

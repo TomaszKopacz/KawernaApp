@@ -3,7 +3,6 @@ package com.tomaszkopacz.kawernaapp.functionalities.statistics
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
@@ -13,76 +12,97 @@ class StatisticsViewModel(
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
-    private var loggedUser: Player? = null
-
-    private var currentCategory: ScoreCategory = ScoreCategory.TOTAL
+    private var userScores = ArrayList<Score>()
 
     var maxScore = MutableLiveData<Int>()
     var meanScore = MutableLiveData<Int>()
 
-    fun init() {
-        getLoggedUser()
+    var state = MutableLiveData<String>()
+
+    init {
+        getUsersScores()
     }
 
-    private fun getLoggedUser() {
-        loggedUser = sharedPrefsRepository.getLoggedUser()!!
-        categoryChanged(ScoreCategory.TOTAL)
+    private fun getUsersScores() {
+        val user = sharedPrefsRepository.getLoggedUser()
+        downloadInProgress()
+        fireStoreRepository.getPlayerScores( user!!.email, object : FireStoreRepository.DownloadScoresListener {
+                override fun onSuccess(scores: ArrayList<Score>) {
+                    userScores = scores
+                    categoryChanged(ScoreCategory.TOTAL)
+                    downloadSucceed()
+                }
+
+                override fun onFailure(exception: java.lang.Exception) {
+                    downloadFailed()
+                }
+            })
     }
 
     fun categoryChanged(category: ScoreCategory) {
-        currentCategory = category
-
-        countMax(category)
-        countMean(category)
+        process(category)
     }
 
-    private fun countMax(category: ScoreCategory) {
-        fireStoreRepository.getPlayerScores(loggedUser!!.email, object : FireStoreRepository.DownloadScoresListener {
-            override fun onSuccess(scores: ArrayList<Score>) {
-
-                val maxValue = when (category) {
-                    ScoreCategory.TOTAL -> scores.maxBy { it.total() }!!.total()
-                    ScoreCategory.ANIMALS -> scores.maxBy { it.livestock }!!.livestock
-                    ScoreCategory.CEREAL -> scores.maxBy { it.cereal }!!.cereal
-                    ScoreCategory.VEGETABLES -> scores.maxBy { it.vegetables }!!.vegetables
-                    ScoreCategory.AREAS -> scores.maxBy { it.areas }!!.areas
-                    ScoreCategory.PREMIUM_AREAS -> scores.maxBy { it.premiumAreas }!!.premiumAreas
-                    ScoreCategory.GOLD -> scores.maxBy { it.gold }!!.gold
-                    else -> 0
-                }
-
-                maxScore.postValue(maxValue)
-            }
-
-            override fun onFailure(exception: Exception) {
-
-            }
-        })
+    private fun process(category: ScoreCategory) {
+        findMaxScore(category)
+        findMeanScore(category)
     }
 
-    private fun countMean(category: ScoreCategory) {
-        fireStoreRepository.getPlayerScores(loggedUser!!.email, object : FireStoreRepository.DownloadScoresListener {
-            override fun onSuccess(scores: ArrayList<Score>) {
-                val mean = scores.sumBy { score ->
-                    when (category) {
-                        ScoreCategory.TOTAL -> score.total()
-                        ScoreCategory.ANIMALS -> score.livestock
-                        ScoreCategory.CEREAL -> score.cereal
-                        ScoreCategory.VEGETABLES -> score.vegetables
-                        ScoreCategory.AREAS -> score.areas
-                        ScoreCategory.PREMIUM_AREAS -> score.premiumAreas
-                        ScoreCategory.GOLD -> score.gold
-                        else -> 0
-                    }
-                } / scores.size
+    private fun findMaxScore(category: ScoreCategory) {
+        val maxValue = when (category) {
+            ScoreCategory.TOTAL -> userScores.maxBy { it.total() }!!.total()
+            ScoreCategory.ANIMALS -> userScores.maxBy { it.livestock }!!.livestock
+            ScoreCategory.CEREAL -> userScores.maxBy { it.cereal }!!.cereal
+            ScoreCategory.VEGETABLES -> userScores.maxBy { it.vegetables }!!.vegetables
+            ScoreCategory.AREAS -> userScores.maxBy { it.areas }!!.areas
+            ScoreCategory.PREMIUM_AREAS -> userScores.maxBy { it.premiumAreas }!!.premiumAreas
+            ScoreCategory.GOLD -> userScores.maxBy { it.gold }!!.gold
+            else -> 0
+        }
 
-                meanScore.postValue(mean)
+        showMaxScore(maxValue)
+    }
+
+    private fun findMeanScore(category: ScoreCategory) {
+        val meanValue = userScores.sumBy { score ->
+            when (category) {
+                ScoreCategory.TOTAL -> score.total()
+                ScoreCategory.ANIMALS -> score.livestock
+                ScoreCategory.CEREAL -> score.cereal
+                ScoreCategory.VEGETABLES -> score.vegetables
+                ScoreCategory.AREAS -> score.areas
+                ScoreCategory.PREMIUM_AREAS -> score.premiumAreas
+                ScoreCategory.GOLD -> score.gold
+                else -> 0
             }
+        } / userScores.size
 
-            override fun onFailure(exception: Exception) {
+        showMeanScore(meanValue)
+    }
 
-            }
+    private fun downloadInProgress() {
+        state.postValue(STATE_SCORES_DOWNLOAD_IN_PROGRESS)
+    }
 
-        })
+    private fun downloadSucceed() {
+        state.postValue(STATE_SCORES_DOWNLOAD_SUCCEED)
+    }
+
+    private fun downloadFailed() {
+        state.postValue(STATE_SCORES_DOWNLOAD_SUCCEED)
+    }
+
+    private fun showMaxScore(value: Int) {
+        maxScore.postValue(value)
+    }
+
+    private fun showMeanScore(value: Int) {
+        meanScore.postValue(value)
+    }
+
+    companion object {
+        const val STATE_SCORES_DOWNLOAD_IN_PROGRESS = "SCORES DOWNLOAD IN PROGRESS"
+        const val STATE_SCORES_DOWNLOAD_SUCCEED = "SCORES DOWNLOAD SUCCEED"
+        const val STATE_SCORES_DOWNLOAD_FAILED = "SCORES DOWNLOAD FAILED"
     }
 }

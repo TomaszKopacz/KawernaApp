@@ -41,22 +41,11 @@ class PlayersScoresFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initGame()
         initRecyclerView()
 
-        setObservers()
-        setListeners()
+        subscribeToViewModel()
+        subscribeToUI()
     }
-
-    private fun initGame() {
-        val gameId = getGameIdFromSharedPrefs()
-        val players = getPlayersFromSharedPrefs()
-        viewModel.initGame(gameId ?: "", players ?: ArrayList())
-    }
-
-    private fun getGameIdFromSharedPrefs() = SharedPrefsRepository.getInstance(context!!).getGameId()
-
-    private fun getPlayersFromSharedPrefs() = SharedPrefsRepository.getInstance(context!!).getPlayers()
 
     private fun initRecyclerView() {
         scoresAdapter.setHasStableIds(true)
@@ -66,14 +55,13 @@ class PlayersScoresFragment : Fragment() {
         scores_list.adapter = scoresAdapter
     }
 
-    private val scoreWatcher: ScoreWatcher = object :
-        ScoreWatcher {
+    private val scoreWatcher: ScoreWatcher = object : ScoreWatcher {
         override fun onScoreChanged(position: Int, score: Int) {
-            viewModel.updateCurrentScore(position, score)
+            viewModel.updateCurrentScoresResults(position, score)
         }
     }
 
-    private fun setObservers() {
+    private fun subscribeToViewModel() {
         setCategoryObserver()
         setScoresObserver()
         setStateObserver()
@@ -95,8 +83,8 @@ class PlayersScoresFragment : Fragment() {
     private fun setStateObserver() {
         viewModel.state.observe(this, Observer {
             when(it) {
-                PlayersScoresViewModel.SCORE_UPLOADED -> navigateToResultScreen()
-                PlayersScoresViewModel.FAILED_TO_UPLOAD_SCORE -> failureMessage()
+                PlayersScoresViewModel.STATE_SCORE_UPLOAD_SUCCEED -> navigateToResultScreen()
+                PlayersScoresViewModel.STATE_SCORES_UPLOAD_FAILED -> failureMessage()
             }
         })
     }
@@ -111,7 +99,7 @@ class PlayersScoresFragment : Fragment() {
             .show()
     }
 
-    private fun setListeners() {
+    private fun subscribeToUI() {
         setPreviousCategoryButtonListener()
         setNextCategoryButtonListener()
         setSubmitButtonListener()

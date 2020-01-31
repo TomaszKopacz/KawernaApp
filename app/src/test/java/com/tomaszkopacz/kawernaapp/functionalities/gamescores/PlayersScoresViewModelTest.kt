@@ -28,7 +28,7 @@ class PlayersScoresViewModelTest {
 
     @Test
     fun `testConstructor - when view model created, then state is NONE` () {
-        assertTrue(viewModel.state.value == PlayersScoresViewModel.NONE)
+        assertTrue(viewModel.state.value == PlayersScoresViewModel.STATE_NONE)
     }
 
     @Test

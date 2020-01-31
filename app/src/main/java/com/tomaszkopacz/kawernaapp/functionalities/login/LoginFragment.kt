@@ -39,11 +39,11 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        reactToUI()
-        subscribeViewModel()
+        subscribeToUI()
+        subscribeToViewModel()
     }
 
-    private fun reactToUI() {
+    private fun subscribeToUI() {
         setSubmitButtonListener()
     }
 
@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
         viewModel.loginAttempt(email, password)
     }
 
-    private fun subscribeViewModel() {
+    private fun subscribeToViewModel() {
         setStateObserver()
     }
 

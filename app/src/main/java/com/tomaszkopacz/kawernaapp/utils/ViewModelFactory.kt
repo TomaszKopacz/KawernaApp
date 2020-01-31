@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.functionalities.account.AccountViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.gamescores.PlayersScoresViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.home.HomeViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.login.LoginViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.resultscreen.ResultScreenViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.scanplayers.ScanPlayersViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.signup.SignUpViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsViewModel
@@ -35,10 +37,16 @@ class ViewModelFactory (
                     ScanPlayersViewModel(sharedPrefsRepository, fireStoreRepository)
 
                 isAssignableFrom(PlayersScoresViewModel::class.java) ->
-                    PlayersScoresViewModel(fireStoreRepository)
+                    PlayersScoresViewModel(sharedPrefsRepository, fireStoreRepository)
 
                 isAssignableFrom(StatisticsViewModel::class.java) ->
                     StatisticsViewModel(sharedPrefsRepository, fireStoreRepository)
+
+                isAssignableFrom(AccountViewModel::class.java) ->
+                    AccountViewModel(sharedPrefsRepository)
+
+                isAssignableFrom(ResultScreenViewModel::class.java) ->
+                    ResultScreenViewModel(sharedPrefsRepository, fireStoreRepository)
 
                 else -> throw IllegalArgumentException("Unknown ViewModel class ${this.name}")
             }
