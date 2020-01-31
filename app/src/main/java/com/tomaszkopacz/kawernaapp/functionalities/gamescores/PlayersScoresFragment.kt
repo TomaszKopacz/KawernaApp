@@ -15,7 +15,7 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_players_scores.*
 
@@ -31,7 +31,10 @@ class PlayersScoresFragment : Fragment() {
 
 
         viewModel = ViewModelProviders
-            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .of(this, ViewModelFactory(
+                AuthManager(),
+                SharedPrefsRepository.getInstance(context!!),
+                FireStoreRepository()))
             .get(PlayersScoresViewModel::class.java)
 
         return layout
@@ -51,9 +54,9 @@ class PlayersScoresFragment : Fragment() {
         viewModel.initGame(gameId ?: "", players ?: ArrayList())
     }
 
-    private fun getGameIdFromSharedPrefs() = SharedPrefsGameManager.getInstance(context!!).getGameId()
+    private fun getGameIdFromSharedPrefs() = SharedPrefsRepository.getInstance(context!!).getGameId()
 
-    private fun getPlayersFromSharedPrefs() = SharedPrefsGameManager.getInstance(context!!).getPlayers()
+    private fun getPlayersFromSharedPrefs() = SharedPrefsRepository.getInstance(context!!).getPlayers()
 
     private fun initRecyclerView() {
         scoresAdapter.setHasStableIds(true)

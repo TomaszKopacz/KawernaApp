@@ -1,17 +1,15 @@
 package com.tomaszkopacz.kawernaapp.functionalities.scanplayers
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.journeyapps.barcodescanner.BarcodeResult
-import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.extensions.isEmailPattern
-import java.lang.Exception
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 
 class ScanPlayersViewModel(
-    private val authManager: AuthManager,
+    private val sharedPrefsRepository: SharedPrefsRepository,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
@@ -21,8 +19,8 @@ class ScanPlayersViewModel(
     var state = MutableLiveData<String>()
 
     fun init() {
-        val loggedUserMail = authManager.getLoggedUser()
-        fireStoreRepository.getPlayerByEmail(loggedUserMail!!, downloadPlayerListener)
+        val loggedUserMail = sharedPrefsRepository.getLoggedUser()!!.email
+        fireStoreRepository.getPlayerByEmail(loggedUserMail, downloadPlayerListener)
     }
 
     fun scanPerformed(barcodeResult: BarcodeResult) {

@@ -1,15 +1,16 @@
 package com.tomaszkopacz.kawernaapp.functionalities.signup
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 
 class SignUpViewModel(
     private val authManager: AuthManager,
+    private val sharedPrefsRepository: SharedPrefsRepository,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
@@ -49,13 +50,25 @@ class SignUpViewModel(
     }
 
     private val registrationAuthListener = object : AuthManager.AuthListener {
-        override fun onSuccess(user: FirebaseUser) { state.postValue(STATE_REGISTRATION_SUCCEED) }
-        override fun onFailure(exception: Exception) { state.postValue(STATE_REGISTRATION_FAILED)}
+        override fun onSuccess(user: FirebaseUser) {
+            state.postValue(STATE_REGISTRATION_SUCCEED)
+        }
+
+        override fun onFailure(exception: Exception) {
+            state.postValue(STATE_REGISTRATION_FAILED)
+        }
     }
 
     private val registrationRepoListener = object : FireStoreRepository.UploadPlayerListener {
-        override fun onSuccess(player: Player) { state.postValue(STATE_REGISTRATION_SUCCEED) }
-        override fun onFailure(exception: Exception) { state.postValue(STATE_REGISTRATION_FAILED) }
+
+        override fun onSuccess(player: Player) {
+            sharedPrefsRepository.saveLoggedUser(player)
+            state.postValue(STATE_REGISTRATION_SUCCEED)
+        }
+
+        override fun onFailure(exception: Exception) {
+            state.postValue(STATE_REGISTRATION_FAILED)
+        }
     }
 
 

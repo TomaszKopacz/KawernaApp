@@ -2,14 +2,14 @@ package com.tomaszkopacz.kawernaapp.functionalities.statistics
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 
 class StatisticsViewModel(
-    private val authManager: AuthManager,
+    private val sharedPrefsRepository: SharedPrefsRepository,
     private val fireStoreRepository: FireStoreRepository
 ) : ViewModel() {
 
@@ -25,15 +25,7 @@ class StatisticsViewModel(
     }
 
     private fun getLoggedUser() {
-        val email = authManager.getLoggedUser()
-        fireStoreRepository.getPlayerByEmail(email!!, object : FireStoreRepository.DownloadPlayerListener {
-            override fun onSuccess(player: Player?) { loggedUserFound(player!!) }
-            override fun onFailure(exception: Exception) { }
-        })
-    }
-
-    private fun loggedUserFound(player: Player) {
-        loggedUser = player
+        loggedUser = sharedPrefsRepository.getLoggedUser()!!
         categoryChanged(ScoreCategory.TOTAL)
     }
 

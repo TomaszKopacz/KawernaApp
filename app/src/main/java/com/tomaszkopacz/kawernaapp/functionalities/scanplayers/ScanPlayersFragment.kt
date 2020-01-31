@@ -16,7 +16,7 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.auth.AuthManager
 import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsGameManager
+import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_scan_players.*
 
@@ -36,7 +36,10 @@ class ScanPlayersFragment : Fragment() {
 
         layout = inflater.inflate(R.layout.fragment_scan_players, container, false)
         viewModel = ViewModelProviders
-            .of(this, ViewModelFactory(AuthManager(), FireStoreRepository()))
+            .of(this, ViewModelFactory(
+                AuthManager(),
+                SharedPrefsRepository.getInstance(context!!),
+                FireStoreRepository()))
             .get(ScanPlayersViewModel::class.java)
 
         return layout
@@ -135,7 +138,7 @@ class ScanPlayersFragment : Fragment() {
 
     private fun addGameIdToSharedPrefs() {
         val id = generateUniqueGameId()
-        SharedPrefsGameManager.getInstance(context!!).saveGameId(id)
+        SharedPrefsRepository.getInstance(context!!).saveGameId(id)
     }
 
     private fun generateUniqueGameId(): String {
@@ -146,7 +149,7 @@ class ScanPlayersFragment : Fragment() {
 
     private fun addPlayersToSharedPrefs() {
         val players = viewModel.players.value
-        SharedPrefsGameManager.getInstance(context!!).savePlayers(players!!)
+        SharedPrefsRepository.getInstance(context!!).savePlayers(players!!)
     }
 
     private fun navigateToScoresScreen() {
