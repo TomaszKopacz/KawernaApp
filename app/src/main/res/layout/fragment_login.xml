@@ -9,7 +9,7 @@
     android:background="@color/primaryTextColor"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".functionalities.login.LoginFragment">
+    tools:context=".functionalities.start.login.LoginFragment">
 
     <EditText
         android:id="@+id/loginMail"
@@ -19,7 +19,8 @@
         android:autofillHints="Email"
         android:hint="@string/hint_email"
         android:inputType="text"
-        tools:targetApi="o" />
+        tools:targetApi="o"
+        android:shadowColor="@color/colorSecondary"/>
 
     <EditText
         android:id="@+id/loginPassword"
@@ -29,7 +30,8 @@
         android:autofillHints="Password"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
-        tools:targetApi="o" />
+        tools:targetApi="o"
+        android:shadowColor="@color/colorSecondary"/>
 
     <Button
         android:id="@+id/loginSubmit"

@@ -70,6 +70,10 @@ dependencies {
     //firestore
     implementation 'com.google.firebase:firebase-firestore:21.3.0'
 
+    //rx java
+    implementation "io.reactivex.rxjava2:rxjava:2.2.7"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+
     //auth
     def authVersion = "17.0.0"
     implementation "com.google.firebase:firebase-auth:$authVersion"

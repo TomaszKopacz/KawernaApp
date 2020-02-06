@@ -4,13 +4,13 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/bottom_navigation"
             app:startDestination="@id/homeFragment">
 
-    <fragment android:id="@+id/homeFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.home.HomeFragment"
+    <fragment android:id="@+id/homeFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.main.board.HomeFragment"
               android:label="fragment_home" tools:layout="@layout/fragment_home"/>
 
-    <fragment android:id="@+id/statisticsFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsFragment"
+    <fragment android:id="@+id/statisticsFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.main.statistics.StatisticsFragment"
               android:label="fragment_statistics" tools:layout="@layout/fragment_statistics"/>
 
-    <fragment android:id="@+id/accountFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.account.AccountFragment"
+    <fragment android:id="@+id/accountFragment" android:name="com.tomaszkopacz.kawernaapp.functionalities.main.profile.AccountFragment"
               android:label="fragment_account" tools:layout="@layout/fragment_account"/>
 
 </navigation>
