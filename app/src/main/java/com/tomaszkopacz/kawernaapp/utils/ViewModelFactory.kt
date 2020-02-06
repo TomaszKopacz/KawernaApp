@@ -2,17 +2,21 @@ package com.tomaszkopacz.kawernaapp.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.tomaszkopacz.kawernaapp.auth.AuthManager
-import com.tomaszkopacz.kawernaapp.data.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.functionalities.account.AccountViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.gamescores.PlayersScoresViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.home.HomeViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.login.LoginViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.resultscreen.ResultScreenViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.scanplayers.ScanPlayersViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.signup.SignUpViewModel
-import com.tomaszkopacz.kawernaapp.functionalities.statistics.StatisticsViewModel
-import com.tomaszkopacz.kawernaapp.sharedprefs.SharedPrefsRepository
+import com.tomaszkopacz.kawernaapp.authentication.AuthManager
+import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.functionalities.game.players.ScanPlayersViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.game.result.ResultScreenViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.game.scores.PlayersScoresViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.main.board.HomeViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.main.profile.AccountViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.main.statistics.StatisticsViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.splash.SplashViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.start.login.LoginViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.start.register.SignUpViewModel
+import com.tomaszkopacz.kawernaapp.game.GameManager
+import com.tomaszkopacz.kawernaapp.scores.AccountManager
+import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
+import com.tomaszkopacz.kawernaapp.user.UserManager
 
 class ViewModelFactory (
     private val authManager: AuthManager,
@@ -22,31 +26,37 @@ class ViewModelFactory (
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
+
+            val userManager = UserManager(fireStoreRepository, sharedPrefsRepository)
+            val scoresManager = AccountManager(fireStoreRepository)
+            val gameManager = GameManager(fireStoreRepository)
             when {
+                isAssignableFrom(SplashViewModel::class.java) ->
+                    SplashViewModel(userManager)
 
                 isAssignableFrom(LoginViewModel::class.java) ->
-                    LoginViewModel(authManager, sharedPrefsRepository, fireStoreRepository)
+                    LoginViewModel(userManager)
 
                 isAssignableFrom(SignUpViewModel::class.java) ->
-                    SignUpViewModel(authManager, sharedPrefsRepository, fireStoreRepository)
+                    SignUpViewModel(userManager)
 
                 isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(sharedPrefsRepository, fireStoreRepository)
+                    HomeViewModel(userManager, scoresManager)
 
                 isAssignableFrom(ScanPlayersViewModel::class.java) ->
-                    ScanPlayersViewModel(sharedPrefsRepository, fireStoreRepository)
+                    ScanPlayersViewModel(userManager, gameManager)
 
                 isAssignableFrom(PlayersScoresViewModel::class.java) ->
-                    PlayersScoresViewModel(sharedPrefsRepository, fireStoreRepository)
+                    PlayersScoresViewModel(gameManager)
 
                 isAssignableFrom(StatisticsViewModel::class.java) ->
-                    StatisticsViewModel(sharedPrefsRepository, fireStoreRepository)
+                    StatisticsViewModel(userManager, scoresManager)
 
                 isAssignableFrom(AccountViewModel::class.java) ->
-                    AccountViewModel(sharedPrefsRepository)
+                    AccountViewModel(userManager)
 
                 isAssignableFrom(ResultScreenViewModel::class.java) ->
-                    ResultScreenViewModel(sharedPrefsRepository, fireStoreRepository)
+                    ResultScreenViewModel(gameManager)
 
                 else -> throw IllegalArgumentException("Unknown ViewModel class ${this.name}")
             }

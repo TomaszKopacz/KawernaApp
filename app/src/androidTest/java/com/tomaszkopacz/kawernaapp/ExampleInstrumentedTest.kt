@@ -1,11 +1,10 @@
 package com.tomaszkopacz.kawernaapp
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.rule.ActivityTestRule
-import com.tomaszkopacz.kawernaapp.activities.MainActivity
+import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,7 +13,8 @@ class ExampleInstrumentedTest {
 
     @Rule
     @JvmField
-    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(
+        MainActivity::class.java)
 
     @Before
     fun setUp() {
