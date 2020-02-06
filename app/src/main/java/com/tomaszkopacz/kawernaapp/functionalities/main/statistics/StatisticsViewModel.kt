@@ -7,8 +7,9 @@ import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.scores.AccountManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
 import java.lang.Exception
+import javax.inject.Inject
 
-class StatisticsViewModel(
+class StatisticsViewModel @Inject constructor(
     private val userManager: UserManager,
     private val accountManager: AccountManager
 ) : ViewModel() {

@@ -9,8 +9,10 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
+import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.authentication.AuthManager
+import com.tomaszkopacz.kawernaapp.di.MainComponent
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
 import com.tomaszkopacz.kawernaapp.utils.locale.Language
@@ -20,13 +22,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val TAG = "Kawerna"
-    }
+    lateinit var mainComponent: MainComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        mainComponent = (application as MyApplication).appComponent.mainComponent().create()
 
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val navController = Navigation.findNavController(this, R.id.container)
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun navigateToStartActivity() {
+    private fun navigateToStartActivity() {
         finish()
 
         val intent = Intent(this, StartActivity::class.java)
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun signOut(): Boolean {
         AuthManager().logoutUser()
-        SharedPrefsRepository.getInstance(this).clearLoggedUser()
+        SharedPrefsRepository(this).clearLoggedUser()
         navigateToStartActivity()
 
         return true

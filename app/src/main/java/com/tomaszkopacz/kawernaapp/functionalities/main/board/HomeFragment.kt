@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.functionalities.main.board
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
 import com.tomaszkopacz.kawernaapp.authentication.AuthManager
@@ -15,14 +17,23 @@ import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
+import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var layout: View
-    private lateinit var viewModel: HomeViewModel
+
+    @Inject
+    lateinit var viewModel: HomeViewModel
 
     private val scoresAdapter = ScoresAdapter()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as MainActivity).mainComponent.inject(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -30,7 +41,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProviders
             .of(this, ViewModelFactory(
                 AuthManager(),
-                SharedPrefsRepository.getInstance(context!!),
+                SharedPrefsRepository(context!!),
                 FireStoreRepository()
             ))
             .get(HomeViewModel::class.java)
@@ -57,7 +68,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun subscribeToViewModel() {
-        viewModel.userScores.observe(this, Observer {scores ->
+        viewModel.userScores.observe(this, Observer { scores ->
             scoresAdapter.loadScores(scores)
         })
     }

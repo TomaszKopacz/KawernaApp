@@ -4,8 +4,9 @@ import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import java.lang.Exception
+import javax.inject.Inject
 
-class AccountManager(
+class AccountManager @Inject constructor(
     private val repository: DataBaseRepository) {
 
     private var scoresListener: ScoresListener? = null

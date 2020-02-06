@@ -4,8 +4,9 @@ package com.tomaszkopacz.kawernaapp.functionalities.splash
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.user.UserManager
+import javax.inject.Inject
 
-class SplashViewModel (
+class SplashViewModel @Inject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
 

@@ -3,8 +3,9 @@ package com.tomaszkopacz.kawernaapp.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
+import javax.inject.Inject
 
-class FireStoreRepository : DataBaseRepository{
+class FireStoreRepository @Inject constructor() : DataBaseRepository {
 
     companion object {
         const val SCORES_COLLECTION = "Scores"
@@ -17,7 +18,7 @@ class FireStoreRepository : DataBaseRepository{
         database.collection(SCORES_COLLECTION).document()
             .set(score)
             .addOnSuccessListener { listener?.onSuccess(arrayListOf(score)) }
-            .addOnFailureListener { exception ->  listener?.onFailure(exception) }
+            .addOnFailureListener { exception -> listener?.onFailure(exception) }
     }
 
     override fun getScoresByPlayer(player: Player, listener: DataBaseRepository.ScoresListener?) {
@@ -32,8 +33,8 @@ class FireStoreRepository : DataBaseRepository{
                 }
                 listener?.onSuccess(scores)
             }
-            .addOnFailureListener {
-                    exception -> listener?.onFailure(exception)
+            .addOnFailureListener { exception ->
+                listener?.onFailure(exception)
             }
     }
 

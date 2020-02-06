@@ -1,29 +1,32 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game.result
 
-
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
-import com.tomaszkopacz.kawernaapp.authentication.AuthManager
-import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
-import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_result.*
+import javax.inject.Inject
 
 class ResultFragment : Fragment() {
 
-    private lateinit var viewModel: ResultScreenViewModel
+    @Inject
+    lateinit var viewModel: ResultScreenViewModel
+
     private lateinit var layout: View
 
     private val adapter = ScoresAdapter()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as GameActivity).gameComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +35,6 @@ class ResultFragment : Fragment() {
     ): View? {
 
         layout = inflater.inflate(R.layout.fragment_result, container, false)
-        viewModel = ResultScreenViewModel((activity as GameActivity).getGameManager())
 
         return layout
     }
