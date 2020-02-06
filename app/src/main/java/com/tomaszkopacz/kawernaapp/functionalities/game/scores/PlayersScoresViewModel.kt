@@ -1,128 +1,56 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game.scores
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.tomaszkopacz.kawernaapp.data.*
-import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
-import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import com.tomaszkopacz.kawernaapp.data.PlayerScore
+import com.tomaszkopacz.kawernaapp.data.ScoreCategory
+import com.tomaszkopacz.kawernaapp.game.GameManager
 
 class PlayersScoresViewModel(
-    private val sharedPrefsRepository: SharedPrefsRepository,
-    private val fireStoreRepository: FireStoreRepository
-) : ViewModel() {
+    private val gameManager: GameManager
+) {
 
     var state: MutableLiveData<String> = MutableLiveData()
 
-    private var _playersScores: ArrayList<PlayerScore> = ArrayList()
     var playersScores: MutableLiveData<ArrayList<PlayerScore>> = MutableLiveData()
 
     var currentCategory: MutableLiveData<ScoreCategory> = MutableLiveData()
 
     init {
-        resetState()
-        initGame()
-        exposeScores()
         exposeCategory(ScoreCategory.ANIMALS)
+        exposeScores(gameManager.getPlayersScores())
     }
 
-    private fun initGame() {
-        val gameId = sharedPrefsRepository.getGameId()
-        val players = sharedPrefsRepository.getGamePlayers()
-        populatePlayersScores(gameId!!, players!!)
-    }
-
-    private fun populatePlayersScores(gameId: String, players: ArrayList<Player>) {
-        val currentDate = getCurrentDateString()
-        val playersCount = players.size
-
-        for (player in players)
-            this._playersScores.add(PlayerScore(player, Score(player.email, gameId, currentDate, playersCount)))
-    }
-
-    private fun getCurrentDateString(): String {
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        return sdf.format(Date())
-    }
-
-    fun updateCurrentScoresResults(position: Int, score: Int) {
-        when (currentCategory.value) {
-            ScoreCategory.TOTAL -> { }
-            ScoreCategory.ANIMALS -> _playersScores[position].score.livestock = score
-            ScoreCategory.ANIMALS_LACK -> _playersScores[position].score.livestockLack = score
-            ScoreCategory.CEREAL -> _playersScores[position].score.cereal = score
-            ScoreCategory.VEGETABLES -> _playersScores[position].score.vegetables = score
-            ScoreCategory.RUBIES -> _playersScores[position].score.rubies = score
-            ScoreCategory.DWARFS -> _playersScores[position].score.dwarfs = score
-            ScoreCategory.AREAS -> _playersScores[position].score.areas = score
-            ScoreCategory.UNUSED_AREAS -> _playersScores[position].score.unusedAreas = score
-            ScoreCategory.PREMIUM_AREAS -> _playersScores[position].score.premiumAreas = score
-            ScoreCategory.GOLD -> _playersScores[position].score.gold = score
-        }
-
-        this.playersScores.value = _playersScores
+    fun updateScore(position: Int, score: Int) {
+        gameManager.updateScoreForCategory(position, score, currentCategory.value!!)
+        exposeScores(gameManager.getPlayersScores())
     }
 
     fun previousCategory() {
         val currentCategoryIndex = currentCategory.value!!.ordinal
         exposeCategory(ScoreCategory.values()[currentCategoryIndex.dec()])
 
-        sortScores()
+        gameManager.sortScores()
+        exposeScores(gameManager.getPlayersScores())
     }
 
     fun nextCategory() {
         val currentCategoryIndex = currentCategory.value!!.ordinal
         exposeCategory(ScoreCategory.values()[currentCategoryIndex.inc()])
 
-        updateUsersPlaces()
-        sortScores()
-    }
-
-    private fun updateUsersPlaces() {
-        val sortedPlayersScores = _playersScores.sortedByDescending { it.score.total() }
-        sortedPlayersScores.forEachIndexed { index, playerScore ->
-            playerScore.score.place = index + 1
-        }
-    }
-
-    private fun sortScores() {
-        _playersScores.sortBy { it.score.place }
-        exposeScores()
+        gameManager.sortScores()
+        exposeScores(gameManager.getPlayersScores())
     }
 
     fun submitScores() {
-        updateUsersPlaces()
-        sortScores()
-        saveScoresToFireStore()
+        gameManager.submitGame()
     }
 
-    private fun saveScoresToFireStore() {
-        for (playerScore in _playersScores)
-            fireStoreRepository.addScore(  playerScore.score, fireStoreListener)
-    }
-
-    private var fireStoreListener = object : FireStoreRepository.UploadScoreListener {
-        override fun onSuccess(score: Score) {
-            scoresUploadSucceed()
-        }
-
-        override fun onFailure(exception: java.lang.Exception) {
-            scoresUploadFailed()
-        }
-    }
-
-    private fun exposeScores() {
-        playersScores.postValue(_playersScores)
+    private fun exposeScores(playersScores: ArrayList<PlayerScore>) {
+        this.playersScores.postValue(playersScores)
     }
 
     private fun exposeCategory(category: ScoreCategory) {
         currentCategory.postValue(category)
-    }
-
-    private fun resetState() {
-        state.postValue(STATE_NONE)
     }
 
     private fun scoresUploadSucceed() {

@@ -13,14 +13,14 @@ class FireStoreRepository : DataBaseRepository{
 
     private val database = FirebaseFirestore.getInstance()
 
-    fun addScore(score: Score, listener: UploadScoreListener?) {
+    override fun addScore(score: Score, listener: DataBaseRepository.ScoresListener?) {
         database.collection(SCORES_COLLECTION).document()
             .set(score)
-            .addOnSuccessListener { listener?.onSuccess(score) }
+            .addOnSuccessListener { listener?.onSuccess(arrayListOf(score)) }
             .addOnFailureListener { exception ->  listener?.onFailure(exception) }
     }
 
-    override fun getUsersScores(player: Player, listener: DataBaseRepository.ScoresListener?) {
+    override fun getScoresByPlayer(player: Player, listener: DataBaseRepository.ScoresListener?) {
         val scores = ArrayList<Score>()
 
         database.collection(SCORES_COLLECTION)
@@ -37,7 +37,7 @@ class FireStoreRepository : DataBaseRepository{
             }
     }
 
-    fun getGameScores(gameId: String, listener: DownloadScoresListener?) {
+    fun getScoresByGame(gameId: String, listener: DownloadScoresListener?) {
         val scores = ArrayList<Score>()
 
         database.collection(SCORES_COLLECTION)
@@ -73,23 +73,8 @@ class FireStoreRepository : DataBaseRepository{
             }
     }
 
-    interface UploadScoreListener {
-        fun onSuccess(score: Score)
-        fun onFailure(exception: Exception)
-    }
-
     interface DownloadScoresListener {
         fun onSuccess(scores: ArrayList<Score>)
-        fun onFailure(exception: Exception)
-    }
-
-    interface UploadPlayerListener {
-        fun onSuccess(player: Player)
-        fun onFailure(exception: Exception)
-    }
-
-    interface DownloadPlayerListener {
-        fun onSuccess(player: Player?)
         fun onFailure(exception: Exception)
     }
 }

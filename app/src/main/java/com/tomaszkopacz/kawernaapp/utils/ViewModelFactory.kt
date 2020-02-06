@@ -10,10 +10,11 @@ import com.tomaszkopacz.kawernaapp.functionalities.game.scores.PlayersScoresView
 import com.tomaszkopacz.kawernaapp.functionalities.main.board.HomeViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.main.profile.AccountViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.main.statistics.StatisticsViewModel
+import com.tomaszkopacz.kawernaapp.functionalities.splash.SplashViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.start.login.LoginViewModel
 import com.tomaszkopacz.kawernaapp.functionalities.start.register.SignUpViewModel
 import com.tomaszkopacz.kawernaapp.game.GameManager
-import com.tomaszkopacz.kawernaapp.scores.ScoreManager
+import com.tomaszkopacz.kawernaapp.scores.AccountManager
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.user.UserManager
 
@@ -27,9 +28,11 @@ class ViewModelFactory (
         with(modelClass) {
 
             val userManager = UserManager(fireStoreRepository, sharedPrefsRepository)
-            val scoresManager = ScoreManager(fireStoreRepository)
-            val gameManager = GameManager(fireStoreRepository, sharedPrefsRepository)
+            val scoresManager = AccountManager(fireStoreRepository)
+            val gameManager = GameManager(fireStoreRepository)
             when {
+                isAssignableFrom(SplashViewModel::class.java) ->
+                    SplashViewModel(userManager)
 
                 isAssignableFrom(LoginViewModel::class.java) ->
                     LoginViewModel(userManager)
@@ -44,7 +47,7 @@ class ViewModelFactory (
                     ScanPlayersViewModel(userManager, gameManager)
 
                 isAssignableFrom(PlayersScoresViewModel::class.java) ->
-                    PlayersScoresViewModel(sharedPrefsRepository, fireStoreRepository)
+                    PlayersScoresViewModel(gameManager)
 
                 isAssignableFrom(StatisticsViewModel::class.java) ->
                     StatisticsViewModel(userManager, scoresManager)
@@ -53,7 +56,7 @@ class ViewModelFactory (
                     AccountViewModel(userManager)
 
                 isAssignableFrom(ResultScreenViewModel::class.java) ->
-                    ResultScreenViewModel(sharedPrefsRepository, fireStoreRepository)
+                    ResultScreenViewModel(gameManager)
 
                 else -> throw IllegalArgumentException("Unknown ViewModel class ${this.name}")
             }

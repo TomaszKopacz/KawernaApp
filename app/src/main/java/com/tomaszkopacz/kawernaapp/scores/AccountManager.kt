@@ -5,14 +5,14 @@ import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import java.lang.Exception
 
-class ScoreManager(
+class AccountManager(
     private val repository: DataBaseRepository) {
 
     private var scoresListener: ScoresListener? = null
 
     fun getUsersScores(player: Player, listener: ScoresListener) {
         this.scoresListener = listener
-        repository.getUsersScores(player, dbScoresListener)
+        repository.getScoresByPlayer(player, dbScoresListener)
     }
 
     private val dbScoresListener = object : DataBaseRepository.ScoresListener {

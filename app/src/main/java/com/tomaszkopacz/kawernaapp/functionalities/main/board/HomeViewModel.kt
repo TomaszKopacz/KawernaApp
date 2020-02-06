@@ -3,12 +3,12 @@ package com.tomaszkopacz.kawernaapp.functionalities.main.board
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Score
-import com.tomaszkopacz.kawernaapp.scores.ScoreManager
+import com.tomaszkopacz.kawernaapp.scores.AccountManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
 
 class HomeViewModel(
     private val userManager: UserManager,
-    private val scoreManager: ScoreManager
+    private val accountManager: AccountManager
 ) : ViewModel() {
 
     private var mUserScores = ArrayList<Score>()
@@ -22,8 +22,8 @@ class HomeViewModel(
 
     private fun downloadScores() {
         if (userManager.isUserLoggedIn()) {
-            scoreManager.getUsersScores(userManager.getLoggedUser()!!,
-                object : ScoreManager.ScoresListener {
+            accountManager.getUsersScores(userManager.getLoggedUser()!!,
+                object : AccountManager.ScoresListener {
                     override fun onSuccess(scores: ArrayList<Score>) {
                         mUserScores = scores
                         exposeScores()

@@ -67,7 +67,7 @@ class HomeViewModelTest {
 
         // when no player found in database repo returns empty list in onSuccess callback
         viewModel.downloadScores()
-        Mockito.verify(fireStoreRepository).getUsersScores(Mockito.anyString(), listenerCaptor.capture())
+        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
         listenerCaptor.value.onSuccess(ArrayList())
 
         assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOADED)
@@ -82,7 +82,7 @@ class HomeViewModelTest {
         Mockito.`when`(authManager.getLoggedUser()).thenReturn("someplayer@gmail.com")
 
         viewModel.downloadScores()
-        Mockito.verify(fireStoreRepository).getUsersScores(Mockito.anyString(), listenerCaptor.capture())
+        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
         listenerCaptor.value.onSuccess(scores)
 
         assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOADED)
@@ -97,7 +97,7 @@ class HomeViewModelTest {
 
         // when no player found in database repo returns empty list in onSuccess callback
         viewModel.downloadScores()
-        Mockito.verify(fireStoreRepository).getUsersScores(Mockito.anyString(), listenerCaptor.capture())
+        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
         listenerCaptor.value.onSuccess(ArrayList())
 
         assertTrue(viewModel.userScores.value != null)
@@ -114,7 +114,7 @@ class HomeViewModelTest {
         Mockito.`when`(authManager.getLoggedUser()).thenReturn("someplayer@gmail.com")
 
         viewModel.downloadScores()
-        Mockito.verify(fireStoreRepository).getUsersScores(Mockito.anyString(), listenerCaptor.capture())
+        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
         listenerCaptor.value.onSuccess(scores)
 
         assertTrue(viewModel.userScores.value != null)

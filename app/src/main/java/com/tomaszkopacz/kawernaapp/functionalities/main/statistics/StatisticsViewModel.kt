@@ -4,14 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
-import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
-import com.tomaszkopacz.kawernaapp.scores.ScoreManager
+import com.tomaszkopacz.kawernaapp.scores.AccountManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
 import java.lang.Exception
 
 class StatisticsViewModel(
     private val userManager: UserManager,
-    private val scoreManager: ScoreManager
+    private val accountManager: AccountManager
 ) : ViewModel() {
 
     private var userScores = ArrayList<Score>()
@@ -28,8 +27,8 @@ class StatisticsViewModel(
     private fun downloadUsersScores() {
         downloadInProgress()
 
-        scoreManager.getUsersScores(userManager.getLoggedUser()!!,
-            object : ScoreManager.ScoresListener {
+        accountManager.getUsersScores(userManager.getLoggedUser()!!,
+            object : AccountManager.ScoresListener {
 
                 override fun onSuccess(scores: ArrayList<Score>) {
                     userScores = scores

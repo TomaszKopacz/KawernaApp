@@ -14,7 +14,8 @@ interface DataBaseRepository {
         fun onFailure(exception: Exception)
     }
 
-    fun getUsersScores(player: Player, listener: ScoresListener?)
+    fun addScore(score: Score, listener: ScoresListener?)
+    fun getScoresByPlayer(player: Player, listener: ScoresListener?)
 
     interface ScoresListener {
         fun onSuccess(scores: ArrayList<Score>)

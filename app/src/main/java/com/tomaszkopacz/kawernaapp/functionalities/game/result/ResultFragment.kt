@@ -32,15 +32,7 @@ class ResultFragment : Fragment() {
     ): View? {
 
         layout = inflater.inflate(R.layout.fragment_result, container, false)
-        viewModel = ViewModelProviders
-            .of(
-                this, ViewModelFactory(
-                    AuthManager(),
-                    SharedPrefsRepository.getInstance(context!!),
-                    FireStoreRepository()
-                )
-            )
-            .get(ResultScreenViewModel::class.java)
+        viewModel = ResultScreenViewModel((activity as GameActivity).getGameManager())
 
         return layout
     }

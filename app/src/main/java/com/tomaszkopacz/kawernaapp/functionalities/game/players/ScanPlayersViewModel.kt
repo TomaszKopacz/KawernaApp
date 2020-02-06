@@ -10,7 +10,7 @@ import com.tomaszkopacz.kawernaapp.user.UserManager
 class ScanPlayersViewModel(
     private val userManager: UserManager,
     private val gameManager: GameManager
-) : ViewModel() {
+) {
 
     var players: MutableLiveData<ArrayList<Player>> = MutableLiveData()
 

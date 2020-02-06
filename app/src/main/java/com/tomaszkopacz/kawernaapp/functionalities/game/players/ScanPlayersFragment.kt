@@ -16,6 +16,7 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.authentication.AuthManager
 import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import com.tomaszkopacz.kawernaapp.qr.QRScanner
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
@@ -38,15 +39,8 @@ class ScanPlayersFragment : Fragment() {
     ): View {
 
         layout = inflater.inflate(R.layout.fragment_scan_players, container, false)
-        viewModel = ViewModelProviders
-            .of(
-                this, ViewModelFactory(
-                    AuthManager(),
-                    SharedPrefsRepository.getInstance(context!!),
-                    FireStoreRepository()
-                )
-            )
-            .get(ScanPlayersViewModel::class.java)
+
+        viewModel = ScanPlayersViewModel((activity as GameActivity).getUserManager(), (activity as GameActivity).getGameManager())
 
         return layout
     }
