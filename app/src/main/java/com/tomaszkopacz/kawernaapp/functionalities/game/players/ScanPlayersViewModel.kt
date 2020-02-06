@@ -6,8 +6,9 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.game.GameManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
+import javax.inject.Inject
 
-class ScanPlayersViewModel(
+class ScanPlayersViewModel @Inject constructor(
     private val userManager: UserManager,
     private val gameManager: GameManager
 ) {

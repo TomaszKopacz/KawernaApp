@@ -1,6 +1,7 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game.scores
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,22 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import kotlinx.android.synthetic.main.fragment_players_scores.*
+import javax.inject.Inject
 
 class PlayersScoresFragment : Fragment() {
 
     private lateinit var layout: View
-    private lateinit var viewModel: PlayersScoresViewModel
+
+    @Inject
+    lateinit var viewModel: PlayersScoresViewModel
 
     private var scoresAdapter: ScoresAdapter = ScoresAdapter()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as GameActivity).gameComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,9 +37,6 @@ class PlayersScoresFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         layout = inflater.inflate(R.layout.fragment_players_scores, container, false)
-
-
-        viewModel = PlayersScoresViewModel((activity as GameActivity).getGameManager())
 
         return layout
     }

@@ -8,8 +8,9 @@ import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.user.UserManager
+import javax.inject.Inject
 
-class SignUpViewModel(
+class SignUpViewModel @Inject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
 

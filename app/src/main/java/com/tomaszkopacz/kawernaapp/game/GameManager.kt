@@ -5,11 +5,14 @@ import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
+import com.tomaszkopacz.kawernaapp.di.ActivityScope
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class GameManager(
+@ActivityScope
+class GameManager @Inject constructor(
     private val repository: DataBaseRepository
 ) {
 

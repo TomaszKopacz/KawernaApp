@@ -4,8 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.game.GameManager
+import javax.inject.Inject
 
-class PlayersScoresViewModel(
+class PlayersScoresViewModel @Inject constructor(
     private val gameManager: GameManager
 ) {
 

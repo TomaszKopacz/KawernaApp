@@ -4,32 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.authentication.AuthManager
-import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.di.SplashComponent
 import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
-import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
-import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
+import javax.inject.Inject
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SplashViewModel
+    lateinit var splashComponent: SplashComponent
+
+    @Inject
+    lateinit var viewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        splashComponent = (application as MyApplication).appComponent.splashComponent().create()
+        splashComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-
-        viewModel = ViewModelProviders
-            .of(
-                this, ViewModelFactory(
-                    AuthManager(),
-                    SharedPrefsRepository.getInstance(this),
-                    FireStoreRepository()
-                )
-            )
-            .get(SplashViewModel::class.java)
 
         subscribeToViewModel()
     }

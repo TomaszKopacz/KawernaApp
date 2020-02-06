@@ -4,11 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.user.UserManager
-import io.reactivex.Observer
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
-class LoginViewModel(
+class LoginViewModel @Inject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
 

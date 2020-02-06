@@ -3,8 +3,11 @@ package com.tomaszkopacz.kawernaapp.user
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import com.tomaszkopacz.kawernaapp.storage.Storage
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserManager(
+@Singleton
+class UserManager @Inject constructor(
     private val repository: DataBaseRepository,
     private val storage: Storage
 ) {

@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.qr.QRGenerator
 import com.tomaszkopacz.kawernaapp.user.UserManager
+import javax.inject.Inject
 
-class AccountViewModel(
+class AccountViewModel @Inject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
 

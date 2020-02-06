@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.scores.AccountManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
+import javax.inject.Inject
 
-class HomeViewModel(
+class HomeViewModel @Inject constructor(
     private val userManager: UserManager,
     private val accountManager: AccountManager
 ) : ViewModel() {

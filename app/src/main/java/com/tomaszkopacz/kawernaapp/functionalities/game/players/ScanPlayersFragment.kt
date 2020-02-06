@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game.players
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,16 +22,24 @@ import com.tomaszkopacz.kawernaapp.qr.QRScanner
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_scan_players.*
+import javax.inject.Inject
 
 class ScanPlayersFragment : Fragment() {
 
     private lateinit var layout: View
-    private lateinit var viewModel: ScanPlayersViewModel
+
+    @Inject
+    lateinit var viewModel: ScanPlayersViewModel
 
     private lateinit var scanner: QRScanner
 
-    private var playersAdapter: PlayersAdapter =
-        PlayersAdapter()
+    private var playersAdapter: PlayersAdapter = PlayersAdapter()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as GameActivity).gameComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +48,6 @@ class ScanPlayersFragment : Fragment() {
     ): View {
 
         layout = inflater.inflate(R.layout.fragment_scan_players, container, false)
-
-        viewModel = ScanPlayersViewModel((activity as GameActivity).getUserManager(), (activity as GameActivity).getGameManager())
 
         return layout
     }
