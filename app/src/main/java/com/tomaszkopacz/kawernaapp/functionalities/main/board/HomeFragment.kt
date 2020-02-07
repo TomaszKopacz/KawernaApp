@@ -9,13 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
-import com.tomaszkopacz.kawernaapp.authentication.AuthManager
 import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
-import com.tomaszkopacz.kawernaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -38,13 +35,6 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         layout = inflater.inflate(R.layout.fragment_home, container, false)
-        viewModel = ViewModelProviders
-            .of(this, ViewModelFactory(
-                AuthManager(),
-                SharedPrefsRepository(context!!),
-                FireStoreRepository()
-            ))
-            .get(HomeViewModel::class.java)
 
         return layout
     }

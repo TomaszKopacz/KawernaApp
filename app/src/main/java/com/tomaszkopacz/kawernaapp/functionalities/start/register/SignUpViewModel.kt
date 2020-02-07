@@ -2,11 +2,7 @@ package com.tomaszkopacz.kawernaapp.functionalities.start.register
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseUser
-import com.tomaszkopacz.kawernaapp.authentication.AuthManager
-import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.data.Player
-import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import com.tomaszkopacz.kawernaapp.user.UserManager
 import javax.inject.Inject
 

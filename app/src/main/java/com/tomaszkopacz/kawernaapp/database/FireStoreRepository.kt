@@ -38,19 +38,6 @@ class FireStoreRepository @Inject constructor() : DataBaseRepository {
             }
     }
 
-    fun getScoresByGame(gameId: String, listener: DownloadScoresListener?) {
-        val scores = ArrayList<Score>()
-
-        database.collection(SCORES_COLLECTION)
-            .whereEqualTo("game", gameId)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) scores.add(document.toObject(Score::class.java))
-                listener?.onSuccess(scores)
-            }
-            .addOnFailureListener { exception -> listener?.onFailure(exception) }
-    }
-
     override fun addPlayer(player: Player, listener: DataBaseRepository.PlayerListener?) {
         database.collection(PLAYERS_COLLECTION).document()
             .set(player)
@@ -72,10 +59,5 @@ class FireStoreRepository @Inject constructor() : DataBaseRepository {
             .addOnFailureListener { exception ->
                 listener?.onFailure(exception)
             }
-    }
-
-    interface DownloadScoresListener {
-        fun onSuccess(scores: ArrayList<Score>)
-        fun onFailure(exception: Exception)
     }
 }

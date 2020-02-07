@@ -1,7 +1,6 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game.players
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.game.GameManager
