@@ -11,7 +11,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.authentication.AuthManager
 import com.tomaszkopacz.kawernaapp.di.MainComponent
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
@@ -91,7 +90,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut(): Boolean {
-        AuthManager().logoutUser()
         SharedPrefsRepository(this).clearLoggedUser()
         navigateToStartActivity()
 

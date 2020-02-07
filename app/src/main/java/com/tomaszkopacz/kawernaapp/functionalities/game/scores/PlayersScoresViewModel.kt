@@ -53,18 +53,4 @@ class PlayersScoresViewModel @Inject constructor(
     private fun exposeCategory(category: ScoreCategory) {
         currentCategory.postValue(category)
     }
-
-    private fun scoresUploadSucceed() {
-        state.postValue(STATE_SCORE_UPLOAD_SUCCEED)
-    }
-
-    private fun scoresUploadFailed() {
-        state.postValue(STATE_SCORES_UPLOAD_FAILED)
-    }
-
-    companion object {
-        const val STATE_NONE = ""
-        const val STATE_SCORE_UPLOAD_SUCCEED = "Scores submitted"
-        const val STATE_SCORES_UPLOAD_FAILED = "Failed to submit playersScores"
-    }
 }
