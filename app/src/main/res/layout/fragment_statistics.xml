@@ -314,6 +314,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_max_category"
                         android:layout_centerHorizontal="true"
+                        android:clickable="false"
                         android:text="Rekord"
                         android:textSize="12sp">
 
@@ -350,6 +351,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_mean_category"
                         android:layout_centerHorizontal="true"
+                        android:clickable="false"
                         android:text="Srednia"
                         android:textSize="12sp" />
                 </RelativeLayout>
