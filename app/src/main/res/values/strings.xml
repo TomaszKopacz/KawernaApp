@@ -1,50 +1,47 @@
 <resources>
-    <string name="app_name">KawernaApp</string>
+    <string name="app_name">Kawerna</string>
 
     <!-- START ACTIVITY -->
 
-    <string name="tab_login">Login</string>
-    <string name="tab_sign_up">Sign Up</string>
+    <string name="tab_login">Zaloguj</string>
+    <string name="tab_sign_up">Nowy użytkownik</string>
 
     <string name="hint_email">Email</string>
-    <string name="hint_name">Name</string>
-    <string name="hint_password">Password</string>
+    <string name="hint_name">Nazwa</string>
+    <string name="hint_password">Hasło</string>
 
-    <string name="btn_submit_login">SUBMIT</string>
-    <string name="btn_submit_sign_up">SUBMIT</string>
+    <string name="btn_submit_login">ZALOGUJ</string>
+    <string name="btn_submit_sign_up">ZAREJESTRUJ</string>
 
     <!-- MAIN ACTIVITY -->
 
-    <string name="tab_board">Home</string>
-    <string name="tab_statistics">Statistics</string>
-    <string name="tab_barcode">Profile</string>
+    <string name="tab_board">Tablica</string>
+    <string name="tab_statistics">Statystyki</string>
+    <string name="tab_barcode">Profil</string>
 
-    <string name="title_qr_code">Your QR code:</string>
-    <string name="desc_qr_code">QR code</string>
+    <string name="title_qr_code">Twój kod QR:</string>
+    <string name="desc_qr_code">Kod QR</string>
 
-    <string name="item_language">Language</string>
-    <string name="item_sign_out">Sign out</string>
-
-    <string name="title_choose_lang">Choose language:</string>
+    <string name="item_sign_out">Wyloguj</string>
 
     <!-- GAME ACTIVITY -->
 
-    <string name="btn_confirm_players">CONFIRM PLAYERS</string>
+    <string name="btn_confirm_players">POTWIERDŹ</string>
 
-    <string name="ANIMALS">Animals</string>
-    <string name="ANIMALS_LACK">Missing animals</string>
-    <string name="CEREAL">Cereal</string>
-    <string name="VEGETABLES">Vegetables</string>
-    <string name="RUBIES">Rubies</string>
-    <string name="DWARFS">Dwarfs</string>
-    <string name="AREAS">Fields and chambers</string>
-    <string name="PREMIUM_AREAS">Premium areas</string>
-    <string name="UNUSED_AREAS">Unused areas</string>
-    <string name="GOLD">Gold coins</string>
-    <string name="BEG">Begging coins</string>
+    <string name="ANIMALS">Zwierzęta</string>
+    <string name="ANIMALS_LACK">Brakujące zwierzęta</string>
+    <string name="CEREAL">Zboże</string>
+    <string name="VEGETABLES">Warzywa</string>
+    <string name="RUBIES">Rubiny</string>
+    <string name="DWARFS">Krasnoludy</string>
+    <string name="AREAS">Pastwiska i komnaty</string>
+    <string name="PREMIUM_AREAS">Usprawnienia</string>
+    <string name="UNUSED_AREAS">Niewykorzystane obszary</string>
+    <string name="GOLD">Złote monety</string>
+    <string name="BEG">Żetony żebrania</string>
 
-    <string name="TOTAL">Total</string>
+    <string name="TOTAL">Wszystko</string>
 
-    <string name="btn_finish">FINISH</string>
+    <string name="btn_finish">ZAKOŃCZ</string>
 
 </resources>

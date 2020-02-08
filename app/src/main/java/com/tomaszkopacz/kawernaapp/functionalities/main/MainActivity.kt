@@ -1,6 +1,5 @@
 package com.tomaszkopacz.kawernaapp.functionalities.main
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -14,9 +13,7 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.di.MainComponent
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
-import com.tomaszkopacz.kawernaapp.utils.locale.Language
 import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
-import com.tomaszkopacz.kawernaapp.utils.locale.LocaleManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -41,12 +38,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.language -> showLanguageDialog()
-            R.id.signout -> signOut()
+            R.id.signout -> {
+                signOut()
+                true
+            }
             else -> {
                 true
             }
         }
+    }
+
+    private fun signOut() {
+        SharedPrefsRepository(this).clearLoggedUser()
+        navigateToStartActivity()
     }
 
     private fun navigateToStartActivity() {
@@ -59,40 +63,5 @@ class MainActivity : AppCompatActivity() {
     fun navigateToNewGameActivity() {
         val intent = Intent(this, GameActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun showLanguageDialog() : Boolean {
-        LanguageDialog.new(
-            this,
-            languageChosenListener
-        ).show()
-        return true
-    }
-
-    private val languageChosenListener = object :
-        LanguageDialog.ChosenLanguageListener {
-        override fun onLanguageChosen(language: Language, dialog: Dialog) {
-            setAppLanguage(language.code)
-            dialog.dismiss()
-        }
-    }
-
-    private fun setAppLanguage(lang: String) {
-        LocaleManager.changeLanguage(baseContext, lang)
-        refreshContext()
-    }
-
-    private fun refreshContext() {
-        val refreshIntent = Intent(this, MainActivity::class.java)
-
-        finish()
-        startActivity(refreshIntent)
-    }
-
-    private fun signOut(): Boolean {
-        SharedPrefsRepository(this).clearLoggedUser()
-        navigateToStartActivity()
-
-        return true
     }
 }
