@@ -52,7 +52,7 @@ class GameManager @Inject constructor(
             repository.getPlayerByEmail(email, dbPlayerListener)
 
         } else {
-            playerListener?.onFailure(Message(NO_INTERNET_CONNECTION))
+            playerListener?.onFailure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
@@ -64,12 +64,12 @@ class GameManager @Inject constructor(
             }
 
             playerListener?.onSuccess(player,
-                Message(PLAYER_FOUND)
+                Message(Message.PLAYER_FOUND)
             )
         }
 
         override fun onFailure(exception: Exception) {
-            playerListener?.onFailure(Message(PLAYER_NOT_FOUND))
+            playerListener?.onFailure(Message(Message.PLAYER_NOT_FOUND))
         }
     }
 
@@ -122,7 +122,7 @@ class GameManager @Inject constructor(
             saveScoresToFireStore()
 
         } else {
-            playerListener?.onFailure(Message(NO_INTERNET_CONNECTION))
+            playerListener?.onFailure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
@@ -152,15 +152,5 @@ class GameManager @Inject constructor(
     interface PlayerListener {
         fun onSuccess(player: Player, message: Message)
         fun onFailure(message: Message)
-    }
-
-    companion object {
-        // internet
-        const val NO_INTERNET_CONNECTION = "No internet connection"
-
-        // player
-        const val PLAYER_FOUND = "Player found"
-        const val PLAYER_NOT_FOUND = "Player not found"
-
     }
 }
