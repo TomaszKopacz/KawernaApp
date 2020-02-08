@@ -26,5 +26,9 @@ data class Message(val text: String) {
         // scan players
         const val PLAYER_FOUND = "Player found"
         const val PLAYER_NOT_FOUND = "Player not found"
+
+        // camera
+        const val CAMERA_ENABLED = "Camera enabled"
+        const val CAMERA_DISABLED = "Camera disabled"
     }
 }

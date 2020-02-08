@@ -1,5 +1,6 @@
 package com.tomaszkopacz.kawernaapp.di
 
+import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
 import com.tomaszkopacz.kawernaapp.functionalities.start.login.LoginFragment
 import com.tomaszkopacz.kawernaapp.functionalities.start.register.SignUpFragment
 import dagger.Subcomponent
@@ -13,6 +14,7 @@ interface StartComponent {
         fun create(): StartComponent
     }
 
+    fun inject(activity: StartActivity)
     fun inject(fragment: LoginFragment)
     fun inject(fragment: SignUpFragment)
 }

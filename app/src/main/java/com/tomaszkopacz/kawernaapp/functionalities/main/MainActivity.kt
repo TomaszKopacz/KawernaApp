@@ -13,15 +13,19 @@ import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.di.MainComponent
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
-import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var mainComponent: MainComponent
 
+    @Inject
+    lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         mainComponent = (application as MyApplication).appComponent.mainComponent().create()
+        mainComponent.inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,18 +43,14 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.signout -> {
-                signOut()
+                viewModel.logout()
+                navigateToStartActivity()
                 true
             }
             else -> {
                 true
             }
         }
-    }
-
-    private fun signOut() {
-        SharedPrefsRepository(this).clearLoggedUser()
-        navigateToStartActivity()
     }
 
     private fun navigateToStartActivity() {
