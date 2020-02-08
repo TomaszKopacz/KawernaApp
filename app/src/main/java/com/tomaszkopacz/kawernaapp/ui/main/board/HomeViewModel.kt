@@ -40,6 +40,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun scoreChosen(score: Score) {
+        accountManager.setScoreChosen(score)
+    }
+
     private fun exposeScores() {
         userScores.postValue(mUserScores)
     }

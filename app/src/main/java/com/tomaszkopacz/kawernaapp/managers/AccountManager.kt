@@ -4,18 +4,21 @@ import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.di.ActivityScope
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+@ActivityScope
 class AccountManager @Inject constructor(
     private val repository: DataBaseRepository,
     private val networkManager: NetworkManager
 ) {
 
     private var scoresListener: ScoresListener? = null
+    private var scoreChosen: Score? = null
 
     fun getUsersScores(player: Player, listener: ScoresListener) {
         this.scoresListener = listener
@@ -53,6 +56,14 @@ class AccountManager @Inject constructor(
                 )
             )
         }
+    }
+
+    fun setScoreChosen(score: Score) {
+        this.scoreChosen = score
+    }
+
+    fun getScoreChosen(): Score? {
+        return scoreChosen
     }
 
     interface ScoresListener {

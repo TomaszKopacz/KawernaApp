@@ -13,6 +13,8 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
 
     private var scores: List<Score> = ArrayList()
 
+    private var itemListener: OnItemClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoresViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.home_score_item, parent, false)
         return ScoresViewHolder(itemView)
@@ -33,7 +35,11 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ScoresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun setItemClickListener(listener: OnItemClickListener) {
+        this.itemListener = listener
+    }
+
+    inner class ScoresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var totalTextView = itemView.findViewById<TextView>(R.id.total)
         private var detailsButton = itemView.findViewById<Button>(R.id.details)
 
@@ -43,12 +49,18 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
 
         private fun setOnClickListener() {
             detailsButton.setOnClickListener {
-
+                val position = adapterPosition
+                val score = scores[position]
+                itemListener?.onItemClick(score)
             }
         }
 
         fun setTotal(total: Int) {
             totalTextView.text = total.toString()
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(score: Score)
     }
 }

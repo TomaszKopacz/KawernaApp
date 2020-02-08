@@ -8,18 +8,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
 import com.tomaszkopacz.kawernaapp.ui.dialogs.ProgressDialog
+import com.tomaszkopacz.kawernaapp.ui.game.players.ScanPlayersFragmentDirections
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
-
-    private lateinit var layout: View
 
     @Inject
     lateinit var viewModel: HomeViewModel
@@ -34,9 +35,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        layout = inflater.inflate(R.layout.fragment_home, container, false)
-
-        return layout
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,6 +55,18 @@ class HomeFragment : Fragment() {
         new_game_button.setOnClickListener {
             (activity as MainActivity).navigateToNewGameActivity()
         }
+
+        scoresAdapter.setItemClickListener(object : ScoresAdapter.OnItemClickListener {
+            override fun onItemClick(score: Score) {
+                viewModel.scoreChosen(score)
+                navigateToDetailsScreen()
+            }
+        })
+    }
+
+    private fun navigateToDetailsScreen() {
+        val direction = HomeFragmentDirections.actionHomeToDetails()
+        findNavController().navigate(direction)
     }
 
     private fun subscribeToViewModel() {
