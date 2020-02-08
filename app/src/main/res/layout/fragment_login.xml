@@ -9,7 +9,7 @@
     android:background="@color/primaryTextColor"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".functionalities.start.login.LoginFragment">
+    tools:context=".ui.start.login.LoginFragment">
 
     <EditText
         android:id="@+id/loginMail"

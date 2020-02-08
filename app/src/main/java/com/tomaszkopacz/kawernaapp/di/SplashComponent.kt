@@ -1,6 +1,6 @@
 package com.tomaszkopacz.kawernaapp.di
 
-import com.tomaszkopacz.kawernaapp.functionalities.splash.SplashScreenActivity
+import com.tomaszkopacz.kawernaapp.ui.splash.SplashScreenActivity
 import dagger.Subcomponent
 
 @ActivityScope

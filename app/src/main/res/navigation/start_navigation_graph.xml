@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tomaszkopacz.kawernaapp.functionalities.start.login.LoginFragment"
+        android:name="com.tomaszkopacz.kawernaapp.ui.start.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.tomaszkopacz.kawernaapp.functionalities.start.register.SignUpFragment"
+        android:name="com.tomaszkopacz.kawernaapp.ui.start.register.SignUpFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
 </navigation>

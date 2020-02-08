@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/scanPlayersFragment"
-        android:name="com.tomaszkopacz.kawernaapp.functionalities.game.players.ScanPlayersFragment"
+        android:name="com.tomaszkopacz.kawernaapp.ui.game.players.ScanPlayersFragment"
         android:label="fragment_scan_players"
         tools:layout="@layout/fragment_scan_players" >
 
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/playersScoresFragment"
-        android:name="com.tomaszkopacz.kawernaapp.functionalities.game.scores.PlayersScoresFragment"
+        android:name="com.tomaszkopacz.kawernaapp.ui.game.scores.PlayersScoresFragment"
         android:label="fragment_players_scores"
         tools:layout="@layout/fragment_players_scores" >
 
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/resultFragment"
-        android:name="com.tomaszkopacz.kawernaapp.functionalities.game.result.ResultFragment"
+        android:name="com.tomaszkopacz.kawernaapp.ui.game.result.ResultFragment"
         android:label="fragment_result"
         tools:layout="@layout/fragment_result" />
 </navigation>

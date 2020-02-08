@@ -1,9 +1,9 @@
 package com.tomaszkopacz.kawernaapp.di
 
-import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
-import com.tomaszkopacz.kawernaapp.functionalities.game.players.ScanPlayersFragment
-import com.tomaszkopacz.kawernaapp.functionalities.game.result.ResultFragment
-import com.tomaszkopacz.kawernaapp.functionalities.game.scores.PlayersScoresFragment
+import com.tomaszkopacz.kawernaapp.ui.game.GameActivity
+import com.tomaszkopacz.kawernaapp.ui.game.players.ScanPlayersFragment
+import com.tomaszkopacz.kawernaapp.ui.game.result.ResultFragment
+import com.tomaszkopacz.kawernaapp.ui.game.scores.PlayersScoresFragment
 import dagger.Subcomponent
 
 @ActivityScope

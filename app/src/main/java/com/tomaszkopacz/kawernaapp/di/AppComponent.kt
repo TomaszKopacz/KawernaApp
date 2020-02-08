@@ -1,12 +1,6 @@
 package com.tomaszkopacz.kawernaapp.di
 
 import android.content.Context
-import com.tomaszkopacz.kawernaapp.functionalities.main.board.HomeFragment
-import com.tomaszkopacz.kawernaapp.functionalities.main.profile.AccountFragment
-import com.tomaszkopacz.kawernaapp.functionalities.main.statistics.StatisticsFragment
-import com.tomaszkopacz.kawernaapp.functionalities.splash.SplashScreenActivity
-import com.tomaszkopacz.kawernaapp.functionalities.start.login.LoginFragment
-import com.tomaszkopacz.kawernaapp.functionalities.start.register.SignUpFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

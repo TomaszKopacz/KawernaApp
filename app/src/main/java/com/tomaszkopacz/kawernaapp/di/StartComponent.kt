@@ -1,8 +1,8 @@
 package com.tomaszkopacz.kawernaapp.di
 
-import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
-import com.tomaszkopacz.kawernaapp.functionalities.start.login.LoginFragment
-import com.tomaszkopacz.kawernaapp.functionalities.start.register.SignUpFragment
+import com.tomaszkopacz.kawernaapp.ui.start.StartActivity
+import com.tomaszkopacz.kawernaapp.ui.start.login.LoginFragment
+import com.tomaszkopacz.kawernaapp.ui.start.register.SignUpFragment
 import dagger.Subcomponent
 
 @ActivityScope

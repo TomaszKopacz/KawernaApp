@@ -4,7 +4,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.rule.ActivityTestRule
-import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
+import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

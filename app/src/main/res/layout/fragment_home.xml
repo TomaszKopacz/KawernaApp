@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.tomaszkopacz.kawernaapp.functionalities.main.board.HomeFragment">
+    tools:context="com.tomaszkopacz.kawernaapp.ui.main.board.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_scores_recycler_view"

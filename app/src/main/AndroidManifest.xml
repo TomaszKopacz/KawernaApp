@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.tomaszkopacz.kawernaapp.functionalities.splash.SplashScreenActivity"
+            android:name="com.tomaszkopacz.kawernaapp.ui.splash.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,14 +26,14 @@
         </activity>
 
         <activity
-            android:name="com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity"
+            android:name="com.tomaszkopacz.kawernaapp.ui.start.StartActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
 
         </activity>
 
         <activity
-            android:name="com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity"
+            android:name="com.tomaszkopacz.kawernaapp.ui.main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -49,7 +49,7 @@
         </activity>
 
         <activity
-            android:name="com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity"
+            android:name="com.tomaszkopacz.kawernaapp.ui.game.GameActivity"
             android:screenOrientation="portrait">
         </activity>
 

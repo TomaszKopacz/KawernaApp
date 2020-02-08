@@ -5,7 +5,7 @@
     android:id="@+id/players"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".functionalities.game.players.ScanPlayersFragment">
+    tools:context=".ui.game.players.ScanPlayersFragment">
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/qr_code_scanner"
