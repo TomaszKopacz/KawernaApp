@@ -81,7 +81,6 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresViewHolder>() {
 
         private fun setCurrentScoreText(score: Score) {
             var categoryScore: String = when (category) {
-                ScoreCategory.TOTAL -> ""
                 ScoreCategory.ANIMALS -> score.livestock.toString()
                 ScoreCategory.ANIMALS_LACK -> score.livestockLack.toString()
                 ScoreCategory.CEREAL -> score.cereal.toString()

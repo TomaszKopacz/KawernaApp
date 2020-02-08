@@ -86,8 +86,6 @@ class GameManager @Inject constructor(
 
     fun updateScoreForCategory(position: Int, score: Int, category: ScoreCategory) {
         when (category) {
-            ScoreCategory.TOTAL -> {
-            }
             ScoreCategory.ANIMALS -> playersScores[position].score.livestock = score
             ScoreCategory.ANIMALS_LACK -> playersScores[position].score.livestockLack = score
             ScoreCategory.CEREAL -> playersScores[position].score.cereal = score

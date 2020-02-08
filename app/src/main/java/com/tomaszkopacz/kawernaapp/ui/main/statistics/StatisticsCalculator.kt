@@ -1,19 +1,66 @@
 package com.tomaszkopacz.kawernaapp.ui.main.statistics
 
+import android.util.Log
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 
 class StatisticsCalculator(private val scores: ArrayList<Score>) {
 
-//    fun maxTotal(): Int {
-//
-//    }
+    fun maxTotal(): Int {
+        return if (scores.isNotEmpty()) {
+            scores.maxBy { it.total() }!!.total()
+
+        } else {
+            0
+        }
+    }
+
+    fun worstTotal(): Int {
+        return if (scores.isNotEmpty()) {
+            scores.minBy { it.total() }!!.total()
+
+        } else {
+            0
+        }
+    }
+
+    fun meanTotal(): Int {
+        return if (scores.isNotEmpty()) {
+            scores.sumBy { it.total() } / scores.size
+
+        } else {
+            0
+        }
+    }
+
+    fun moreThan100PointsCount(): Int {
+        var count = 0
+        for (score in scores) {
+            if (score.total() >= 100) {
+                count++
+            }
+        }
+        return count
+    }
+
+    fun winCount(): Int {
+        var count = 0
+        for (score in scores) {
+            if (score.place == 1) {
+                count++
+            }
+        }
+        return count
+    }
+
+    fun gamesCount(): Int {
+        return scores.size
+    }
 
     fun maxCategoryResult(category: ScoreCategory): Int {
 
         if (scores.isNotEmpty()) {
             return when (category) {
-                ScoreCategory.TOTAL -> scores.maxBy { it.total() }!!.total()
                 ScoreCategory.ANIMALS -> scores.maxBy { it.livestock }!!.livestock
                 ScoreCategory.ANIMALS_LACK -> scores.maxBy { it.livestockLack }!!.livestockLack
                 ScoreCategory.CEREAL -> scores.maxBy { it.cereal }!!.cereal
@@ -34,7 +81,6 @@ class StatisticsCalculator(private val scores: ArrayList<Score>) {
         if (scores.isNotEmpty()) {
             return scores.sumBy { score ->
                 when (category) {
-                    ScoreCategory.TOTAL -> score.total()
                     ScoreCategory.ANIMALS -> score.livestock
                     ScoreCategory.ANIMALS_LACK -> score.livestockLack
                     ScoreCategory.CEREAL -> score.cereal

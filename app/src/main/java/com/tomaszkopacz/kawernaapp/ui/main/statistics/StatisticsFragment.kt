@@ -53,8 +53,7 @@ class StatisticsFragment : Fragment() {
 
     private fun subscribeToViewModel() {
         observeState()
-        observeMaxValue()
-        observeMeanValue()
+        observeResult()
     }
 
     private fun observeState() {
@@ -75,15 +74,14 @@ class StatisticsFragment : Fragment() {
         })
     }
 
-    private fun observeMaxValue() {
-        viewModel.maxScore.observe(this, Observer { score ->
-            max_score.text = score.toString()
-        })
-    }
-
-    private fun observeMeanValue() {
-        viewModel.meanScore.observe(this, Observer { score ->
-            mean_score.text = score.toString()
+    private fun observeResult() {
+        viewModel.result.observe(this, Observer { result ->
+            tv_max_total.text = result.maxTotal.toString()
+            tv_worst_total.text = result.worstTotal.toString()
+            tv_mean_total.text = result.meanTotal.toString()
+            tv_hundreds.text = result.bestScoresCount.toString()
+            tv_wins.text = result.winsCount.toString()
+            tv_games.text = result.gamesCount.toString()
         })
     }
 
