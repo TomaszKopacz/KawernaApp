@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    lateinit var splashComponent: SplashComponent
+    private lateinit var splashComponent: SplashComponent
 
     @Inject
     lateinit var viewModel: SplashViewModel

@@ -1,13 +1,15 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.di.GameComponent
 import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
+import javax.inject.Inject
 
 const val PERMISSION_REQUEST_CODE = 100
 
@@ -15,20 +17,33 @@ class GameActivity : AppCompatActivity() {
 
     lateinit var gameComponent: GameComponent
 
+    @Inject
+    lateinit var viewModel: GameViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         gameComponent = (application as MyApplication).appComponent.gameComponent().create()
+        gameComponent.inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
-        checkCameraPermission()
+        subscribeToViewModel()
     }
 
-    private fun checkCameraPermission() {
-        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestCameraPermission()
-        }
+    private fun subscribeToViewModel() {
+        observeState()
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(this, Observer { state ->
+            when (state) {
+                Message.CAMERA_ENABLED -> { }
+                Message.CAMERA_DISABLED -> {
+                    requestCameraPermission()
+                }
+            }
+        })
     }
 
     private fun requestCameraPermission() {

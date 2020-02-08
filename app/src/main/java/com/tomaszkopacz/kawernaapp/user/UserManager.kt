@@ -107,6 +107,10 @@ class UserManager @Inject constructor(
         }
     }
 
+    fun logout() {
+        storage.clearLoggedUser()
+    }
+
     fun register(mail: String, name: String, password: String, listener: UserListener?) {
         this.mail = mail
         this.name = name
