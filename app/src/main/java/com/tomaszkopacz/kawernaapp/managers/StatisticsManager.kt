@@ -26,6 +26,11 @@ class StatisticsManager @Inject constructor() {
         result.bestScoresCount = calculator.moreThan100PointsCount()
         result.winsCount = calculator.winCount()
         result.gamesCount = calculator.gamesCount()
+        result.seriesTotal = calculator.seriesTotal()
+
+        result.maxForCategory = calculator.maxCategoryResult(category)
+        result.meanForCategory = calculator.meanCategoryResult(category)
+        result.seriesForCategory = calculator.seriesForCategory(category)
 
         return result
     }
