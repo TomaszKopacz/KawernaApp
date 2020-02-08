@@ -36,12 +36,13 @@
     <string name="DWARFS">Krasnoludy</string>
     <string name="AREAS">Pastwiska i komnaty</string>
     <string name="PREMIUM_AREAS">Usprawnienia</string>
-    <string name="UNUSED_AREAS">Niewykorzystane obszary</string>
+    <string name="UNUSED_AREAS">Niewykorzystane pola</string>
     <string name="GOLD">Złote monety</string>
-    <string name="BEG">Żetony żebrania</string>
 
-    <string name="TOTAL">Wszystko</string>
+    <string name="TOTAL">Wynik</string>
+    <string name="place">Miejsce</string>
+    <string name="players_num">Liczba graczy</string>
+    <string name="date">Data</string>
 
     <string name="btn_finish">ZAKOŃCZ</string>
-
 </resources>
