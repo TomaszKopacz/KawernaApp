@@ -80,6 +80,8 @@ dependencies {
     def authVersion = "17.0.0"
     implementation "com.google.firebase:firebase-auth:$authVersion"
 
+    //graph
+    implementation 'com.jjoe64:graphview:4.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

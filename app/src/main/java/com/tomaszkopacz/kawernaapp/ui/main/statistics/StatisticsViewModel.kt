@@ -5,19 +5,19 @@ import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
+import com.tomaszkopacz.kawernaapp.data.StatisticsResult
 import com.tomaszkopacz.kawernaapp.managers.AccountManager
+import com.tomaszkopacz.kawernaapp.managers.StatisticsManager
 import com.tomaszkopacz.kawernaapp.managers.UserManager
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
     private val userManager: UserManager,
-    private val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    private var statisticsManager: StatisticsManager
 ) : ViewModel() {
 
-    private var userScores = ArrayList<Score>()
-
-    var maxScore = MutableLiveData<Int>()
-    var meanScore = MutableLiveData<Int>()
+    var result = MutableLiveData<StatisticsResult>()
 
     var state = MutableLiveData<String>()
 
@@ -32,8 +32,8 @@ class StatisticsViewModel @Inject constructor(
             object : AccountManager.ScoresListener {
 
                 override fun onSuccess(scores: ArrayList<Score>, message: Message) {
-                    userScores = scores
-                    process(ScoreCategory.TOTAL)
+                    statisticsManager.setScores(scores)
+                    process(ScoreCategory.ANIMALS)
 
                     state.postValue(Message.SCORES_DOWNLOADED)
                 }
@@ -49,19 +49,10 @@ class StatisticsViewModel @Inject constructor(
     }
 
     private fun process(category: ScoreCategory) {
-        val calculator = StatisticsCalculator(userScores)
-        val maxScore = calculator.maxCategoryResult(category)
-        val meanScore = calculator.meanCategoryResult(category)
-
-        exposeMaxScore(maxScore)
-        exposeMeanScore(meanScore)
+        exposeResult(statisticsManager.calculateResults(category))
     }
 
-    private fun exposeMaxScore(value: Int) {
-        maxScore.postValue(value)
-    }
-
-    private fun exposeMeanScore(value: Int) {
-        meanScore.postValue(value)
+    private fun exposeResult(result: StatisticsResult) {
+        this.result.postValue(result)
     }
 }

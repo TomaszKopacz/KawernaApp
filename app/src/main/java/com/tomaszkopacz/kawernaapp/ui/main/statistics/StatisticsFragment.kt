@@ -3,6 +3,7 @@ package com.tomaszkopacz.kawernaapp.ui.main.statistics
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,9 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.jjoe64.graphview.series.BarGraphSeries
+import com.jjoe64.graphview.series.DataPoint
+import com.jjoe64.graphview.series.LineGraphSeries
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
@@ -42,9 +46,28 @@ class StatisticsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initGraphs()
         initCategoryPicker()
 
         subscribeToViewModel()
+    }
+
+    private fun initGraphs() {
+        graph_total.viewport.isScrollable = true
+        graph_total.viewport.isXAxisBoundsManual = true
+        graph_total.viewport.isYAxisBoundsManual = true
+        graph_total.viewport.setMinX(0.0)
+        graph_total.viewport.setMaxX(10.0)
+        graph_total.viewport.setMinY(0.0)
+        graph_total.viewport.setMaxY(120.0)
+
+        graph_category.viewport.isScrollable = true
+        graph_category.viewport.isXAxisBoundsManual = true
+        graph_category.viewport.isYAxisBoundsManual = true
+        graph_category.viewport.setMinX(0.0)
+        graph_category.viewport.setMaxX(10.0)
+        graph_category.viewport.setMinY(0.0)
+        graph_category.viewport.setMaxY(40.0)
     }
 
     private fun initCategoryPicker() {
@@ -53,8 +76,7 @@ class StatisticsFragment : Fragment() {
 
     private fun subscribeToViewModel() {
         observeState()
-        observeMaxValue()
-        observeMeanValue()
+        observeResult()
     }
 
     private fun observeState() {
@@ -75,15 +97,25 @@ class StatisticsFragment : Fragment() {
         })
     }
 
-    private fun observeMaxValue() {
-        viewModel.maxScore.observe(this, Observer { score ->
-            max_score.text = score.toString()
-        })
-    }
+    private fun observeResult() {
+        viewModel.result.observe(this, Observer { result ->
+            tv_max_total.text = result.maxTotal.toString()
+            tv_worst_total.text = result.worstTotal.toString()
+            tv_mean_total.text = result.meanTotal.toString()
+            tv_hundreds.text = result.bestScoresCount.toString()
+            tv_wins.text = result.winsCount.toString()
+            tv_games.text = result.gamesCount.toString()
 
-    private fun observeMeanValue() {
-        viewModel.meanScore.observe(this, Observer { score ->
-            mean_score.text = score.toString()
+            graph_total.removeAllSeries()
+            graph_total.addSeries(result.seriesTotal)
+            graph_total.viewport.scrollToEnd()
+
+            tv_max_category.text = result.maxForCategory.toString()
+            tv_mean_category.text = result.meanForCategory.toString()
+
+            graph_category.removeAllSeries()
+            graph_category.addSeries(result.seriesForCategory)
+            graph_category.viewport.scrollToEnd()
         })
     }
 
