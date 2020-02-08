@@ -1,21 +1,17 @@
 package com.tomaszkopacz.kawernaapp.functionalities.game
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
-import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
 import com.tomaszkopacz.kawernaapp.di.GameComponent
 import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
-import com.tomaszkopacz.kawernaapp.game.GameManager
-import com.tomaszkopacz.kawernaapp.storage.SharedPrefsRepository
-import com.tomaszkopacz.kawernaapp.user.UserManager
+
+const val PERMISSION_REQUEST_CODE = 100
 
 class GameActivity : AppCompatActivity() {
-
-    private lateinit var gameManager: GameManager
-    private lateinit var userManager: UserManager
 
     lateinit var gameComponent: GameComponent
 
@@ -23,13 +19,30 @@ class GameActivity : AppCompatActivity() {
 
         gameComponent = (application as MyApplication).appComponent.gameComponent().create()
 
-        val db = FireStoreRepository()
-        val sp = SharedPrefsRepository(this)
-        gameManager = GameManager(db)
-        userManager = UserManager(db, sp)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+        checkCameraPermission()
+    }
+
+    private fun checkCameraPermission() {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestCameraPermission()
+        }
+    }
+
+    private fun requestCameraPermission() {
+        requestPermissions(arrayOf(android.Manifest.permission.CAMERA), PERMISSION_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> { }
+        }
     }
 
     fun goToMainActivity() {
@@ -37,13 +50,5 @@ class GameActivity : AppCompatActivity() {
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
-
-    fun getUserManager(): UserManager {
-        return userManager
-    }
-
-    fun getGameManager(): GameManager {
-        return gameManager
     }
 }

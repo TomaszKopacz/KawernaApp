@@ -1,5 +1,8 @@
 package com.tomaszkopacz.kawernaapp.utils.extensions
 
-fun String.isEmailPattern() : Boolean {
-    return this.contains('@')
+import java.security.MessageDigest
+
+fun String.MD5() : String {
+    val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
+    return bytes.toHex()
 }

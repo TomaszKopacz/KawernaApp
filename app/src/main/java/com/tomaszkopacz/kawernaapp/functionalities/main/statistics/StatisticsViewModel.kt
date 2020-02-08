@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.functionalities.main.statistics
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.scores.AccountManager
@@ -26,20 +27,20 @@ class StatisticsViewModel @Inject constructor(
     }
 
     private fun downloadUsersScores() {
-        downloadInProgress()
+        state.postValue(Message.SCORES_DOWNLOAD_IN_PROGRESS)
 
         accountManager.getUsersScores(userManager.getLoggedUser()!!,
             object : AccountManager.ScoresListener {
 
-                override fun onSuccess(scores: ArrayList<Score>) {
+                override fun onSuccess(scores: ArrayList<Score>, message: Message) {
                     userScores = scores
                     process(ScoreCategory.TOTAL)
 
-                    downloadSucceed()
+                    state.postValue(Message.SCORES_DOWNLOADED)
                 }
 
-                override fun onFailure(exception: Exception) {
-                    downloadFailed()
+                override fun onFailure(message: Message) {
+                    state.postValue(Message.SCORES_DOWNLOAD_FAILED)
                 }
             })
     }
@@ -63,23 +64,5 @@ class StatisticsViewModel @Inject constructor(
 
     private fun exposeMeanScore(value: Int) {
         meanScore.postValue(value)
-    }
-
-    private fun downloadInProgress() {
-        state.postValue(STATE_SCORES_DOWNLOAD_IN_PROGRESS)
-    }
-
-    private fun downloadSucceed() {
-        state.postValue(STATE_SCORES_DOWNLOAD_SUCCEED)
-    }
-
-    private fun downloadFailed() {
-        state.postValue(STATE_SCORES_DOWNLOAD_SUCCEED)
-    }
-
-    companion object {
-        const val STATE_SCORES_DOWNLOAD_IN_PROGRESS = "SCORES DOWNLOAD IN PROGRESS"
-        const val STATE_SCORES_DOWNLOAD_SUCCEED = "SCORES DOWNLOAD SUCCEED"
-        const val STATE_SCORES_DOWNLOAD_FAILED = "SCORES DOWNLOAD FAILED"
     }
 }

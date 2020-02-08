@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.functionalities.start.register
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.user.UserManager
 import javax.inject.Inject
@@ -17,25 +18,12 @@ class SignUpViewModel @Inject constructor(
     }
 
     private val registerListener = object : UserManager.UserListener {
-        override fun onSuccess(player: Player) {
-            registrationSucceed()
+        override fun onSuccess(player: Player, message: Message) {
+            state.postValue(message.text)
         }
 
-        override fun onFailure(exception: Exception) {
-            registrationFailed()
+        override fun onFailure(message: Message) {
+            state.postValue(message.text)
         }
-    }
-
-    private fun registrationSucceed() {
-        state.postValue(STATE_REGISTRATION_SUCCEED)
-    }
-
-    private fun registrationFailed() {
-        state.postValue(STATE_REGISTRATION_FAILED)
-    }
-
-    companion object {
-        const val STATE_REGISTRATION_SUCCEED = "REGISTRATION_SUCCEED"
-        const val STATE_REGISTRATION_FAILED = "REGISTRATION_FAILED"
     }
 }

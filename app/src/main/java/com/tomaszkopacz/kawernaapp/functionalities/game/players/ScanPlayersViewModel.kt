@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.functionalities.game.players
 
 import androidx.lifecycle.MutableLiveData
 import com.journeyapps.barcodescanner.BarcodeResult
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.game.GameManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
@@ -17,13 +18,13 @@ class ScanPlayersViewModel @Inject constructor(
     var state = MutableLiveData<String>()
 
     private val playerListener = object : GameManager.PlayerListener {
-        override fun onSuccess(player: Player) {
-            playerFound()
+        override fun onSuccess(player: Player, message: Message) {
+            state.postValue(message.text)
             exposePlayers(gameManager.getPlayers())
         }
 
-        override fun onFailure(exception: Exception) {
-            playerNotFound()
+        override fun onFailure(message: Message) {
+            state.postValue(message.text)
         }
     }
 
@@ -46,18 +47,5 @@ class ScanPlayersViewModel @Inject constructor(
 
     private fun exposePlayers(players: ArrayList<Player>) {
         this.players.postValue(players)
-    }
-
-    private fun playerFound() {
-        state.postValue(PLAYER_FOUND)
-    }
-
-    private fun playerNotFound() {
-        state.postValue(PLAYER_NOT_FOUND)
-    }
-
-    companion object {
-        const val PLAYER_FOUND = "PLAYER FOUND"
-        const val PLAYER_NOT_FOUND = "PLAYER NOT FOUND"
     }
 }
