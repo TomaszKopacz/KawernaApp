@@ -50,11 +50,13 @@ class FireStoreRepository @Inject constructor() : DataBaseRepository {
             .whereEqualTo("email", email)
             .get()
             .addOnSuccessListener { documents ->
-                if (documents.size() > 0) {
+                if (documents.size() == 0) {
+                    listener?.onFailure(Exception("User not found"))
+
+                } else {
                     val player = documents.documents[0].toObject(Player::class.java)
                     listener?.onSuccess(player!!)
                 }
-
             }
             .addOnFailureListener { exception ->
                 listener?.onFailure(exception)

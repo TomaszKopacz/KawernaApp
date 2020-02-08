@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.dialogs.ProgressDialog
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -52,6 +54,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginAttempt() {
+        showProgressBar()
+
         val email = loginMail.text.toString()
         val password = loginPassword.text.toString()
         viewModel.login(email, password)
@@ -63,9 +67,10 @@ class LoginFragment : Fragment() {
 
     private fun setStateObserver() {
         viewModel.state.observe(this, Observer { state ->
+            hideProgressBar()
             when (state) {
-                LoginViewModel.STATE_LOGIN_SUCCEED -> goToMainActivity()
-                LoginViewModel.STATE_LOGIN_FAILED -> showErrorMessage()
+                Message.LOGIN_SUCCEED -> goToMainActivity()
+                else -> showErrorMessage(state)
             }
         })
     }
@@ -74,7 +79,15 @@ class LoginFragment : Fragment() {
         (activity as StartActivity).navigateToMainActivity()
     }
 
-    private fun showErrorMessage() {
-        Toast.makeText(context, "Login failed!", Toast.LENGTH_LONG).show()
+    private fun showProgressBar() {
+        ProgressDialog.show(context!!)
+    }
+
+    private fun hideProgressBar() {
+        ProgressDialog.hide()
+    }
+
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

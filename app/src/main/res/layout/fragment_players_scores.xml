@@ -13,11 +13,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="@color/colorPrimaryLight"
+            android:textColor="@color/colorSecondaryDark"
             android:gravity="center"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textSize="24sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/category_text"
+            android:background="@color/colorPrimaryDark">
+
+        </View>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scores_list"

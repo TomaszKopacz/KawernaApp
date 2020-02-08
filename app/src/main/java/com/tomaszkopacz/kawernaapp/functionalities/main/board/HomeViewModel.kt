@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.functionalities.main.board
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.scores.AccountManager
 import com.tomaszkopacz.kawernaapp.user.UserManager
@@ -25,15 +26,15 @@ class HomeViewModel @Inject constructor(
         if (userManager.isUserLoggedIn()) {
             accountManager.getUsersScores(userManager.getLoggedUser()!!,
                 object : AccountManager.ScoresListener {
-                    override fun onSuccess(scores: ArrayList<Score>) {
+                    override fun onSuccess(scores: ArrayList<Score>, message: Message) {
                         mUserScores = scores
                         exposeScores()
 
-                        downloadSucceed()
+                        state.postValue(message.text)
                     }
 
-                    override fun onFailure(exception: Exception) {
-                        downloadFailed()
+                    override fun onFailure(message: Message) {
+                        state.postValue(message.text)
                     }
                 })
         }
@@ -41,18 +42,5 @@ class HomeViewModel @Inject constructor(
 
     private fun exposeScores() {
         userScores.postValue(mUserScores)
-    }
-
-    private fun downloadSucceed() {
-        state.postValue(STATE_SCORES_DOWNLOADED)
-    }
-
-    private fun downloadFailed() {
-        state.postValue(STATE_SCORES_DOWNLOAD_FAILED)
-    }
-
-    companion object {
-        const val STATE_SCORES_DOWNLOADED = "SCORES DOWNLOADED"
-        const val STATE_SCORES_DOWNLOAD_FAILED = "SCORES DOWNLOAD FAILED"
     }
 }

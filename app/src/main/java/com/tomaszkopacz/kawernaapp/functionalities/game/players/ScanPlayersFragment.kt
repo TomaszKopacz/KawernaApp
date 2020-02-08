@@ -14,6 +14,7 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.functionalities.game.GameActivity
 import com.tomaszkopacz.kawernaapp.qr.QRScanner
 import kotlinx.android.synthetic.main.fragment_scan_players.*
@@ -82,7 +83,8 @@ class ScanPlayersFragment : Fragment() {
     private fun setStateObserver() {
         viewModel.state.observe(this, Observer { state ->
             when (state) {
-                ScanPlayersViewModel.PLAYER_NOT_FOUND -> showMessage("Cannot find such player")
+                Message.PLAYER_FOUND -> { }
+                else -> showErrorMessage(state)
             }
         })
     }
@@ -115,7 +117,7 @@ class ScanPlayersFragment : Fragment() {
         findNavController().navigate(direction)
     }
 
-    private fun showMessage(message: String) {
+    private fun showErrorMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

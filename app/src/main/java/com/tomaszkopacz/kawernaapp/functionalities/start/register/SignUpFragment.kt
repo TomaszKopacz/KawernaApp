@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.dialogs.ProgressDialog
 import com.tomaszkopacz.kawernaapp.functionalities.start.StartActivity
 import kotlinx.android.synthetic.main.fragment_signup.*
 import javax.inject.Inject
@@ -49,6 +51,8 @@ class SignUpFragment : Fragment() {
 
     private fun setSubmitButtonListener() {
         signUpSubmit.setOnClickListener {
+            showProgressBar()
+
             val mail = signUpMail.text.toString()
             val name = signUpName.text.toString()
             val password = signUpPassword.text.toString()
@@ -63,9 +67,11 @@ class SignUpFragment : Fragment() {
 
     private fun observeState() {
         viewModel.state.observe(this, Observer { state ->
+            hideProgressBar()
+
             when (state) {
-                SignUpViewModel.STATE_REGISTRATION_SUCCEED -> goToMainActivity()
-                SignUpViewModel.STATE_REGISTRATION_FAILED -> showMessage("Registration failed!")
+                Message.REGISTRATION_SUCCEED -> goToMainActivity()
+                else -> showErrorMessage(state)
             }
         })
     }
@@ -74,7 +80,15 @@ class SignUpFragment : Fragment() {
         (activity as StartActivity).navigateToMainActivity()
     }
 
-    private fun showMessage(message: String) {
+    private fun showProgressBar() {
+        ProgressDialog.show(context!!)
+    }
+
+    private fun hideProgressBar() {
+        ProgressDialog.hide()
+    }
+
+    private fun showErrorMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

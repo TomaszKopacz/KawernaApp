@@ -6,6 +6,8 @@ import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import com.tomaszkopacz.kawernaapp.di.ActivityScope
+import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.network.NetworkManager
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -13,7 +15,8 @@ import kotlin.collections.ArrayList
 
 @ActivityScope
 class GameManager @Inject constructor(
-    private val repository: DataBaseRepository
+    private val repository: DataBaseRepository,
+    private val networkManager: NetworkManager
 ) {
 
     private var gameId: String? = null
@@ -45,7 +48,12 @@ class GameManager @Inject constructor(
     }
 
     private fun getPlayerByEmail(email: String) {
-        repository.getPlayerByEmail(email, dbPlayerListener)
+        if (networkManager.isNetworkConnected()) {
+            repository.getPlayerByEmail(email, dbPlayerListener)
+
+        } else {
+            playerListener?.onFailure(Message(NO_INTERNET_CONNECTION))
+        }
     }
 
     private val dbPlayerListener = object : DataBaseRepository.PlayerListener {
@@ -55,11 +63,13 @@ class GameManager @Inject constructor(
                 playersScores.add(PlayerScore(player, Score(player.email, gameId!!, date!!)))
             }
 
-            playerListener?.onSuccess(player)
+            playerListener?.onSuccess(player,
+                Message(PLAYER_FOUND)
+            )
         }
 
         override fun onFailure(exception: Exception) {
-            playerListener?.onFailure(exception)
+            playerListener?.onFailure(Message(PLAYER_NOT_FOUND))
         }
     }
 
@@ -108,7 +118,12 @@ class GameManager @Inject constructor(
     }
 
     fun submitResult() {
-        saveScoresToFireStore()
+        if(networkManager.isNetworkConnected()) {
+            saveScoresToFireStore()
+
+        } else {
+            playerListener?.onFailure(Message(NO_INTERNET_CONNECTION))
+        }
     }
 
     private fun saveScoresToFireStore() {
@@ -135,7 +150,17 @@ class GameManager @Inject constructor(
     }
 
     interface PlayerListener {
-        fun onSuccess(player: Player)
-        fun onFailure(exception: Exception)
+        fun onSuccess(player: Player, message: Message)
+        fun onFailure(message: Message)
+    }
+
+    companion object {
+        // internet
+        const val NO_INTERNET_CONNECTION = "No internet connection"
+
+        // player
+        const val PLAYER_FOUND = "Player found"
+        const val PLAYER_NOT_FOUND = "Player not found"
+
     }
 }

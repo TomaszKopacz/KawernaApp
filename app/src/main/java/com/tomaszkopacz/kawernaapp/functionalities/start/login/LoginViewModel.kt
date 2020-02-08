@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.functionalities.start.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.user.UserManager
 import javax.inject.Inject
@@ -17,25 +18,12 @@ class LoginViewModel @Inject constructor(
     }
 
     private val loginListener = object : UserManager.UserListener {
-        override fun onSuccess(player: Player) {
-            loginSucceed()
+        override fun onSuccess(player: Player, message: Message) {
+            state.postValue(message.text)
         }
 
-        override fun onFailure(exception: Exception) {
-            loginFailed()
+        override fun onFailure(message: Message) {
+            state.postValue(message.text)
         }
-    }
-
-    private fun loginSucceed() {
-        state.postValue(STATE_LOGIN_SUCCEED)
-    }
-
-    private fun loginFailed() {
-        state.postValue(STATE_LOGIN_FAILED)
-    }
-
-    companion object {
-        const val STATE_LOGIN_SUCCEED = "LOGIN SUCCEED"
-        const val STATE_LOGIN_FAILED = "LOGIN FAILED"
     }
 }

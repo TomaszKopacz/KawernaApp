@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
+import com.tomaszkopacz.kawernaapp.dialogs.ProgressDialog
 import com.tomaszkopacz.kawernaapp.functionalities.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import javax.inject.Inject
@@ -58,9 +62,17 @@ class StatisticsFragment : Fragment() {
     private fun observeState() {
         viewModel.state.observe(this, Observer { state->
             when (state) {
-                StatisticsViewModel.STATE_SCORES_DOWNLOAD_IN_PROGRESS -> { }
-                StatisticsViewModel.STATE_SCORES_DOWNLOAD_SUCCEED -> { subscribeToUI() }
-                StatisticsViewModel.STATE_SCORES_DOWNLOAD_FAILED -> { }
+                Message.SCORES_DOWNLOAD_IN_PROGRESS -> {
+                    showProgressBar()
+                }
+                Message.SCORES_DOWNLOADED -> {
+                    subscribeToUI()
+                    hideProgressBar()
+                }
+                else -> {
+                    hideProgressBar()
+                    showErrorMessage(state)
+                }
             }
         })
     }
@@ -85,5 +97,17 @@ class StatisticsFragment : Fragment() {
                 viewModel.categoryChanged(parent!!.getItemAtPosition(position) as ScoreCategory)
             }
         }
+    }
+
+    private fun showProgressBar() {
+        ProgressDialog.show(context!!)
+    }
+
+    private fun hideProgressBar() {
+        ProgressDialog.hide()
+    }
+
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }
