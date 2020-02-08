@@ -2,11 +2,6 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/language"
-        android:icon="@drawable/ic_options"
-        android:title="@string/item_language"
-        app:showAsAction="never" />
-
     <item android:id="@+id/signout"
         android:title="@string/item_sign_out"
         app:showAsAction="never" />
