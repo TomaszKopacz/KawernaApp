@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.ui.dialogs.ProgressDialog
+import com.tomaszkopacz.kawernaapp.ui.dialogs.TermsDialog
 import com.tomaszkopacz.kawernaapp.ui.start.StartActivity
 import kotlinx.android.synthetic.main.fragment_signup.*
 import javax.inject.Inject
@@ -51,13 +52,19 @@ class SignUpFragment : Fragment() {
 
     private fun setSubmitButtonListener() {
         signUpSubmit.setOnClickListener {
-            showProgressBar()
+            TermsDialog.show(context!!, object : TermsDialog.AcceptListener {
+                override fun onAccept() {
+                    TermsDialog.hide()
+                    showProgressBar()
 
-            val mail = signUpMail.text.toString()
-            val name = signUpName.text.toString()
-            val password = signUpPassword.text.toString()
+                    val mail = signUpMail.text.toString()
+                    val name = signUpName.text.toString()
+                    val password = signUpPassword.text.toString()
 
-            viewModel.register(mail, name, password)
+                    viewModel.register(mail, name, password)
+                }
+            })
+
         }
     }
 

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:text="Polityka prywatności"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="POLITYKA PRYWATNOŚCI"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Tomasz Kopacz zbudował aplikację Kawerna. Aplikacja jest dostarczana przez Tomasz Kopacz bez żadnych kosztów."
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Jeśli zdecydujesz się skorzystać z mojego Serwisu, to zgadzasz się na gromadzenie i wykorzystywanie informacji w zgodnie z tą polityką. Dane osobowe, które zbieram, są wykorzystywane do świadczenia i doskonalenia usług. Nie będę używał ani udostępniał Państwa informacje z wyjątkiem przypadków opisanych w niniejszej Polityce Prywatności."
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="GROMADZENIE I WYKORZYSTYWANIE INFORMACJI"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Podczas korzystania z naszego serwisu, mogę wymagać, abyś dostarczył nam pewnych danych osobowych w tym, dostępu do aparatu fotograficznego. Informacje, o które proszę, będą zatrzymane na twoim urządzeniu i nie są przeze mnie w żaden sposób przetwarzane."
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Aplikacja korzysta z usług osób trzecich, które mogą gromadzić informacje używane do identyfikacji Ciebie."
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="USŁUGODAWCY"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Chcę poinformować użytkowników tej usługi, że osoby trzecie mają dostęp do Twoich danych osobowych. Powodem jest wykonywanie w naszym imieniu przydzielonych im zadań. Są oni jednak zobowiązani do nieujawniania i nie wykorzystywania tych informacji w żadnym innym celu."
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="BEZPIECZEŃSTWO"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Cenię sobie zaufanie, jakim obdarzają nas Państwo przekazując nam swoje dane osobowe, dlatego też staramy się wykorzystywać akceptowane komercyjnie środki ich ochrony. Ale pamiętaj, że żadna metoda transmisji przez Internet, ani żadna metoda elektronicznego przechowywania nie jest w 100% bezpieczna i niezawodna i nie mogę zagwarantować jej całkowitego bezpieczeństwa."
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="KONTAKT"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Jeśli masz jakiekolwiek pytania lub sugestie dotyczące Polityki Prywatności, nie wahaj się skontaktować ze mną na tomasz.kopacz@onet.pl."
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/accept_button"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="15dp"
+            android:text="ZAAKCEPTUJ" />
+    </LinearLayout>
+</ScrollView>
