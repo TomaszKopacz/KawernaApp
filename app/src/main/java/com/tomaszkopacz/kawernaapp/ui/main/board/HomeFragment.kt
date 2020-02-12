@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Score
-import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
 import com.tomaszkopacz.kawernaapp.ui.dialogs.ProgressDialog
-import com.tomaszkopacz.kawernaapp.ui.game.players.ScanPlayersFragmentDirections
+import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 

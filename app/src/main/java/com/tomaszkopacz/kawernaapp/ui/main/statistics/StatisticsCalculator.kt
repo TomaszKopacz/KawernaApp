@@ -1,6 +1,5 @@
 package com.tomaszkopacz.kawernaapp.ui.main.statistics
 
-import android.util.Log
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import com.tomaszkopacz.kawernaapp.data.Score

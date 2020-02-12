@@ -27,7 +27,7 @@ class ScoresAdapter : RecyclerView.Adapter<ScoresAdapter.ScoresViewHolder>() {
         val score = playersScores[position].score
 
         holder.setPlace(score.place)
-        holder.setPlayer(player.name ?: player.email)
+        holder.setPlayer(player.name)
         holder.setScore(score.total().toString())
     }
 

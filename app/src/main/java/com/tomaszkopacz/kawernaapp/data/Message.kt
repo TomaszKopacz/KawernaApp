@@ -28,7 +28,7 @@ data class Message(val text: String) {
         const val PLAYER_NOT_FOUND = "Nie znaleziono gracza"
 
         // camera
-        const val CAMERA_ENABLED = "Aparat jest wyłączony"
+        const val CAMERA_ENABLED = "Aparat jest włączony"
         const val CAMERA_DISABLED = "Aparat jest wyłączony"
     }
 }
