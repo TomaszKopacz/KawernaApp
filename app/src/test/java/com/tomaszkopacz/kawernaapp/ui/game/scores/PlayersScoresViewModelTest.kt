@@ -1,7 +1,7 @@
 package com.tomaszkopacz.kawernaapp.ui.game.scores
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.tomaszkopacz.kawernaapp.database.FireStoreRepository
+import com.tomaszkopacz.kawernaapp.data.source.remote.ScoresRemoteSource
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
 import org.junit.Assert.assertTrue
@@ -18,11 +18,11 @@ class PlayersScoresViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: PlayersScoresViewModel
-    private lateinit var fireStoreRepository: FireStoreRepository
+    private lateinit var fireStoreRepository: ScoresRemoteSource
 
     @Before
     fun setUp() {
-        fireStoreRepository = Mockito.mock(FireStoreRepository::class.java)
+        fireStoreRepository = Mockito.mock(ScoresRemoteSource::class.java)
         viewModel = PlayersScoresViewModel(fireStoreRepository)
     }
 

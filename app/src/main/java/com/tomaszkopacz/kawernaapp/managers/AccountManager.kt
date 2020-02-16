@@ -2,8 +2,9 @@ package com.tomaszkopacz.kawernaapp.managers
 
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
-import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.data.repository.ScoresRepository
+import com.tomaszkopacz.kawernaapp.data.source.ScoresSource
 import com.tomaszkopacz.kawernaapp.di.ActivityScope
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -13,7 +14,7 @@ import kotlin.collections.ArrayList
 
 @ActivityScope
 class AccountManager @Inject constructor(
-    private val repository: DataBaseRepository,
+    private val repository: ScoresRepository,
     private val networkManager: NetworkManager
 ) {
 
@@ -24,7 +25,7 @@ class AccountManager @Inject constructor(
         this.scoresListener = listener
 
         if (networkManager.isNetworkConnected()) {
-            repository.getScoresByPlayer(player, dbScoresListener)
+            repository.getScores(player, dbScoresListener)
 
         } else {
             scoresListener?.onFailure(
@@ -35,7 +36,7 @@ class AccountManager @Inject constructor(
         }
     }
 
-    private val dbScoresListener = object : DataBaseRepository.ScoresListener {
+    private val dbScoresListener = object : ScoresSource.ScoresListener {
         override fun onSuccess(scores: ArrayList<Score>) {
             val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
