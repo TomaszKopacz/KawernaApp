@@ -1,8 +1,8 @@
-package com.tomaszkopacz.kawernaapp.storage
+package com.tomaszkopacz.kawernaapp.data.source
 
 import com.tomaszkopacz.kawernaapp.data.Player
 
-interface Storage {
+interface LoggedUserStorage {
 
     fun setLoggedUser(user: Player)
     fun getLoggedUser(): Player?

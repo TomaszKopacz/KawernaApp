@@ -1,18 +1,10 @@
-package com.tomaszkopacz.kawernaapp.database
+package com.tomaszkopacz.kawernaapp.data.source
 
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Score
 import java.lang.Exception
 
-interface DataBaseRepository {
-
-    fun addPlayer(player: Player, listener: PlayerListener?)
-    fun getPlayerByEmail(email: String, listener: PlayerListener?)
-
-    interface PlayerListener {
-        fun onSuccess(player: Player)
-        fun onFailure(exception: Exception)
-    }
+interface ScoresSource {
 
     fun addScore(score: Score, listener: ScoresListener?)
     fun getScoresByPlayer(player: Player, listener: ScoresListener?)

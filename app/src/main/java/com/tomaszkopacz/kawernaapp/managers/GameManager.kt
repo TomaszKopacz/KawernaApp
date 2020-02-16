@@ -4,9 +4,12 @@ import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
-import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import com.tomaszkopacz.kawernaapp.di.ActivityScope
 import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.data.repository.PlayersRepository
+import com.tomaszkopacz.kawernaapp.data.repository.ScoresRepository
+import com.tomaszkopacz.kawernaapp.data.source.PlayerSource
+import com.tomaszkopacz.kawernaapp.data.source.ScoresSource
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -14,7 +17,8 @@ import kotlin.collections.ArrayList
 
 @ActivityScope
 class GameManager @Inject constructor(
-    private val repository: DataBaseRepository,
+    private val playersRepository: PlayersRepository,
+    private val scoresRepository: ScoresRepository,
     private val networkManager: NetworkManager
 ) {
 
@@ -48,21 +52,22 @@ class GameManager @Inject constructor(
 
     private fun getPlayerByEmail(email: String) {
         if (networkManager.isNetworkConnected()) {
-            repository.getPlayerByEmail(email, dbPlayerListener)
+            playersRepository.findUserByEmail(email, dbPlayerListener)
 
         } else {
             playerListener?.onFailure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
-    private val dbPlayerListener = object : DataBaseRepository.PlayerListener {
+    private val dbPlayerListener = object : PlayerSource.PlayerListener {
         override fun onSuccess(player: Player) {
             if (!players.contains(player)) {
                 players.add(player)
                 playersScores.add(PlayerScore(player, Score(player.email, gameId!!, date!!)))
             }
 
-            playerListener?.onSuccess(player,
+            playerListener?.onSuccess(
+                player,
                 Message(Message.PLAYER_FOUND)
             )
         }
@@ -115,7 +120,7 @@ class GameManager @Inject constructor(
     }
 
     fun submitResult() {
-        if(networkManager.isNetworkConnected()) {
+        if (networkManager.isNetworkConnected()) {
             saveScoresToFireStore()
 
         } else {
@@ -124,11 +129,10 @@ class GameManager @Inject constructor(
     }
 
     private fun saveScoresToFireStore() {
-        for (playerScore in playersScores)
-            repository.addScore(playerScore.score, scoresListener)
+        scoresRepository.addPlayersScores(playersScores, scoresListener)
     }
 
-    private var scoresListener = object : DataBaseRepository.ScoresListener {
+    private var scoresListener = object : ScoresSource.ScoresListener {
         override fun onSuccess(scores: ArrayList<Score>) {
 
         }

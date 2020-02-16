@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Player
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
@@ -29,8 +31,8 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         val player = players[position]
-        val name = player.name ?: player.email
-        val text = name.subSequence(0, 2).toString().toUpperCase()
+        val name = player.name
+        val text = name.subSequence(0, 2).toString().toUpperCase(Locale.getDefault())
 
         holder.setPlayerView(text)
     }

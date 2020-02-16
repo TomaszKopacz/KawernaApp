@@ -1,7 +1,6 @@
 package com.tomaszkopacz.kawernaapp.managers
 
 import com.tomaszkopacz.kawernaapp.data.Player
-import com.tomaszkopacz.kawernaapp.database.DataBaseRepository
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Message.Companion.EMAIL_OCCUPIED
 import com.tomaszkopacz.kawernaapp.data.Message.Companion.EMPTY_DATA
@@ -10,15 +9,15 @@ import com.tomaszkopacz.kawernaapp.data.Message.Companion.NO_INTERNET_CONNECTION
 import com.tomaszkopacz.kawernaapp.data.Message.Companion.PASSWORD_INCORRECT
 import com.tomaszkopacz.kawernaapp.data.Message.Companion.LOGIN_EMAIL_NOT_FOUND
 import com.tomaszkopacz.kawernaapp.data.Message.Companion.REGISTRATION_SUCCEED
-import com.tomaszkopacz.kawernaapp.storage.Storage
+import com.tomaszkopacz.kawernaapp.data.repository.PlayersRepository
+import com.tomaszkopacz.kawernaapp.data.source.PlayerSource
 import com.tomaszkopacz.kawernaapp.extensions.MD5
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserManager @Inject constructor(
-    private val repository: DataBaseRepository,
-    private val storage: Storage,
+    private val repository: PlayersRepository,
     private val networkManager: NetworkManager
 ) {
 
@@ -30,11 +29,11 @@ class UserManager @Inject constructor(
     private var registerListener: UserListener? = null
 
     fun isUserLoggedIn(): Boolean {
-        return storage.getLoggedUser() != null
+        return repository.isUserLoggedIn()
     }
 
     fun getLoggedUser(): Player? {
-        return storage.getLoggedUser()
+        return repository.getLoggedUser()
     }
 
     fun login(mail: String, password: String, listener: UserListener?) {
@@ -68,7 +67,7 @@ class UserManager @Inject constructor(
 
     private fun attemptUserLogin() {
         if (networkManager.isNetworkConnected()) {
-            repository.getPlayerByEmail(mail!!, dbLoginListener)
+            repository.findUserByEmail(mail!!, loginPlayerListener)
 
         } else {
             loginListener?.onFailure(
@@ -79,11 +78,11 @@ class UserManager @Inject constructor(
         }
     }
 
-    private val dbLoginListener = object : DataBaseRepository.PlayerListener {
+    private val loginPlayerListener = object : PlayerSource.PlayerListener {
         override fun onSuccess(player: Player) {
 
             if (password!!.MD5() == player.password) {
-                storage.setLoggedUser(player)
+                repository.loginUser(player)
                 loginListener?.onSuccess(player,
                     Message(LOGIN_SUCCEED)
                 )
@@ -107,7 +106,7 @@ class UserManager @Inject constructor(
     }
 
     fun logout() {
-        storage.clearLoggedUser()
+        repository.logoutUser()
     }
 
     fun register(mail: String, name: String, password: String, listener: UserListener?) {
@@ -141,7 +140,7 @@ class UserManager @Inject constructor(
     }
 
     private fun checkUserAlreadyExists() {
-        repository.getPlayerByEmail(mail!!, object : DataBaseRepository.PlayerListener {
+        repository.findUserByEmail(mail!!, object : PlayerSource.PlayerListener {
             override fun onSuccess(player: Player) {
                 registerListener?.onFailure(
                     Message(
@@ -153,14 +152,13 @@ class UserManager @Inject constructor(
             override fun onFailure(exception: Exception) {
                 val passwordEncrypted = password!!.MD5()
                 val player = Player(mail!!, name!!, passwordEncrypted)
-                repository.addPlayer(player, dbRegisterListener)
+                repository.registerUser(player, registerPlayerListener)
             }
         })
     }
 
-    private val dbRegisterListener = object : DataBaseRepository.PlayerListener {
+    private val registerPlayerListener = object : PlayerSource.PlayerListener {
         override fun onSuccess(player: Player) {
-            storage.setLoggedUser(player)
             registerListener?.onSuccess(player,
                 Message(REGISTRATION_SUCCEED)
             )
