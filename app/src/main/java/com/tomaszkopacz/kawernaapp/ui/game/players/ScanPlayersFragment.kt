@@ -2,6 +2,7 @@ package com.tomaszkopacz.kawernaapp.ui.game.players
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,7 @@ class ScanPlayersFragment : Fragment() {
 
             override fun barcodeResult(result: BarcodeResult?) {
                 viewModel.scanPerformed(result!!)
+                Log.d("Kawerna", "Scan performed")
             }
 
             override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {

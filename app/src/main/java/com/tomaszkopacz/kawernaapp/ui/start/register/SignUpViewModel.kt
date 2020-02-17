@@ -4,7 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.Result
 import com.tomaszkopacz.kawernaapp.managers.UserManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
@@ -14,16 +17,16 @@ class SignUpViewModel @Inject constructor(
     var state = MutableLiveData<String>()
 
     fun register(mail: String, name: String, password: String) {
-        userManager.register(mail, name, password, registerListener)
-    }
+        GlobalScope.launch {
+            when (val result = userManager.register(mail, name, password)) {
+                is Result.Success -> {
+                    state.postValue(Message.REGISTRATION_SUCCEED)
+                }
 
-    private val registerListener = object : UserManager.UserListener {
-        override fun onSuccess(player: Player, message: Message) {
-            state.postValue(message.text)
-        }
-
-        override fun onFailure(message: Message) {
-            state.postValue(message.text)
+                is Result.Failure -> {
+                    state.postValue(result.message.text)
+                }
+            }
         }
     }
 }

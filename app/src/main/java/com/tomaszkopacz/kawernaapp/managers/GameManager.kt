@@ -1,15 +1,11 @@
 package com.tomaszkopacz.kawernaapp.managers
 
-import com.tomaszkopacz.kawernaapp.data.Player
-import com.tomaszkopacz.kawernaapp.data.PlayerScore
-import com.tomaszkopacz.kawernaapp.data.Score
-import com.tomaszkopacz.kawernaapp.data.ScoreCategory
-import com.tomaszkopacz.kawernaapp.di.ActivityScope
-import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.data.*
 import com.tomaszkopacz.kawernaapp.data.repository.PlayersRepository
 import com.tomaszkopacz.kawernaapp.data.repository.ScoresRepository
-import com.tomaszkopacz.kawernaapp.data.source.PlayerSource
-import com.tomaszkopacz.kawernaapp.data.source.ScoresSource
+import com.tomaszkopacz.kawernaapp.di.ActivityScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -47,33 +43,35 @@ class GameManager @Inject constructor(
 
     fun addNewPlayer(email: String, listener: PlayerListener?) {
         this.playerListener = listener
-        getPlayerByEmail(email)
+        GlobalScope.launch {
+            getPlayerByEmail(email)
+        }
     }
 
-    private fun getPlayerByEmail(email: String) {
+    private suspend fun getPlayerByEmail(email: String) {
         if (networkManager.isNetworkConnected()) {
-            playersRepository.findUserByEmail(email, dbPlayerListener)
+
+            when (val result = playersRepository.findUserByEmail(email)) {
+                is Result.Success -> {
+                    val player = result.data
+                    if (!players.contains(player)) {
+                        playerListener?.onSuccess(
+                            player,
+                            Message(Message.PLAYER_FOUND)
+                        )
+
+                        players.add(player)
+                        playersScores.add(PlayerScore(player, Score(player.email, gameId!!, date!!)))
+                    }
+                }
+
+                else -> {
+                    playerListener?.onFailure(Message(Message.PLAYER_NOT_FOUND))
+                }
+            }
 
         } else {
             playerListener?.onFailure(Message(Message.NO_INTERNET_CONNECTION))
-        }
-    }
-
-    private val dbPlayerListener = object : PlayerSource.PlayerListener {
-        override fun onSuccess(player: Player) {
-            if (!players.contains(player)) {
-                players.add(player)
-                playersScores.add(PlayerScore(player, Score(player.email, gameId!!, date!!)))
-            }
-
-            playerListener?.onSuccess(
-                player,
-                Message(Message.PLAYER_FOUND)
-            )
-        }
-
-        override fun onFailure(exception: Exception) {
-            playerListener?.onFailure(Message(Message.PLAYER_NOT_FOUND))
         }
     }
 
@@ -119,27 +117,17 @@ class GameManager @Inject constructor(
         }
     }
 
-    fun submitResult() {
-        if (networkManager.isNetworkConnected()) {
+    suspend fun submitResult(): Result<List<PlayerScore>> {
+        return if (networkManager.isNetworkConnected()) {
             saveScoresToFireStore()
 
         } else {
-            playerListener?.onFailure(Message(Message.NO_INTERNET_CONNECTION))
+            Result.Failure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
-    private fun saveScoresToFireStore() {
-        scoresRepository.addPlayersScores(playersScores, scoresListener)
-    }
-
-    private var scoresListener = object : ScoresSource.ScoresListener {
-        override fun onSuccess(scores: ArrayList<Score>) {
-
-        }
-
-        override fun onFailure(exception: Exception) {
-
-        }
+    private suspend fun saveScoresToFireStore(): Result<List<PlayerScore>> {
+        return scoresRepository.addPlayersScores(playersScores)
     }
 
     fun getPlayers(): ArrayList<Player> {

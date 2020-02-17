@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.ui.game.GameActivity
 import kotlinx.android.synthetic.main.fragment_result.*
 import javax.inject.Inject
@@ -54,13 +56,28 @@ class ResultFragment : Fragment() {
     private fun subscribeToUI() {
         accept_button.setOnClickListener {
             viewModel.submit()
-            (activity as GameActivity).goToMainActivity()
         }
     }
 
     private fun subscribeToViewModel() {
+        viewModel.state.observe(this, Observer {state ->
+            when (state) {
+                Message.GAME_SUBMITTED -> {
+                    (activity as GameActivity).goToMainActivity()
+                }
+
+                Message.GAME_SUBMITION_FAILED -> {
+                    showErrorMessage(state)
+                }
+            }
+        })
+
         viewModel.resultScores.observe(this, Observer { resultScores ->
             adapter.loadScores(resultScores)
         })
+    }
+
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }
