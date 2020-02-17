@@ -1,16 +1,14 @@
 package com.tomaszkopacz.kawernaapp.managers
 
-import com.tomaszkopacz.kawernaapp.data.Player
-import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.Result
+import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.repository.ScoresRepository
-import com.tomaszkopacz.kawernaapp.data.source.ScoresSource
 import com.tomaszkopacz.kawernaapp.di.ActivityScope
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @ActivityScope
 class AccountManager @Inject constructor(
@@ -18,45 +16,37 @@ class AccountManager @Inject constructor(
     private val networkManager: NetworkManager
 ) {
 
-    private var scoresListener: ScoresListener? = null
     private var scoreChosen: Score? = null
 
-    fun getUsersScores(player: Player, listener: ScoresListener) {
-        this.scoresListener = listener
-
-        if (networkManager.isNetworkConnected()) {
-            repository.getScores(player, dbScoresListener)
+    suspend fun getUsersScores(player: Player): Result<List<Score>> {
+        return if (networkManager.isNetworkConnected()) {
+            downloadScores(player)
 
         } else {
-            scoresListener?.onFailure(
-                Message(
-                    Message.NO_INTERNET_CONNECTION
-                )
-            )
+            Result.Failure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
-    private val dbScoresListener = object : ScoresSource.ScoresListener {
-        override fun onSuccess(scores: ArrayList<Score>) {
-            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-
-            scores.sortByDescending { score ->
-                sdf.parse(score.date)
+    private suspend fun downloadScores(player: Player): Result<List<Score>> {
+        return when (val result = repository.getScores(player)) {
+            is Result.Success -> {
+                Result.Success(sortScores(result.data as ArrayList))
             }
 
-            scoresListener?.onSuccess(
-                scores,
-                Message(Message.SCORES_DOWNLOADED)
-            )
+            is Result.Failure -> {
+                result
+            }
+        }
+    }
+
+    private fun sortScores(scores: ArrayList<Score>): List<Score> {
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        scores.sortByDescending { score ->
+            sdf.parse(score.date)
         }
 
-        override fun onFailure(exception: Exception) {
-            scoresListener?.onFailure(
-                Message(
-                    Message.SCORES_DOWNLOAD_FAILED
-                )
-            )
-        }
+        return scores
     }
 
     fun setScoreChosen(score: Score) {
@@ -65,10 +55,5 @@ class AccountManager @Inject constructor(
 
     fun getScoreChosen(): Score? {
         return scoreChosen
-    }
-
-    interface ScoresListener {
-        fun onSuccess(scores: ArrayList<Score>, message: Message)
-        fun onFailure(message: Message)
     }
 }

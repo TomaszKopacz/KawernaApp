@@ -13,6 +13,7 @@ data class Message(val text: String) {
         const val LOGIN_EMAIL_NOT_FOUND = "Nie znaleziono użytkownika"
         const val PASSWORD_INCORRECT = "Hasło jest nieprawidłowe"
         const val LOGIN_SUCCEED = "Zalogowano"
+        const val LOGIN_FAILED = "Nie można zalogować"
 
         // register
         const val EMAIL_OCCUPIED = "Podany adres email jest już zajęty"
@@ -21,11 +22,15 @@ data class Message(val text: String) {
         // scores
         const val SCORES_DOWNLOAD_IN_PROGRESS = "Trwa pobieranie wyników"
         const val SCORES_DOWNLOADED = "Pobrano wyniki"
-        const val SCORES_DOWNLOAD_FAILED = "Nie można pobrać wyników"
+        const val NO_SCORES = "Brak wyników"
 
         // scan players
         const val PLAYER_FOUND = "Znaleziono gracza"
         const val PLAYER_NOT_FOUND = "Nie znaleziono gracza"
+
+        // game
+        const val GAME_SUBMITTED = "Zakończono grę"
+        const val GAME_SUBMITION_FAILED = "Nie można zapisać wyników"
 
         // camera
         const val CAMERA_ENABLED = "Aparat jest włączony"

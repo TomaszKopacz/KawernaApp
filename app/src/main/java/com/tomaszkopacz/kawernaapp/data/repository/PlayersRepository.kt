@@ -1,6 +1,7 @@
 package com.tomaszkopacz.kawernaapp.data.repository
 
 import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.Result
 import com.tomaszkopacz.kawernaapp.data.source.LoggedUserStorage
 import com.tomaszkopacz.kawernaapp.data.source.PlayerSource
 import javax.inject.Inject
@@ -20,8 +21,8 @@ class PlayersRepository @Inject constructor(
         return loggedUserStorage.getLoggedUser()
     }
 
-    fun findUserByEmail(email: String, listener: PlayerSource.PlayerListener?) {
-        playerSource.getPlayer(email, listener)
+    suspend fun findUserByEmail(email: String): Result<Player> {
+        return playerSource.getPlayer(email)
     }
 
     fun loginUser(user: Player) {
@@ -32,9 +33,8 @@ class PlayersRepository @Inject constructor(
         loggedUserStorage.clearLoggedUser()
     }
 
-    fun registerUser(user: Player, listener: PlayerSource.PlayerListener?) {
-        playerSource.addPlayer(user, listener)
+    suspend fun registerUser(user: Player): Result<Player>{
         loggedUserStorage.setLoggedUser(user)
+        return playerSource.addPlayer(user)
     }
-
 }

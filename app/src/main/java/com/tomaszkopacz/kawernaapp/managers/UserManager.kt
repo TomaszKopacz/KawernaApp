@@ -1,16 +1,9 @@
 package com.tomaszkopacz.kawernaapp.managers
 
-import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Message
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.EMAIL_OCCUPIED
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.EMPTY_DATA
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.LOGIN_SUCCEED
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.NO_INTERNET_CONNECTION
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.PASSWORD_INCORRECT
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.LOGIN_EMAIL_NOT_FOUND
-import com.tomaszkopacz.kawernaapp.data.Message.Companion.REGISTRATION_SUCCEED
+import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.Result
 import com.tomaszkopacz.kawernaapp.data.repository.PlayersRepository
-import com.tomaszkopacz.kawernaapp.data.source.PlayerSource
 import com.tomaszkopacz.kawernaapp.extensions.MD5
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,9 +18,6 @@ class UserManager @Inject constructor(
     private var name: String? = null
     private var password: String? = null
 
-    private var loginListener: UserListener? = null
-    private var registerListener: UserListener? = null
-
     fun isUserLoggedIn(): Boolean {
         return repository.isUserLoggedIn()
     }
@@ -36,19 +26,17 @@ class UserManager @Inject constructor(
         return repository.getLoggedUser()
     }
 
-    fun login(mail: String, password: String, listener: UserListener?) {
+    suspend fun login(mail: String, password: String): Result<Player> {
         this.mail = mail
         this.password = password
 
-        this.loginListener = listener
-
         trimCredentials()
 
-        if (credentialsAreCorrect()) {
+        return if (credentialsAreCorrect()) {
             attemptUserLogin()
 
         } else {
-            loginListener?.onFailure(Message(EMPTY_DATA))
+            Result.Failure(Message(Message.EMPTY_DATA))
         }
     }
 
@@ -65,43 +53,36 @@ class UserManager @Inject constructor(
         return mail!!.isEmpty() || password!!.isEmpty()
     }
 
-    private fun attemptUserLogin() {
+    private suspend fun attemptUserLogin(): Result<Player> {
         if (networkManager.isNetworkConnected()) {
-            repository.findUserByEmail(mail!!, loginPlayerListener)
+
+            return when (val result = repository.findUserByEmail(mail!!)) {
+                is Result.Success -> {
+                    val player = result.data
+                    checkPassword(player)
+                }
+
+                is Result.Failure -> {
+                    Result.Failure(Message(Message.LOGIN_EMAIL_NOT_FOUND))
+                }
+
+                else -> {
+                    Result.Failure(Message(Message.LOGIN_FAILED))
+                }
+            }
 
         } else {
-            loginListener?.onFailure(
-                Message(
-                    NO_INTERNET_CONNECTION
-                )
-            )
+            return Result.Failure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
-    private val loginPlayerListener = object : PlayerSource.PlayerListener {
-        override fun onSuccess(player: Player) {
+    private fun checkPassword(player: Player): Result<Player> {
+        return if (password!!.MD5() == player.password) {
+            repository.loginUser(player)
+            Result.Success(player)
 
-            if (password!!.MD5() == player.password) {
-                repository.loginUser(player)
-                loginListener?.onSuccess(player,
-                    Message(LOGIN_SUCCEED)
-                )
-
-            } else {
-                loginListener?.onFailure(
-                    Message(
-                        PASSWORD_INCORRECT
-                    )
-                )
-            }
-        }
-
-        override fun onFailure(exception: Exception) {
-            loginListener?.onFailure(
-                Message(
-                    LOGIN_EMAIL_NOT_FOUND
-                )
-            )
+        } else {
+            Result.Failure(Message(Message.PASSWORD_INCORRECT))
         }
     }
 
@@ -109,68 +90,51 @@ class UserManager @Inject constructor(
         repository.logoutUser()
     }
 
-    fun register(mail: String, name: String, password: String, listener: UserListener?) {
+    suspend fun register(mail: String, name: String, password: String): Result<Player> {
         this.mail = mail
         this.name = name
         this.password = password
 
-        this.registerListener = listener
-
         trimCredentials()
 
-        if (credentialsAreCorrect()) {
+        return if (credentialsAreCorrect()) {
             attemptUserRegistration()
 
         } else {
-            registerListener?.onFailure(Message(EMPTY_DATA))
+            Result.Failure(Message(Message.EMPTY_DATA))
         }
     }
 
-    private fun attemptUserRegistration() {
-        if(networkManager.isNetworkConnected()) {
-            checkUserAlreadyExists()
+    private suspend fun attemptUserRegistration(): Result<Player> {
+        return if(networkManager.isNetworkConnected()) {
+            if (userAlreadyExists()) {
+                Result.Failure(Message(Message.EMAIL_OCCUPIED))
+
+            } else {
+                doRegister()
+            }
 
         } else {
-            registerListener?.onFailure(
-                Message(
-                    NO_INTERNET_CONNECTION
-                )
-            )
+            Result.Failure(Message(Message.NO_INTERNET_CONNECTION))
         }
     }
 
-    private fun checkUserAlreadyExists() {
-        repository.findUserByEmail(mail!!, object : PlayerSource.PlayerListener {
-            override fun onSuccess(player: Player) {
-                registerListener?.onFailure(
-                    Message(
-                        EMAIL_OCCUPIED
-                    )
-                )
+    private suspend fun userAlreadyExists(): Boolean {
+        return when (repository.findUserByEmail(mail!!)) {
+            is Result.Success -> {
+                true
             }
 
-            override fun onFailure(exception: Exception) {
-                val passwordEncrypted = password!!.MD5()
-                val player = Player(mail!!, name!!, passwordEncrypted)
-                repository.registerUser(player, registerPlayerListener)
+            is Result.Failure -> {
+                false
             }
-        })
+        }
     }
 
-    private val registerPlayerListener = object : PlayerSource.PlayerListener {
-        override fun onSuccess(player: Player) {
-            registerListener?.onSuccess(player,
-                Message(REGISTRATION_SUCCEED)
-            )
-        }
-
-        override fun onFailure(exception: Exception) {
-            registerListener?.onFailure(
-                Message(
-                    NO_INTERNET_CONNECTION
-                )
-            )
-        }
+    private suspend fun doRegister(): Result<Player> {
+        val passwordEncrypted = password!!.MD5()
+        val newPlayer = Player(mail!!, name!!, passwordEncrypted)
+        return repository.registerUser(newPlayer)
     }
 
     interface UserListener {

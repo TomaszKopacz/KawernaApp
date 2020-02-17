@@ -3,8 +3,10 @@ package com.tomaszkopacz.kawernaapp.ui.start.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tomaszkopacz.kawernaapp.data.Message
-import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.Result
 import com.tomaszkopacz.kawernaapp.managers.UserManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
@@ -14,16 +16,17 @@ class LoginViewModel @Inject constructor(
     var state = MutableLiveData<String>()
 
     fun login(mail: String, password: String) {
-        userManager.login(mail, password, loginListener)
-    }
+        GlobalScope.launch {
 
-    private val loginListener = object : UserManager.UserListener {
-        override fun onSuccess(player: Player, message: Message) {
-            state.postValue(message.text)
-        }
+            when (val result = userManager.login(mail, password)) {
+                is Result.Success -> {
+                    state.postValue(Message.LOGIN_SUCCEED)
+                }
 
-        override fun onFailure(message: Message) {
-            state.postValue(message.text)
+                is Result.Failure -> {
+                    state.postValue(result.message.text)
+                }
+            }
         }
     }
 }
