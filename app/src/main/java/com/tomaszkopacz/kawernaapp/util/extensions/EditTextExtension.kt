@@ -1,4 +1,4 @@
-package com.tomaszkopacz.kawernaapp.extensions
+package com.tomaszkopacz.kawernaapp.util.extensions
 
 import android.widget.EditText
 
