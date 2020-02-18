@@ -11,7 +11,7 @@ import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.PlayerScore
 import com.tomaszkopacz.kawernaapp.data.Score
 import com.tomaszkopacz.kawernaapp.data.ScoreCategory
-import com.tomaszkopacz.kawernaapp.extensions.setCursorToEnd
+import com.tomaszkopacz.kawernaapp.util.extensions.setCursorToEnd
 import com.tomaszkopacz.kawernaapp.ui.game.scores.ScoresAdapter.ScoresViewHolder
 import kotlinx.android.synthetic.main.score_item.view.*
 

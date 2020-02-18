@@ -4,7 +4,7 @@ import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.data.Player
 import com.tomaszkopacz.kawernaapp.data.Result
 import com.tomaszkopacz.kawernaapp.data.repository.PlayersRepository
-import com.tomaszkopacz.kawernaapp.extensions.MD5
+import com.tomaszkopacz.kawernaapp.util.extensions.MD5
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -135,10 +135,5 @@ class UserManager @Inject constructor(
         val passwordEncrypted = password!!.MD5()
         val newPlayer = Player(mail!!, name!!, passwordEncrypted)
         return repository.registerUser(newPlayer)
-    }
-
-    interface UserListener {
-        fun onSuccess(player: Player, message: Message)
-        fun onFailure(message: Message)
     }
 }
