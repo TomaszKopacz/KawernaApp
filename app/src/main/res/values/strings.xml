@@ -13,12 +13,12 @@
     <string name="btn_submit_login">ZALOGUJ</string>
     <string name="btn_submit_sign_up">ZAREJESTRUJ</string>
 
-    <string name="password_forgot">Zaponiałem hasła</string>
+    <string name="password_forgot">Zapomniałem hasła</string>
 
 
     <!-- RESTORE PASSWORD ACTIVITY -->
 
-    <string name="restore_password">Przypomnij hasło</string>
+    <string name="restore_password">Wyślij hasło</string>
     <string name="restore_password_instruction">Podaj swój email. Na wpisany adres zostanie wysłane Twoje hasło.</string>
 
     <!-- MAIN ACTIVITY -->
@@ -29,6 +29,7 @@
 
     <string name="title_qr_code">Twój kod QR:</string>
     <string name="desc_qr_code">Kod QR</string>
+    <string name="confirm">Zatwierdź</string>
 
     <string name="item_sign_out">Wyloguj</string>
 

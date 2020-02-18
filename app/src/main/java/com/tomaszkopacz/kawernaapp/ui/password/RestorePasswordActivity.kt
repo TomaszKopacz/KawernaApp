@@ -3,16 +3,14 @@ package com.tomaszkopacz.kawernaapp.ui.password
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.di.RestorePasswordComponent
-import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
 import com.tomaszkopacz.kawernaapp.ui.start.StartActivity
 import kotlinx.android.synthetic.main.activity_restore_password.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class RestorePasswordActivity : AppCompatActivity() {
@@ -41,8 +39,12 @@ class RestorePasswordActivity : AppCompatActivity() {
     private fun observeState() {
         viewModel.getState().observe(this, Observer { state ->
             when (state) {
-                Message.PASSWORD_RESTORED -> {
+                Message.PASSWORD_UPDATED -> {
+                    goToStartActivity()
+                }
 
+                else -> {
+                    showErrorMessage(state)
                 }
             }
         })
@@ -59,5 +61,9 @@ class RestorePasswordActivity : AppCompatActivity() {
 
         val intent = Intent(this, StartActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

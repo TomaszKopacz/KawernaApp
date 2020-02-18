@@ -24,9 +24,9 @@ class RestorePasswordViewModel @Inject constructor(
 
         } else {
             GlobalScope.launch {
-                when (val result = restorePasswordService.restorePassword(email)) {
+                when (val result = restorePasswordService.updatePassword(email)) {
                     is Result.Success -> {
-                        state.postValue(Message.PASSWORD_RESTORED)
+                        state.postValue(Message.PASSWORD_UPDATED)
                     }
 
                     is Result.Failure -> {

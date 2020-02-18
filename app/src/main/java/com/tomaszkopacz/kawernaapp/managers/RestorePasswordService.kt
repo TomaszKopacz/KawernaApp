@@ -13,11 +13,14 @@ class RestorePasswordService @Inject constructor(
     private val playersRepository: PlayersRepository
 ) {
 
-    suspend fun restorePassword(email: String): Result<Player> {
+    suspend fun updatePassword(email: String, password: String): Result<Player> {
+        return playersRepository.updatePassword(email, password)
+    }
+
+    suspend fun updatePassword(email: String): Result<Player> {
         val newPassword = randomString()
 
-        val result = playersRepository.updatePassword(email, newPassword)
-
+        val result = updatePassword(email, newPassword)
         if (result is Result.Success) {
             sendEmailWithPassword(email, newPassword)
         }
