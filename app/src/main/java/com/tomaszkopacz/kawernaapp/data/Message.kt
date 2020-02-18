@@ -19,6 +19,9 @@ data class Message(val text: String) {
         const val EMAIL_OCCUPIED = "Podany adres email jest już zajęty"
         const val REGISTRATION_SUCCEED = "Zarejestrowano"
 
+        // restore password
+        const val PASSWORD_RESTORED = "Wysłano email z hasłem"
+
         // scores
         const val SCORES_DOWNLOAD_IN_PROGRESS = "Trwa pobieranie wyników"
         const val SCORES_DOWNLOADED = "Pobrano wyniki"

@@ -13,6 +13,14 @@
     <string name="btn_submit_login">ZALOGUJ</string>
     <string name="btn_submit_sign_up">ZAREJESTRUJ</string>
 
+    <string name="password_forgot">Zaponiałem hasła</string>
+
+
+    <!-- RESTORE PASSWORD ACTIVITY -->
+
+    <string name="restore_password">Przypomnij hasło</string>
+    <string name="restore_password_instruction">Podaj swój email. Na wpisany adres zostanie wysłane Twoje hasło.</string>
+
     <!-- MAIN ACTIVITY -->
 
     <string name="tab_board">Tablica</string>

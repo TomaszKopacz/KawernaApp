@@ -6,6 +6,7 @@ import dagger.Module
     subcomponents = [
         SplashComponent::class,
         StartComponent::class,
+        RestorePasswordComponent::class,
         MainComponent::class,
         GameComponent::class
     ]

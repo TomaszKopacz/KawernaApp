@@ -16,6 +16,7 @@ interface AppComponent {
 
     fun splashComponent(): SplashComponent.Factory
     fun startComponent(): StartComponent.Factory
+    fun restorePasswordComponent(): RestorePasswordComponent.Factory
     fun mainComponent(): MainComponent.Factory
     fun gameComponent(): GameComponent.Factory
 

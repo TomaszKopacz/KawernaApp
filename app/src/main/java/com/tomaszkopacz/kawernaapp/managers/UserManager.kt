@@ -136,4 +136,6 @@ class UserManager @Inject constructor(
         val newPlayer = Player(mail!!, name!!, passwordEncrypted)
         return repository.registerUser(newPlayer)
     }
+
+
 }
