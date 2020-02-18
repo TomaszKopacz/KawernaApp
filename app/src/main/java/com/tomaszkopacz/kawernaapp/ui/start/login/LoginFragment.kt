@@ -45,11 +45,18 @@ class LoginFragment : Fragment() {
 
     private fun subscribeToUI() {
         setSubmitButtonListener()
+        setRestorePasswordButtonListener()
     }
 
     private fun setSubmitButtonListener() {
         loginSubmit.setOnClickListener {
             loginAttempt()
+        }
+    }
+
+    private fun setRestorePasswordButtonListener() {
+        btnRestorePassword.setOnClickListener {
+            goToRestorePasswordActivity()
         }
     }
 
@@ -77,6 +84,10 @@ class LoginFragment : Fragment() {
 
     private fun goToMainActivity() {
         (activity as StartActivity).navigateToMainActivity()
+    }
+
+    private fun goToRestorePasswordActivity() {
+        (activity as StartActivity).navigateToRestorePasswordActivity()
     }
 
     private fun showProgressBar() {

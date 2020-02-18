@@ -9,6 +9,7 @@ import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.di.StartComponent
 import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
+import com.tomaszkopacz.kawernaapp.ui.password.RestorePasswordActivity
 import kotlinx.android.synthetic.main.activity_start.*
 import javax.inject.Inject
 
@@ -32,8 +33,14 @@ class StartActivity : AppCompatActivity() {
     }
 
     fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
         finish()
+
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun navigateToRestorePasswordActivity() {
+        val intent = Intent(this, RestorePasswordActivity::class.java)
         startActivity(intent)
     }
 }

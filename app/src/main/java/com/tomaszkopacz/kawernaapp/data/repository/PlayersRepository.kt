@@ -37,4 +37,8 @@ class PlayersRepository @Inject constructor(
         loggedUserStorage.setLoggedUser(user)
         return playerSource.addPlayer(user)
     }
+
+    suspend fun updatePassword(email: String, password: String): Result<Player> {
+        return playerSource.updatePassword(email, password)
+    }
 }
