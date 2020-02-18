@@ -46,19 +46,30 @@ class AccountViewModel @Inject constructor(
     }
 
     fun changePassword(password: String) {
+        if (password.isEmpty()) {
+            state.postValue(Message.EMPTY_DATA)
+
+        } else {
+            updatePassword(password)
+        }
+    }
+
+    private fun updatePassword(password: String) {
         GlobalScope.launch {
-           when (val result =
-               restorePasswordService.updatePassword(userManager.getLoggedUser()!!.email, password)) {
+            when (val result =
+                restorePasswordService.updatePassword(
+                    userManager.getLoggedUser()!!.email,
+                    password
+                )) {
 
-               is Result.Success -> {
-                   state.postValue(Message.PASSWORD_UPDATED)
-               }
+                is Result.Success -> {
+                    state.postValue(Message.PASSWORD_UPDATED)
+                }
 
-               is Result.Failure -> {
-                   state.postValue(result.message.text)
-               }
-           }
-
+                is Result.Failure -> {
+                    state.postValue(result.message.text)
+                }
+            }
         }
     }
 }

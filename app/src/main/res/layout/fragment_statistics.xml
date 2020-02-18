@@ -211,6 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_wins"
                         android:layout_centerHorizontal="true"
+                        android:clickable="false"
                         android:text="Wygrane"
                         android:textSize="12sp">
 
@@ -247,6 +248,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_games"
                         android:layout_centerHorizontal="true"
+                        android:clickable="false"
                         android:text="Liczba gier"
                         android:textSize="12sp" />
                 </RelativeLayout>
