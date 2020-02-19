@@ -3,6 +3,7 @@ package com.tomaszkopacz.kawernaapp.ui.splash
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.managers.UserManager
 import javax.inject.Inject
 
@@ -26,15 +27,10 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun userIsLoggedIn() {
-        state.postValue(STATE_USER_LOGGED_IN)
+        state.postValue(Message.STATE_USER_LOGGED_IN)
     }
 
     private fun noUserIsLoggedIn() {
-        state.postValue(STATE_NO_USER_LOGGED_IN)
-    }
-
-    companion object {
-        const val STATE_USER_LOGGED_IN = "User is logged in"
-        const val STATE_NO_USER_LOGGED_IN = "No user is logged in"
+        state.postValue(Message.STATE_NO_USER_LOGGED_IN)
     }
 }

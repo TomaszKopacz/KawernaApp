@@ -14,6 +14,8 @@ data class Message(val text: String) {
         const val PASSWORD_INCORRECT = "Hasło jest nieprawidłowe"
         const val LOGIN_SUCCEED = "Zalogowano"
         const val LOGIN_FAILED = "Nie można zalogować"
+        const val STATE_USER_LOGGED_IN = "User is logged in"
+        const val STATE_NO_USER_LOGGED_IN = "No user is logged in"
 
         // register
         const val EMAIL_OCCUPIED = "Podany adres email jest już zajęty"

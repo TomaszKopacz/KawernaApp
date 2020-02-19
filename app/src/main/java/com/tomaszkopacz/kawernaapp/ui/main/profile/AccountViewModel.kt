@@ -20,12 +20,10 @@ class AccountViewModel @Inject constructor(
 
     private val state = MutableLiveData<String>()
 
-    private var _qrCode: Bitmap? = null
     private var qrCode = MutableLiveData<Bitmap>()
 
     init {
         generateQRCode()
-        exposeQRCodeBitmap()
     }
 
     fun getState(): LiveData<String> = state
@@ -33,16 +31,11 @@ class AccountViewModel @Inject constructor(
     fun getQRCode(): LiveData<Bitmap> = qrCode
 
     private fun generateQRCode() {
-        val qrCode = QRGenerator.generateQRCode(getStringToEncode())
-        this._qrCode = qrCode
+        qrCode.postValue(QRGenerator.generateQRCode(getStringToEncode()))
     }
 
     private fun getStringToEncode(): String {
         return userManager.getLoggedUser()!!.email
-    }
-
-    private fun exposeQRCodeBitmap() {
-        qrCode.postValue(_qrCode)
     }
 
     fun changePassword(password: String) {

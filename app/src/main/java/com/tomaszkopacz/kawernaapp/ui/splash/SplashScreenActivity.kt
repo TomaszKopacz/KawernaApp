@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.tomaszkopacz.kawernaapp.MyApplication
 import com.tomaszkopacz.kawernaapp.R
+import com.tomaszkopacz.kawernaapp.data.Message
 import com.tomaszkopacz.kawernaapp.di.SplashComponent
 import com.tomaszkopacz.kawernaapp.ui.main.MainActivity
 import com.tomaszkopacz.kawernaapp.ui.start.StartActivity
@@ -31,8 +32,8 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun subscribeToViewModel() {
         viewModel.state.observe(this, Observer { state ->
             when (state) {
-                SplashViewModel.STATE_USER_LOGGED_IN -> goToMainActivity()
-                SplashViewModel.STATE_NO_USER_LOGGED_IN -> goToStartActivity()
+                Message.STATE_USER_LOGGED_IN -> goToMainActivity()
+                Message.STATE_NO_USER_LOGGED_IN -> goToStartActivity()
             }
         })
     }

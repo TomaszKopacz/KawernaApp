@@ -1,122 +1,126 @@
 package com.tomaszkopacz.kawernaapp.ui.main.board
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.tomaszkopacz.kawernaapp.data.source.remote.ScoresRemoteSource
+import com.tomaszkopacz.kawernaapp.data.Message
+import com.tomaszkopacz.kawernaapp.data.Player
+import com.tomaszkopacz.kawernaapp.data.Result
 import com.tomaszkopacz.kawernaapp.data.Score
-import org.junit.Assert.assertTrue
+import com.tomaszkopacz.kawernaapp.managers.AccountManager
+import com.tomaszkopacz.kawernaapp.managers.UserManager
+import com.tomaszkopacz.kawernaapp.util.extensions.observeOnce
+import kotlinx.coroutines.runBlocking
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 
 class HomeViewModelTest {
 
-//    @Rule @JvmField
-//    val instantExecutorRule = InstantTaskExecutorRule()
-//
-//    private lateinit var viewModel: HomeViewModel
-//    private lateinit var authManager: AuthManager
-//    private lateinit var fireStoreRepository: ScoresRemoteSource
-//
-//    @Before
-//    fun setUp() {
-//        fireStoreRepository = Mockito.mock(ScoresRemoteSource::class.java)
-//        authManager = Mockito.mock(AuthManager::class.java)
-//        viewModel = HomeViewModel(authManager, fireStoreRepository)
-//    }
-//
-//    @Test
-//    fun `testConstructor - when view model created, then state is NONE`() {
-//        assertTrue(viewModel.state.value == HomeViewModel.STATE_NONE)
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when logged player is null then state is DOWNLOAD_FAILED` () {
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn(null)
-//
-//        viewModel.downloadScores()
-//
-//        assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOAD_FAILED)
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when logged player is empty then state is DOWNLOAD_FAILED`() {
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn("")
-//
-//        viewModel.downloadScores()
-//
-//        assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOAD_FAILED)
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when player email hasn't at sign then state is DOWNLOAD_FAILED` () {
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn("johnsmithgmail.com")
-//
-//        viewModel.downloadScores()
-//
-//        assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOAD_FAILED)
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when player doesn't exist in db then state is DOWNLOADED` () {
-//        val listenerCaptor = ArgumentCaptor.forClass(ScoresRemoteSource.DownloadScoresListener::class.java)
-//
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn("playernotfound@gmail.com")
-//
-//        // when no player found in database repo returns empty list in onSuccess callback
-//        viewModel.downloadScores()
-//        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
-//        listenerCaptor.value.onSuccess(ArrayList())
-//
-//        assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOADED)
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when player exists in db then state is DOWNLOADED` () {
-//        val listenerCaptor = ArgumentCaptor.forClass(ScoresRemoteSource.DownloadScoresListener::class.java)
-//        val scores = ArrayList<Score>()
-//        for (i in 1..3) scores.add(Score())
-//
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn("someplayer@gmail.com")
-//
-//        viewModel.downloadScores()
-//        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
-//        listenerCaptor.value.onSuccess(scores)
-//
-//        assertTrue(viewModel.state.value == HomeViewModel.STATE_SCORES_DOWNLOADED)
-//
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when player doesn't exist in db then scores list is empty` () {
-//        val listenerCaptor = ArgumentCaptor.forClass(ScoresRemoteSource.DownloadScoresListener::class.java)
-//
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn("playernotfound@gmail.com")
-//
-//        // when no player found in database repo returns empty list in onSuccess callback
-//        viewModel.downloadScores()
-//        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
-//        listenerCaptor.value.onSuccess(ArrayList())
-//
-//        assertTrue(viewModel.userScores.value != null)
-//        assertTrue(viewModel.userScores.value!!.isEmpty())
-//    }
-//
-//    @Test
-//    fun `downloadScores() - when player exists in db then scores list is set` () {
-//        val listenerCaptor = ArgumentCaptor.forClass(ScoresRemoteSource.DownloadScoresListener::class.java)
-//        val scores = ArrayList<Score>()
-//        for (i in 1..3)
-//            scores.add(Score())
-//
-//        Mockito.`when`(authManager.getLoggedUser()).thenReturn("someplayer@gmail.com")
-//
-//        viewModel.downloadScores()
-//        Mockito.verify(fireStoreRepository).getScoresByPlayer(Mockito.anyString(), listenerCaptor.capture())
-//        listenerCaptor.value.onSuccess(scores)
-//
-//        assertTrue(viewModel.userScores.value != null)
-//        assertTrue(viewModel.userScores.value!!.size == 3)
-//    }
+    @get:Rule
+    val instantExecutorRule = InstantTaskExecutorRule()
+
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var userManager: UserManager
+    private lateinit var accountManager: AccountManager
+
+    private val player = Player()
+    private val scores = ArrayList<Score>()
+
+    @Before
+    fun setUp() {
+        userManager = Mockito.mock(UserManager::class.java)
+        accountManager = Mockito.mock(AccountManager::class.java)
+        viewModel = HomeViewModel(userManager, accountManager)
+
+        populateScores()
+    }
+
+    private fun populateScores() {
+        val score1 = Score("player1", "game1", "date1")
+        val score2 = Score("player2", "game2", "date2")
+        val score3 = Score("player3", "game3", "date3")
+
+        scores.add(score1)
+        scores.add(score2)
+        scores.add(score3)
+    }
+
+    @Test
+    fun `init{} - check state when account service returns failure`() {
+
+        runBlocking {
+            Mockito
+                .`when`(userManager.isUserLoggedIn())
+                .thenReturn(true)
+
+            Mockito
+                .`when`(userManager.getLoggedUser())
+                .thenReturn(player)
+
+            Mockito
+                .`when`(accountManager.getUsersScores(player))
+                .thenReturn(Result.Failure(Message("FAILURE")))
+
+            val newViewModel = HomeViewModel(userManager, accountManager)
+            newViewModel.state.observeOnce { state ->
+                assertThat(state, `is`("FAILURE"))
+            }
+        }
+    }
+
+    @Test
+    fun `init{} - check state when scores download succeed`() {
+
+        runBlocking {
+            Mockito
+                .`when`(userManager.isUserLoggedIn())
+                .thenReturn(true)
+
+            Mockito
+                .`when`(userManager.getLoggedUser())
+                .thenReturn(player)
+
+            Mockito
+                .`when`(accountManager.getUsersScores(player))
+                .thenReturn(Result.Success(scores))
+
+            val newViewModel = HomeViewModel(userManager, accountManager)
+            newViewModel.state.observeOnce { state ->
+                assertThat(state, `is`(Message.SCORES_DOWNLOADED))
+            }
+        }
+    }
+
+    @Test
+    fun `init{} - check scores when scores download succeed`() {
+
+        runBlocking {
+            Mockito
+                .`when`(userManager.isUserLoggedIn())
+                .thenReturn(true)
+
+            Mockito
+                .`when`(userManager.getLoggedUser())
+                .thenReturn(player)
+
+            Mockito
+                .`when`(accountManager.getUsersScores(player))
+                .thenReturn(Result.Success(scores))
+
+            val newViewModel = HomeViewModel(userManager, accountManager)
+            newViewModel.userScores.observeOnce { testScores ->
+                assertThat(testScores.size, `is`(scores.size))
+            }
+        }
+    }
+
+    @Test
+    fun `scoreChosen() - verify account service method call`() {
+        val score = Score()
+        viewModel.scoreChosen(score)
+
+        Mockito.verify(accountManager).setScoreChosen(score)
+    }
 }
