@@ -1,5 +1,7 @@
 # KawernaApp
 
+[Zobacz w Google Play](https://play.google.com/store/apps/details?id=com.tomaszkopacz.kawernaapp)
+
 Lubisz grać w grę planszową Kawerna? Ekscytujesz się wynikami, porównujesz swoje wyniki z innymi graczami, analizujesz w jaki sposób możesz osiągnąć jeszcze lepszy rezultat? Ta aplikacja jest właśnie dla Ciebie! 
 
 ![1](https://user-images.githubusercontent.com/17621860/74862006-a1c64680-534b-11ea-90f9-540ac57b939a.jpg)
