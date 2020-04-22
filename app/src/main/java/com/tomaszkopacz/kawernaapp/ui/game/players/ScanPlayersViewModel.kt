@@ -1,6 +1,5 @@
 package com.tomaszkopacz.kawernaapp.ui.game.players
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.data.Message
@@ -39,9 +38,7 @@ class ScanPlayersViewModel @Inject constructor(
 
     fun scanPerformed(barcodeResult: BarcodeResult) {
         val scannedText = barcodeResult.text
-        Log.d("Kawerna", "Text scanned: $scannedText")
         gameManager.addNewPlayer(scannedText, playerListener)
-        Log.d("Kawerna", "New player added")
     }
 
     fun confirm() {

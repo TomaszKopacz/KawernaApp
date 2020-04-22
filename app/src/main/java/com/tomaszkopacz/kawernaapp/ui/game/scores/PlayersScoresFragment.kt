@@ -68,7 +68,7 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun setCategoryObserver() {
-        viewModel.currentCategory.observe(this, Observer { category ->
+        viewModel.currentCategory.observe(viewLifecycleOwner, Observer { category ->
             updateCategoryLayout(category)
             scoresAdapter.loadCategory(category)
         })
@@ -132,7 +132,7 @@ class PlayersScoresFragment : Fragment() {
     }
 
     private fun setScoresObserver() {
-        viewModel.playersScores.observe(this, Observer {
+        viewModel.playersScores.observe(viewLifecycleOwner, Observer {
             scoresAdapter.loadScores(it)
         })
     }

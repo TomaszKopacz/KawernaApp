@@ -16,8 +16,8 @@ import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.tomaszkopacz.kawernaapp.R
 import com.tomaszkopacz.kawernaapp.data.Message
-import com.tomaszkopacz.kawernaapp.ui.game.GameActivity
 import com.tomaszkopacz.kawernaapp.qr.QRScanner
+import com.tomaszkopacz.kawernaapp.ui.game.GameActivity
 import kotlinx.android.synthetic.main.fragment_scan_players.*
 import javax.inject.Inject
 
@@ -83,7 +83,7 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun setStateObserver() {
-        viewModel.state.observe(this, Observer { state ->
+        viewModel.state.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 Message.PLAYER_FOUND -> { }
                 else -> showErrorMessage(state)
@@ -92,7 +92,7 @@ class ScanPlayersFragment : Fragment() {
     }
 
     private fun setPlayersObserver() {
-        viewModel.players.observe(this, Observer { players ->
+        viewModel.players.observe(viewLifecycleOwner, Observer { players ->
             playersAdapter.loadPlayers(players)
         })
     }
